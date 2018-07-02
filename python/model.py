@@ -40,7 +40,7 @@ def model(u, ctx):
     runcmd = ". model/de.uni-kiel.rz.nesh-fe.petsc-3.3-p7.opt.sh; " + \
                 "mpiexec " + os.environ["NQSII_MPIOPTS"] + " ./model/metos3d-simpack-" + ctx.modname + ".exe " + \
               optionfilepath + " > " + logfilepath
-#    print("# run:      " + runcmd)
+#    print("# run:      " + runcmd, flush=True)
     status = os.system(runcmd)
 
     # read result from scratch
@@ -50,12 +50,12 @@ def model(u, ctx):
     y = np.zeros((nt,nx))       # note, c order
     for i in range(nt):
         filepath = readpath + "{:04d}".format(i) + "-N.petsc"
-#        if i%500==0: print("# {}".format(filepath))
+#        if i%500==0: print("# {}".format(filepath), flush=True)
         y[i,:] = read_petsc_vector(filepath);
 
     # clean scratch
     cleancmd = "rm " + readpath + "*"
-#    print("# clean:    " + cleancmd)
+#    print("# clean:    " + cleancmd, flush=True)
     status = os.system(cleancmd)
 
     return y

@@ -75,7 +75,7 @@ ctx.options = options
 
 # optimization run
 r = spo.minimize(lambda u: objective(u, ctx), ctx.u0, **ctx.options)
-print(r)
+print(r, flush=True)
 
 # store optimal parameter set and corresponding objective value
 logfile = h5py.File(ctx.logfile, "a")

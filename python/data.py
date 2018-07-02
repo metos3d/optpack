@@ -28,7 +28,7 @@ def data(ctx):
     y = np.zeros((nt,nx))   # note, c order
     for i in range(nt):
         filepath = datapath + "{:04d}".format(i) + "-N.petsc"
-#        if i%500==0: print("# {}".format(filepath))
+#        if i%500==0: print("# {}".format(filepath), flush=True)
         y[i,:] = read_petsc_vector(filepath)
     yd = average(y, ctx)
 

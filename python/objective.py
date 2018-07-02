@@ -21,7 +21,7 @@ from python.misfit import misfit
 from python.store import store
 
 def objective(u, ctx):
-    print("# i:        {:03d}".format(ctx.i))
+    print("# i:        {:03d}".format(ctx.i), flush=True)
     
     y = model(u, ctx)
     J = misfit(y, ctx)

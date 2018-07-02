@@ -52,7 +52,7 @@ def misfit(y, ctx):
 
     # return the annual mean as objective value
     J = Jan
-    print("# J:        {:.16e}".format(J))
+    print("# J:        {:.16e}".format(J), flush=True)
     return J
 
 
