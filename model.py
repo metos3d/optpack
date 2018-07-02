@@ -3,14 +3,17 @@ import os
 
 # main
 if __name__ == "__main__":
+    
+    model_list = ["N", "N-DOP", "NP-DOP", "NPZ-DOP", "NPZD-DOP"]
+    
     if len(sys.argv[:]) < 2:
-        print('''usage: python {0} [model-name]
-example:
-$> python {0} NPZ-DOP'''.format(sys.argv[0]))
+        print("usage: python {0} [model-name]".format(sys.argv[0]))
+        print("[model-name]     ", model_list)
+        print("example:")
+        print("$> python {0} NPZ-DOP".format(sys.argv[0]))
         sys.exit(0)
 
     model_name = sys.argv[1]
-    model_list = ["N", "N-DOP", "NP-DOP", "NPZ-DOP", "NPZD-DOP"]
     if not model_name in model_list:
         print("Model not known ... " + model_name)
         print("Choose from ... ", model_list)
