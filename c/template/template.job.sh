@@ -18,24 +18,31 @@
 #
 
 #PBS -T intmpi
-#PBS -b 5
-#PBS -l cpunum_job=32
-#PBS -l elapstim_req=100:00:00
+#PBS -b {job[nodes]}
+#PBS -l cpunum_job={job[cores]}
+#PBS -l elapstim_req={job[walltime]}
 #PBS -l memsz_job=10gb
-#PBS -N twin.c-petsc-tao.blmvm.NPZD-DOP
-#PBS -o twin.c-petsc-tao.blmvm.NPZD-DOP.job.out.txt
+#PBS -N {experiment[name]}.{model[name]}.{nexp}
+#PBS -o {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.job.out.txt
 #PBS -j o
-#PBS -q cllong
+#PBS -q {job[queue]}
 
-# Note: We create a directory in '/scratch', because it is a local, fast storage located on the master node.
+# Note: We use a directory in '/scratch', because it is a local, fast storage located on the master node.
 # All other directories are network mounted paths and, as such, significantly slower.
-# On the NEC Linux cluster the ratio is approximately 1:6.
-mkdir /scratch/jpi
+# On the NEC Linux cluster the ratio is usually better than 1:10.
 cd $PBS_O_WORKDIR
+
+export SCRATCH="/scratch/${PBS_JOBID/0:}/"
+
+#module load matlab2017a
+#matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.m > /dev/null
+
+#python {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.py &> {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt
 
 . ../../petsc/de.uni-kiel.rz.nesh-fe.petsc-3.9.0.opt.sh
 ./c-petsc-tao/run.exe -tao_monitor &> twin.c-petsc-tao.blmvm.NPZD-DOP.out.txt
 
-rm -fr /scratch/jpi
 qstat -f ${PBS_JOBID/0:}
+
+
 

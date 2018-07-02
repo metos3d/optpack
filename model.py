@@ -90,7 +90,8 @@ ln -s ../../../../../../metos3d/metos3d/Makefile
 #    print("Copying start template ...           {0}/{1}/template.start.py".format(model_name))
 #    os.system("cp optpack/template/template.start.py {0}/.".format(model_name))
     
-    
+
+
     print("Copying model configuration ...      {0}/conf.yaml".format(model_name))
     os.system("cp optpack/conf/{0}.conf.yaml {0}/conf.yaml".format(model_name))
     

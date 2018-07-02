@@ -84,6 +84,3 @@ logfile.create_dataset("uopt", data=r.x[None,:])
 logfile.close()
 
 
-
-
-
