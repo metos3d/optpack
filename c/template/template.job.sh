@@ -33,16 +33,9 @@
 cd $PBS_O_WORKDIR
 
 export SCRATCH="/scratch/${PBS_JOBID/0:}/"
-
-#module load matlab2017a
-#matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.m > /dev/null
-#python {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.py &> {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt
-#./c-petsc-tao/run.exe -tao_monitor &> twin.c-petsc-tao.blmvm.NPZD-DOP.out.txt
-
 . ../../petsc/de.uni-kiel.rz.nesh-fe.petsc-3.9.0.opt.sh
 ./{experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.exe -tao_monitor &> {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt
 
 qstat -f ${PBS_JOBID/0:}
-
 
 

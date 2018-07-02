@@ -1,0 +1,49 @@
+#
+# Metos3D: A Marine Ecosystem Toolkit for Optimization and Simulation in 3-D
+# Copyright (C) 2018  Jaroslaw Piwonski, CAU, jpi@informatik.uni-kiel.de
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# optpack configuration
+
+model:
+    # absolute (or relative, not recommended) path for metos3d,
+    # where the data, metos3d, simpack and model repositories are located
+    metos3d:     /sfs/fs2/work-sh1/sunip194/papers/optref/metos3d
+
+    # petsc version that will be used for metos3d,
+    # absolute (or relative, not recommended) path for petsc shell script,
+    # where the petsc environment (compilers, sequential and/or parallel, variables) is set,
+    #
+    # example:
+    #   module load intel17.0.4
+    #   module load intelmpi17.0.4
+    #   export PETSC_DIR=/sfs/fs2/work-sh1/sunip194/papers/optref/petsc/petsc-3.3-p7
+    #   export PETSC_ARCH=arch-linux2-c-opt
+    #
+    petsc:      /sfs/fs2/work-sh1/sunip194/papers/optref/petsc/de.uni-kiel.rz.nesh-fe.petsc-3.3-p7.opt.sh
+
+language:
+    # petsc version that will be used for optimization, if the c-petsc-tao algorithms are be used,
+    # otherwise this option is not required
+    # absolute (or relative, not recommended) path for petsc shell script,
+    # where the petsc environment (compilers, sequential and/or parallel, variables) is set,
+    # example, see above
+    c:
+        petsc:      /sfs/fs2/work-sh1/sunip194/papers/optref/experiments/twin-full/c-petsc-tao/petsc/de.uni-kiel.rz.nesh-fe.petsc-3.9.0.opt.sh
+
+#data:
+#    path: ???
+#    template: ??
