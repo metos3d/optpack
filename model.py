@@ -64,13 +64,13 @@ ln -s ../../../../../../metos3d/metos3d/Makefile
 #make BGC=model/{0} &> /dev/null
 '''.format(model_name))
 
-print("Copying job template ...             {0}/{1}/template/template.job.sh".format(model_name, language_name))
+    print("Copying job template ...             {0}/{1}/template/template.job.sh".format(model_name, language_name))
     os.system("cp optpack/{1}/template/template.job.sh {0}/.".format(model_name, language_name))
     
     
     
-    #    print("Copying start template ...           {0}/{1}/template.start.py".format(model_name))
-    #    os.system("cp optpack/template/template.start.py {0}/.".format(model_name))
+#    print("Copying start template ...           {0}/{1}/template.start.py".format(model_name))
+#    os.system("cp optpack/template/template.start.py {0}/.".format(model_name))
     
     
     print("Copying model configuration ...      {0}/conf.yaml".format(model_name))
