@@ -96,27 +96,27 @@ if __name__ == "__main__":
     print("Reading optpack configuration ...... " + conf_file_path)
     conf_optpack = parse_yaml_file(conf_file_path)
 
-    print("Preparing model suite .............. " + model_name)
+    print("Preparing model suite .................. " + model_name)
 
     if os.path.exists(model_name):
         print("Directory already exists ...")
         print("Exiting ...")
         sys.exit(1)
         
-    print("Creating directory ................. {0}/".format(model_name))
+    print("Creating directory ..................... {0}/".format(model_name))
     os.system("mkdir {0}".format(model_name))
     
-    print("Creating directory ................. {0}/model/".format(model_name))
+    print("Creating directory ..................... {0}/model/".format(model_name))
     os.system("mkdir {0}/model/".format(model_name))
     
     copy_from = conf_optpack["model"]["petsc"]
     copy_to = "{0}/model/petsc.env.sh".format(model_name)
-    print("Copying environment file ..... from: {0}".format(copy_from))
-    print("                                 to: {0}".format(copy_to))
+    print("Copying environment file ......... from: {0}".format(copy_from))
+    print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
     
     model_metos3d_path = conf_optpack["model"]["metos3d"]
-    print("Compiling executable ............... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
+    print("Compiling executable ................... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
     os.system('''
 cd {0}/model/;
 source ./petsc.env.sh
@@ -134,23 +134,24 @@ ln -s {1}/metos3d/Makefile
     
     copy_from = "optpack/language/{0}/template/template.job.sh".format(language_name)
     copy_to = "{0}/template.job.sh".format(model_name)
-    print("Copying job template ......... from: {0}".format(copy_from))
-    print("                                 to: {0}".format(copy_to))
+    print("Copying job template ............. from: {0}".format(copy_from))
+    print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
     extension_code = language_extensions[language_name]["code"]
     copy_from = "optpack/language/{0}/template/template.start.{1}".format(language_name, extension_code)
     copy_to = "{0}/template.start.{1}".format(model_name, extension_code)
-    print("Copying start template ....... from: {0}".format(copy_from))
-    print("                                 to: {0}".format(copy_to))
+    print("Copying start template ........... from: {0}".format(copy_from))
+    print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
     copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
     copy_to = "{0}/experiment.conf.yaml".format(model_name)
-    print("Preparing experiment configuration ...... " + copy_to)
-    print("Formatting .............................. " + copy_from)
+    print("Preparing experiment configuration ..... " + copy_to)
+    print("Formatting template .................... " + copy_from)
     experiment_conf_template = read_template(copy_from)
-    experiment_conf = format_text(experiment_conf_template, {"language": {"name": language_name}})
+    format_conf = {"language": {"name": language_name}}
+    experiment_conf = format_text(experiment_conf_template, format_conf)
     write_text_file(copy_to, experiment_conf)
 
 #    print("Copying experiment script ...        {0}/experiment.py".format(model_name))
@@ -158,15 +159,28 @@ ln -s {1}/metos3d/Makefile
 
     print("Preparing {0} codes ...".format(language_name))
     dir_name = "{0}/{1}/".format(model_name, language_name)
-    print("Creating directory ...               {0}"format(dir_name))
+    print("Creating directory ..................... {0}".format(dir_name))
     os.system("mkdir {0}".format(dir_name))
 
     print("Copying {0} codes ...".format(language_name))
-    copy_from = "optpack/language/{0}/*.{1}".format(language_name, extension_code)
-    copy_to = "{0}/{1}/.".format(model_name, language_name)
-    print("                               from: {0}".format(copy_from))
-    print("                                 to: {0}".format(copy_to))
-    os.system("cp {0} {1}".format(copy_from, copy_to))
+    if language_name=="c":
+        copy_to = "{0}/{1}/.".format(model_name, language_name)
+        copy_from = "optpack/language/{0}/*.c".format(language_name)
+        print("                                   from: {0}".format(copy_from))
+        os.system("cp {0} {1}".format(copy_from, copy_to))
+        copy_from = "optpack/language/{0}/*.h".format(language_name)
+        print("                                   from: {0}".format(copy_from))
+        os.system("cp {0} {1}".format(copy_from, copy_to))
+        copy_from = "optpack/language/{0}/Makefile")
+        print("                                   from: {0}".format(copy_from))
+        os.system("cp {0} {1}".format(copy_from, copy_to))
+        print("                                     to: {0}".format(copy_to))
+    else:
+        copy_from = "optpack/language/{0}/*.{1}".format(language_name, extension_code)
+        copy_to = "{0}/{1}/.".format(model_name, language_name)
+        print("                                   from: {0}".format(copy_from))
+        print("                                     to: {0}".format(copy_to))
+        os.system("cp {0} {1}".format(copy_from, copy_to))
 
 
 
