@@ -153,15 +153,20 @@ ln -s {1}/metos3d/Makefile
     experiment_conf = format_text(experiment_conf_template, {"language": {"name": language_name}})
     write_text_file(copy_to, experiment_conf)
 
-    print("Copying experiment script ...        {0}/experiment.py".format(model_name))
-    os.system("cp optpack/experiment.py {0}/.".format(model_name))
+#    print("Copying experiment script ...        {0}/experiment.py".format(model_name))
+#    os.system("cp optpack/experiment.py {0}/.".format(model_name))
 
-#    print("Preparing python scripts ...")
-#    print("Creating directory ...               {0}/python/".format(model_name))
-#    os.system("mkdir {0}/python/".format(model_name))
-#
-#    print("Copying python scripts ...")
-#    os.system("cp optpack/python/*.py {0}/python/.".format(model_name))
+    print("Preparing {0} codes ...".format(language_name))
+    dir_name = "{0}/{1}/".format(model_name, language_name)
+    print("Creating directory ...               {0}"format(dir_name))
+    os.system("mkdir {0}".format(dir_name))
+
+    print("Copying {0} codes ...".format(language_name))
+    copy_from = "optpack/language/{0}/*.{1}".format(language_name, extension_code)
+    copy_to = "{0}/{1}/.".format(model_name, language_name)
+    print("                               from: {0}".format(copy_from))
+    print("                                 to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
 
 
 
