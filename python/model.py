@@ -37,7 +37,7 @@ def model(u, ctx):
     # run
     logfile = ctx.expname + "." + ctx.modname + "." + "{:d}".format(ctx.nexp) + "." + "{:03d}".format(ctx.i) + ".log.txt"
     logfilepath = ctx.expname + "/log/" + logfile
-    runcmd = ". model/de.uni-kiel.rz.nesh-fe.petsc-3.3-p7.opt.sh; " + \
+    runcmd = ". model/petsc.env.sh; " + \
                 "mpiexec " + os.environ["NQSII_MPIOPTS"] + " ./model/metos3d-simpack-" + ctx.modname + ".exe " + \
               optionfilepath + " > " + logfilepath
 #    print("# run:      " + runcmd, flush=True)

@@ -82,24 +82,26 @@ if __name__ == "__main__":
 
     model_petsc_file_path = conf_optpack["model"]["petsc"]
     model_petsc_file = os.path.basename(model_petsc_file_path)
-    print("Copying environment file ...         {0}/model/{1}".format(model_name, model_petsc_file))
-    os.system("cd {0}/model/; cp {1} .".format(model_name, model_petsc_file_path))
+    print("Copying environment file ...    from {0}".format(model_petsc_file_path))
+    print("                                  to {0}/model/petsc.env.sh".format(model_name))
+    os.system("cd {0}/model/; cp {1} petsc.env.sh".format(model_name, model_petsc_file_path))
 
+    model_metos3d_path = conf_optpack["model"]["metos3d"]
     print("Compiling executable ...             {0}/model/metos3d-simpack-{0}.exe".format(model_name))
     os.system('''
 cd {0}/model/;
-source ./de.uni-kiel.rz.nesh-fe.petsc-3.3-p7.opt.sh
+source ./petsc.env.sh
 
 # links
-ln -s ../../../../../../metos3d/data/data/
-ln -s ../../../../../../metos3d/model/model/
-ln -s ../../../../../../metos3d/simpack/
-ln -s ../../../../../../metos3d/metos3d/Makefile
+ln -s {1}/data/data/
+ln -s {1}/model/model/
+ln -s {1}/simpack/
+ln -s {1}/metos3d/Makefile
 
 # compile
 #make BGC=model/{0} clean &> /dev/null
 #make BGC=model/{0} &> /dev/null
-'''.format(model_name))
+'''.format(model_name, model_metos3d_path))
 
     print("Copying job template ...             {0}/{1}/template/template.job.sh".format(model_name, language_name))
     os.system("cp optpack/{1}/template/template.job.sh {0}/.".format(model_name, language_name))
