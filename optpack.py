@@ -161,19 +161,6 @@ ln -s {1}/metos3d/Makefile
     print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
-#    copy_to = "{0}/experiment.py".format(model_name)
-#    copy_from = "optpack/experiment.py"
-#    print("Preparing experiment script ............ " + copy_to)
-#    print("Formatting template .................... " + copy_from)
-#    experiment_script_template = read_template(copy_from)
-#
-#
-#    format_conf = {}
-#
-#
-#    experiment_script = format_text(experiment_script_template, format_conf)
-#    write_text_file(copy_to, experiment_script)
-
     print("Preparing {0} codes ...".format(language_name))
     dir_name = "{0}/{1}/".format(model_name, language_name)
     print("Creating directory ..................... {0}".format(dir_name))
@@ -189,8 +176,15 @@ ln -s {1}/metos3d/Makefile
         os.system("cp {0} {1}".format(copy_from, copy_to))
         copy_from = "optpack/language/{0}/Makefile".format(language_name)
         print("                                   from: {0}".format(copy_from))
-        os.system("cp {0} {1}".format(copy_from, copy_to))
         print("                                     to: {0}".format(copy_to))
+        os.system("cp {0} {1}".format(copy_from, copy_to))
+        # petsc for tao
+        if conf_optpack.get("language"):
+            copy_from = conf_optpack["language"]["c"]["petsc"]
+            copy_to = "{0}/{1}/petsc.env.sh".format(model_name, language_name)
+            print("                                   from: {0}".format(copy_from))
+            print("                                     to: {0}".format(copy_to))
+            os.system("cp {0} {1}".format(copy_from, copy_to))
     else:
         copy_from = "optpack/language/{0}/*.{1}".format(language_name, extension_code)
         copy_to = "{0}/{1}/.".format(model_name, language_name)
