@@ -170,7 +170,7 @@ ln -s {1}/metos3d/Makefile
         copy_from = "optpack/language/{0}/*.h".format(language_name)
         print("                                   from: {0}".format(copy_from))
         os.system("cp {0} {1}".format(copy_from, copy_to))
-        copy_from = "optpack/language/{0}/Makefile"
+        copy_from = "optpack/language/{0}/Makefile".format(language_name)
         print("                                   from: {0}".format(copy_from))
         os.system("cp {0} {1}".format(copy_from, copy_to))
         print("                                     to: {0}".format(copy_to))
