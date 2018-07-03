@@ -89,19 +89,19 @@ if __name__ == "__main__":
     model_metos3d_path = conf_optpack["model"]["metos3d"]
     print("Compiling executable ............... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
     os.system('''
-        cd {0}/model/;
-        source ./petsc.env.sh
-        
-        # links
-        ln -s {1}/data/data/
-        ln -s {1}/model/model/
-        ln -s {1}/simpack/
-        ln -s {1}/metos3d/Makefile
-        
-        # compile
-        #make BGC=model/{0} clean &> /dev/null
-        #make BGC=model/{0} &> /dev/null
-        '''.format(model_name, model_metos3d_path))
+cd {0}/model/;
+source ./petsc.env.sh
+
+# links
+ln -s {1}/data/data/
+ln -s {1}/model/model/
+ln -s {1}/simpack/
+ln -s {1}/metos3d/Makefile
+
+# compile
+#make BGC=model/{0} clean &> /dev/null
+#make BGC=model/{0} &> /dev/null
+'''.format(model_name, model_metos3d_path))
     
     copy_from = "optpack/{0}/template/template.job.sh".format(language_name)
     copy_to = "{0}/template.job.sh".format(model_name)
