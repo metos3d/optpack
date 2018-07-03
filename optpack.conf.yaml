@@ -21,7 +21,7 @@
 model:
     # petsc version that will be used for metos3d,
     # absolute (or relative, not recommended) path for petsc shell script,
-    # where the petsc environment (compilers, sequential and/or parallel, variables) is set,
+    # where the petsc environment is set (compilers, sequential and/or parallel, variables),
     #
     # example:
     #   module load intel17.0.4
