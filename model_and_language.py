@@ -67,13 +67,13 @@ if __name__ == "__main__":
     print("Reading optpack configuration ...... " + conf_file_path)
     conf_optpack = parse_yaml_file(conf_file_path)
 
-print("Preparing model suite .............. " + model_name)
+    print("Preparing model suite .............. " + model_name)
 
-if os.path.exists(model_name):
-    print("Directory already exists ...")
-    print("Exiting ...")
-    sys.exit(1)
-    
+    if os.path.exists(model_name):
+        print("Directory already exists ...")
+        print("Exiting ...")
+        sys.exit(1)
+        
     print("Creating directory ................. {0}/".format(model_name))
     os.system("mkdir {0}".format(model_name))
     
