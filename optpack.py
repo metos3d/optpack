@@ -30,6 +30,35 @@ def parse_yaml_file(yaml_file_path):
     return conf_dict
 
 # ---------------------------------------------------------------------------------------------------------------------
+# read template
+# ---------------------------------------------------------------------------------------------------------------------
+def read_template(template_file_path):
+    template_file = open(template_file_path, "r")
+    template_text = template_file.read()
+    template_file.close()
+    return template_text
+
+# ---------------------------------------------------------------------------------------------------------------------
+# format text
+# ---------------------------------------------------------------------------------------------------------------------
+def format_text(text_template, config_dict):
+    text = ""
+    for line in text_template.splitlines(keepends=True):
+        try:
+            text = text + line.format(**config_dict)
+        except KeyError:
+            text = text + line
+    return text
+
+# ---------------------------------------------------------------------------------------------------------------------
+# write text file
+# ---------------------------------------------------------------------------------------------------------------------
+def write_text_file(file_path, text):
+    file = open(file_path, "w")
+    file.write(text)
+    file.close()
+
+# ---------------------------------------------------------------------------------------------------------------------
 # main
 # ---------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
@@ -115,11 +144,24 @@ ln -s {1}/metos3d/Makefile
     print("Copying start template ....... from: {0}".format(copy_from))
     print("                                 to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
-    
+
+
+
     copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
     copy_to = "{0}/experiment.conf.yaml".format(model_name)
-    print("Copying model configuration .. from: {0}".format(copy_from))
-    print("                                 to: {0}".format(copy_to))
+    print("Preparing experiment configuration .............. " + copy_to)
+    experiment_conf_template = read_template(copy_from)
+    experiment_conf = format_text(experiment_conf_template, {"language": {"name": language_name}})
+    print(experiment_conf)
+    sys.exit(1)
+
+
+    print("Preparing model suite ..............     " + model_name)
+    copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
+    copy_to = "{0}/experiment.conf.yaml".format(model_name)
+#    print("Copying model configuration .. from: {0}".format(copy_from))
+    print("Copying experiment configuration ..... from: {0}".format(copy_from))
+    print("                                         to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
     print("Copying experiment script ...        {0}/experiment.py".format(model_name))
