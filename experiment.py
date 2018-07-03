@@ -163,6 +163,8 @@ $> python {0} new exp-01 10'''.format(sys.argv[0]))
     # strip any trailing path separators
     expname = os.path.normpath(expname)
     exp_config["experiment"] = {"name": expname}
+    print(exp_config)
+    sys.exit(1)
 
     if command=="new":
         if os.path.exists(expname):

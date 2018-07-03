@@ -145,27 +145,34 @@ ln -s {1}/metos3d/Makefile
     print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
+    extension_data = language_extensions[language_name]["data"]
     copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
     copy_to = "{0}/experiment.conf.yaml".format(model_name)
     print("Preparing experiment configuration ..... " + copy_to)
     print("Formatting template .................... " + copy_from)
     experiment_conf_template = read_template(copy_from)
-    format_conf = {"language": {"name": language_name}}
+    format_conf = {"language": {"name": language_name, "code": extension_code, "data": extension_data}}
     experiment_conf = format_text(experiment_conf_template, format_conf)
     write_text_file(copy_to, experiment_conf)
 
-    copy_to = "{0}/experiment.py".format(model_name)
     copy_from = "optpack/experiment.py"
-    print("Preparing experiment script ............ " + copy_to)
-    print("Formatting template .................... " + copy_from)
-    experiment_script_template = read_template(copy_from)
+    copy_to = "{0}/experiment.py".format(model_name)
+    print("Copying experiment script ........ from: {0}".format(copy_from))
+    print("                                     to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
 
-
-    format_conf = {}
-
-
-    experiment_script = format_text(experiment_script_template, format_conf)
-    write_text_file(copy_to, experiment_script)
+#    copy_to = "{0}/experiment.py".format(model_name)
+#    copy_from = "optpack/experiment.py"
+#    print("Preparing experiment script ............ " + copy_to)
+#    print("Formatting template .................... " + copy_from)
+#    experiment_script_template = read_template(copy_from)
+#
+#
+#    format_conf = {}
+#
+#
+#    experiment_script = format_text(experiment_script_template, format_conf)
+#    write_text_file(copy_to, experiment_script)
 
     print("Preparing {0} codes ...".format(language_name))
     dir_name = "{0}/{1}/".format(model_name, language_name)
