@@ -1,4 +1,4 @@
-# NPZD-DOP model configuration
+language:   {language[name]}
 
 model:
     name:   NPZD-DOP

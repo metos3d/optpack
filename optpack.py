@@ -103,25 +103,25 @@ ln -s {1}/metos3d/Makefile
 #make BGC=model/{0} &> /dev/null
 '''.format(model_name, model_metos3d_path))
     
-    copy_from = "optpack/{0}/template/template.job.sh".format(language_name)
+    copy_from = "optpack/language/{0}/template/template.job.sh".format(language_name)
     copy_to = "{0}/template.job.sh".format(model_name)
     print("Copying job template ......... from: {0}".format(copy_from))
     print("                                 to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
-    
+
     extension_code = language_extensions[language_name]["code"]
-    copy_from = "optpack/{0}/template/template.start.{1}".format(language_name, extension_code)
+    copy_from = "optpack/language/{0}/template/template.start.{1}".format(language_name, extension_code)
     copy_to = "{0}/template.start.{1}".format(model_name, extension_code)
     print("Copying start template ....... from: {0}".format(copy_from))
     print("                                 to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
     
-    copy_from = "optpack/conf/{0}.conf.yaml".format(model_name)
-    copy_to = "{0}/conf.yaml".format(model_name)
+    copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
+    copy_to = "{0}/experiment.conf.yaml".format(model_name)
     print("Copying model configuration .. from: {0}".format(copy_from))
     print("                                 to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
-    
+
     print("Copying experiment script ...        {0}/experiment.py".format(model_name))
     os.system("cp optpack/experiment.py {0}/.".format(model_name))
 

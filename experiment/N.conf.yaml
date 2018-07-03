@@ -1,4 +1,4 @@
-# N model configuration
+language:   {language[name]}
 
 model:
     name:   N

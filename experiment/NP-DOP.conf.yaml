@@ -1,4 +1,4 @@
-# NP-DOP model configuration
+language:   {language[name]}
 
 model:
     name:   NP-DOP
