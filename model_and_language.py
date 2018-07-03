@@ -62,62 +62,68 @@ if __name__ == "__main__":
         print("Choose from ... ", ", ".join(language_list))
         print("Exiting ...")
         sys.exit(1)
-    
+
     conf_file_path = os.path.join(os.path.dirname(__file__), "optpack.conf.yaml")
-    print("Reading optpack configuration ...    " + conf_file_path)
+    print("Reading optpack configuration ...... " + conf_file_path)
     conf_optpack = parse_yaml_file(conf_file_path)
 
-    print("Preparing model suite ...            " + model_name)
+print("Preparing model suite .............. " + model_name)
 
-    if os.path.exists(model_name):
-        print("Directory already exists ...")
-        print("Exiting ...")
-        sys.exit(1)
-
-    print("Creating directory ...               {0}/".format(model_name))
+if os.path.exists(model_name):
+    print("Directory already exists ...")
+    print("Exiting ...")
+    sys.exit(1)
+    
+    print("Creating directory ................. {0}/".format(model_name))
     os.system("mkdir {0}".format(model_name))
-
-    print("Creating directory ...               {0}/model/".format(model_name))
+    
+    print("Creating directory ................. {0}/model/".format(model_name))
     os.system("mkdir {0}/model/".format(model_name))
-
-    model_petsc_file_path = conf_optpack["model"]["petsc"]
-    model_petsc_file = os.path.basename(model_petsc_file_path)
-    print("Copying environment file ...    from {0}".format(model_petsc_file_path))
-    print("                                  to {0}/model/petsc.env.sh".format(model_name))
-    os.system("cd {0}/model/; cp {1} petsc.env.sh".format(model_name, model_petsc_file_path))
-
+    
+    copy_from = conf_optpack["model"]["petsc"]
+    copy_to = "{0}/model/petsc.env.sh".format(model_name)
+    print("Copying environment file ..... from: {0}".format(copy_from))
+    print("                                 to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
+    
     model_metos3d_path = conf_optpack["model"]["metos3d"]
-    print("Compiling executable ...             {0}/model/metos3d-simpack-{0}.exe".format(model_name))
+    print("Compiling executable ............... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
     os.system('''
-cd {0}/model/;
-source ./petsc.env.sh
-
-# links
-ln -s {1}/data/data/
-ln -s {1}/model/model/
-ln -s {1}/simpack/
-ln -s {1}/metos3d/Makefile
-
-# compile
-#make BGC=model/{0} clean &> /dev/null
-#make BGC=model/{0} &> /dev/null
-'''.format(model_name, model_metos3d_path))
-
-    print("Copying job template ...             {0}/{1}/template/template.job.sh".format(model_name, language_name))
-    os.system("cp optpack/{1}/template/template.job.sh {0}/.".format(model_name, language_name))
-
-#    print("Copying start template ...           {0}/{1}/template.start.py".format(model_name))
-#    os.system("cp optpack/template/template.start.py {0}/.".format(model_name))
-
-
-
-    print("Copying model configuration ...      {0}/conf.yaml".format(model_name))
-    os.system("cp optpack/conf/{0}.conf.yaml {0}/conf.yaml".format(model_name))
-
+        cd {0}/model/;
+        source ./petsc.env.sh
+        
+        # links
+        ln -s {1}/data/data/
+        ln -s {1}/model/model/
+        ln -s {1}/simpack/
+        ln -s {1}/metos3d/Makefile
+        
+        # compile
+        #make BGC=model/{0} clean &> /dev/null
+        #make BGC=model/{0} &> /dev/null
+        '''.format(model_name, model_metos3d_path))
+    
+    copy_from = "optpack/{0}/template/template.job.sh".format(language_name)
+    copy_to = "{0}/template.job.sh".format(model_name)
+    print("Copying job template ......... from: {0}".format(copy_from))
+    print("                                 to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
+    
+    extension_code = language_extensions[language_name]["code"]
+    copy_from = "optpack/{0}/template/template.start.{1}".format(language_name, extension_code)
+    copy_to = "{0}/template.start.{1}".format(model_name, extension_code)
+    print("Copying start template ....... from: {0}".format(copy_from))
+    print("                                 to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
+    
+    copy_from = "optpack/conf/{0}.conf.yaml".format(model_name)
+    copy_to = "{0}/conf.yaml".format(model_name)
+    print("Copying model configuration .. from: {0}".format(copy_from))
+    print("                                 to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
+    
     print("Copying experiment script ...        {0}/experiment.py".format(model_name))
     os.system("cp optpack/experiment.py {0}/.".format(model_name))
-
-
 
 #    print("Preparing python scripts ...")
 #    print("Creating directory ...               {0}/python/".format(model_name))
