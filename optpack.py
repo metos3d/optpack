@@ -145,24 +145,13 @@ ln -s {1}/metos3d/Makefile
     print("                                 to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
-
-
     copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
     copy_to = "{0}/experiment.conf.yaml".format(model_name)
-    print("Preparing experiment configuration .............. " + copy_to)
+    print("Preparing experiment configuration ...... " + copy_to)
+    print("Formatting .............................. " + copy_from)
     experiment_conf_template = read_template(copy_from)
     experiment_conf = format_text(experiment_conf_template, {"language": {"name": language_name}})
-    print(experiment_conf)
-    sys.exit(1)
-
-
-    print("Preparing model suite ..............     " + model_name)
-    copy_from = "optpack/experiment/{0}.conf.yaml".format(model_name)
-    copy_to = "{0}/experiment.conf.yaml".format(model_name)
-#    print("Copying model configuration .. from: {0}".format(copy_from))
-    print("Copying experiment configuration ..... from: {0}".format(copy_from))
-    print("                                         to: {0}".format(copy_to))
-    os.system("cp {0} {1}".format(copy_from, copy_to))
+    write_text_file(copy_to, experiment_conf)
 
     print("Copying experiment script ...        {0}/experiment.py".format(model_name))
     os.system("cp optpack/experiment.py {0}/.".format(model_name))
