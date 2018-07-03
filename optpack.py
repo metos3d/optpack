@@ -154,8 +154,14 @@ ln -s {1}/metos3d/Makefile
     experiment_conf = format_text(experiment_conf_template, format_conf)
     write_text_file(copy_to, experiment_conf)
 
-#    print("Copying experiment script ...        {0}/experiment.py".format(model_name))
-#    os.system("cp optpack/experiment.py {0}/.".format(model_name))
+    copy_to = "{0}/experiment.py".format(model_name))
+    copy_from = "optpack/experiment.py"
+    print("Preparing experiment script ............ " + copy_to)
+    print("Formatting template .................... " + copy_from)
+    experiment_script_template = read_template(copy_from)
+    format_conf = {}
+    experiment_script = format_text(experiment_script_template, format_conf)
+    write_text_file(copy_to, experiment_script)
 
     print("Preparing {0} codes ...".format(language_name))
     dir_name = "{0}/{1}/".format(model_name, language_name)
