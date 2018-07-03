@@ -159,7 +159,7 @@ $> python {0} new exp-01 10'''.format(sys.argv[0]))
     expname = sys.argv[2]
     niter = sys.argv[3]
 
-    exp_config = parse_yaml_file("conf.yaml")
+    exp_config = parse_yaml_file("experiment.conf.yaml")
     # strip any trailing path separators
     expname = os.path.normpath(expname)
     exp_config["experiment"] = {"name": expname}
