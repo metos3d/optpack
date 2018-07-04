@@ -15,7 +15,7 @@ parameter:
     ub:     [0.05, 4.0, 1.0,  60.0, 1.5]
 
 language:
-    name:   {language[name]}:
+    name:   {language[name]}
     code:   {language[code]}
     data:   {language[data]}
 

@@ -14,7 +14,10 @@ parameter:
     lb:     [0.01, 0.24, 1.0, 1.0, 0.25, 0.044, 15.0, 0.05, 0.02, 2.0, 0.005, 0.25, 0.7]
     ub:     [0.05, 0.72, 4.0, 4.0, 1.0,  0.176, 60.0, 0.95, 0.08, 6.0, 0.015, 1.0,  1.5]
 
-language:   {language[name]}
+language:
+    name:   {language[name]}
+    code:   {language[code]}
+    data:   {language[data]}
 
 job:
     queue:      cllong
