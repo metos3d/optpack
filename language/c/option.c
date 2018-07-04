@@ -41,15 +41,21 @@ PetscErrorCode option(char *file_path, context *ctx) {
 
     // tracer
     sprintf(line, "%s%d%s", "-Metos3DTracerCount                                 ", ctx->ny, "\n");
+    strcat(text, line);
     sprintf(line, "%s%s%s", "-Metos3DTracerInitValue                             ", ctx->y0, "\n");
+    strcat(text, line);
     sprintf(line, "%s%s%s", "-Metos3DTracerOutputDirectory                       ", getenv("SCRATCH"), "\n");
+    strcat(text, line);
     sprintf(line, "%s%s%s", "-Metos3DTracerOutputFile                            ", ctx->yout, "\n");
+    strcat(text, line);
 
     // parameter
     sprintf(line, "%s%d%s", "-Metos3DParameterCount                              ", ctx->nu, "\n");
+    strcat(text, line);
     sprintf(line, "%s%s%s", "-Metos3DParameterValue                              ", ustr, "\n");
+    strcat(text, line);
 
-    print(text);
+    printf(text);
 
     
 //

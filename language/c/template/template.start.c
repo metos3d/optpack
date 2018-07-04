@@ -111,6 +111,7 @@ int main(int argc, char **args) {{
     TaoSetGradientRoutine(tao, TaoDefaultComputeGradient, PETSC_NULL);
 
     // optimization
+    TaoSetFromOptions(tao);
     TaoSolve(tao);
     TaoView(tao, PETSC_VIEWER_STDOUT_WORLD);
 
