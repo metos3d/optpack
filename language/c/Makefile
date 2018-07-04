@@ -23,7 +23,12 @@
 # object files
 OPTPACK = \
 	c/average.o \
-	c/data.o
+	c/data.o \
+	c/misfit.o \
+	c/model.o \
+	c/objective.o \
+	c/option.o \
+	c/store.o
 
 ALL: $(PROGRAM)
 CFLAGS = -I c/

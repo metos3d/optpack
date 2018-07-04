@@ -3,8 +3,9 @@
 #undef  __FUNCT__
 #define __FUNCT__ "objective"
 PetscErrorCode objective(Tao tao, Vec u, PetscReal *J, void *objctx) {
-    context *ctx = (context*)objctx
-    
+    context *ctx = (context*)objctx;
+    Vec *y;
+
     // info
     printf("# i:        %03d\n", ctx->i);
     
