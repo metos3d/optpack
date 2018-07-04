@@ -15,6 +15,9 @@ Vec* data(context* ctx) {
     VecSetType(ytmp, VECSTANDARD);
     VecSetSizes(ytmp, PETSC_DECIDE, ctx->nx);
     
+    // create yd, data
+    VecDuplicateVecs(ytmp, ctx->ndata, &ctx->yd);
+
     // create yt, trajectory
     VecDuplicateVecs(ytmp, ctx->nt, &yt);
     

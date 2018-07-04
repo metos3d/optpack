@@ -56,34 +56,34 @@ int main(int argc, char **args) {{
     ctx->yout       = "{model[yout]}";
 
     // parameter
+    Vec u;
     ctx->nu = {parameter[nu]};
     PetscScalar U0[] = {{{parameter[u0]}}};
     PetscScalar UD[] = {{{parameter[ud]}}};     // not used, info only
     PetscScalar LB[] = {{{parameter[lb]}}};
     PetscScalar UB[] = {{{parameter[ub]}}};
-    VecCreate(ctx->comm, &ctx->u);
+    VecCreate(ctx->comm, &u);
     VecCreate(ctx->comm, &ctx->ud);
     VecCreate(ctx->comm, &ctx->lb);
     VecCreate(ctx->comm, &ctx->ub);
-    VecSetType(ctx->u, VECSTANDARD);
+    VecSetType(u, VECSTANDARD);
     VecSetType(ctx->ud, VECSTANDARD);
     VecSetType(ctx->lb, VECSTANDARD);
     VecSetType(ctx->ub, VECSTANDARD);
-    VecSetSizes(ctx->u, PETSC_DECIDE, ctx->nu);
+    VecSetSizes(u, PETSC_DECIDE, ctx->nu);
     VecSetSizes(ctx->ud, PETSC_DECIDE, ctx->nu);
     VecSetSizes(ctx->lb, PETSC_DECIDE, ctx->nu);
     VecSetSizes(ctx->ub, PETSC_DECIDE, ctx->nu);
-    VecPlaceArray(ctx->u, U0);
+    VecPlaceArray(u, U0);
     VecPlaceArray(ctx->ud, UD);
     VecPlaceArray(ctx->lb, LB);
     VecPlaceArray(ctx->ub, UB);
-    PetscObjectSetName((PetscObject)ctx->u, "u");
+    PetscObjectSetName((PetscObject)u, "u");
     PetscObjectSetName((PetscObject)ctx->ud, "ud");
     PetscObjectSetName((PetscObject)ctx->lb, "lb");
     PetscObjectSetName((PetscObject)ctx->ub, "ub");
-    Vec u;
-    VecDuplicate(ctx->u, &u);
-    PetscObjectSetName((PetscObject)u, "u");
+    VecDuplicate(u, &ctx->u);
+    PetscObjectSetName((PetscObject)ctx->u, "u");
 
     // data
     ctx->ndata  = 17;

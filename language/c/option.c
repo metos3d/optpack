@@ -4,15 +4,24 @@
 #undef  __FUNCT__
 #define __FUNCT__ "option"
 PetscErrorCode option(char *file_path, context *ctx) {
-//    char ystr[PETSC_MAX_PATH_LEN];
-//    char ywrk[PETSC_MAX_PATH_LEN];
-//    char ustr[PETSC_MAX_PATH_LEN];
-//    char uwrk[PETSC_MAX_PATH_LEN];
-//    const PetscScalar *uarr;
-//    int i;
-    
+    char ustr[PETSC_MAX_PATH_LEN];
+    char uwrk[PETSC_MAX_PATH_LEN];
     char line[PETSC_MAX_PATH_LEN];
-    char text[1<<16];   // 64K, should be sufficient
+    char text[1<<16];               // 64K, should be sufficient
+    const PetscScalar *uarr;
+    int i;
+
+    // u
+    VecGetArrayRead(ctx->u, &uarr);
+    strcpy(ustr, "");
+    for(i=0; i<ctx->nu-1; i++) {
+        sprintf(uwrk, "%.16e,", uarr[i]);
+        strcat(ustr, uwrk);
+    }
+    i = ctx->nu-1;
+    sprintf(uwrk, "%.16e", uarr[i]);
+    strcat(ustr, uwrk);
+    VecRestoreArrayRead(ctx->u, &uarr);
 
     strcpy(text, "");
 
@@ -20,66 +29,29 @@ PetscErrorCode option(char *file_path, context *ctx) {
     sprintf(line, "%s%s", "-Metos3DDebugLevel                                  1", "\n");
     strcat(text, line);
     
+    // geometry
+    sprintf(line, "%s%s", "-Metos3DGeometryType                                Profile", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DProfileInputDirectory                       data/TMM/2.8/Geometry/", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DProfileMaskFile                             landSeaMask.petsc", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DProfileVolumeFile                           volumes.petsc", "\n");
+    strcat(text, line);
+
+    // tracer
+    sprintf(line, "%s%d%s", "-Metos3DTracerCount                                 ", ctx->ny, "\n");
+    sprintf(line, "%s%s%s", "-Metos3DTracerInitValue                             ", ctx->y0, "\n");
+    sprintf(line, "%s%s%s", "-Metos3DTracerOutputDirectory                       ", getenv("SCRATCH"), "\n");
+    sprintf(line, "%s%s%s", "-Metos3DTracerOutputFile                            ", ctx->yout, "\n");
+
+    // parameter
+    sprintf(line, "%s%d%s", "-Metos3DParameterCount                              ", ctx->nu, "\n");
+    sprintf(line, "%s%s%s", "-Metos3DParameterValue                              ", ustr, "\n");
+
     print(text);
+
     
-//    ny      = num2str(ctx.ny);
-//    y0      = ctx.y0;
-//    ypath   = getenv('SCRATCH');
-//    yout    = ctx.yout;
-//    nu      = num2str(ctx.nu);
-//    u       = num2str(ctx.u, '%.16e,');
-//    u       = u(1:end-1);
-//    text    = '';
-
-//    ny      = "{:d}".format(ctx.ny)
-//    y0      = ctx.y0
-//    ypath   = os.environ["SCRATCH"]
-//    yout    = ctx.yout
-//    nu      = "{:d}".format(ctx.nu)
-//    u       = ""
-//    for ui in ctx.u:
-//    u = u + "{:.16e},".format(ui)
-//    u = u[:-1]
-
-//    // y
-//    strcpy(ystr, "");
-//    for(i=0; i<ctx->ny-1; i++) {
-//        sprintf(ywrk, "%.16e,", ctx.y0[i]);
-//        strcat(ystr, ywrk);
-//    }
-//    i = ctx->ny-1;
-//    sprintf(ywrk, "%.16e", ctx.y0[i]);
-//    strcat(ystr, ywrk);
-//
-//    // u
-//    VecGetArrayRead(u, &uarr);
-//    strcpy(ustr, "");
-//    for(i=0; i<ctx.nu-1; i++) {
-//        sprintf(uwrk, "%.16e,", uarr[i]);
-//        strcat(ustr, uwrk);
-//    }
-//    i = ctx.nu-1;
-//    sprintf(uwrk, "%.16e", uarr[i]);
-//    strcat(ustr, uwrk);
-//    VecRestoreArrayRead(u, &uarr);
-//
-//
-//
-//    // geometry
-//    fprintf(f, "%s%s", "-Metos3DGeometryType                                Profile", "\n");
-//    fprintf(f, "%s%s", "-Metos3DProfileInputDirectory                       data/TMM/2.8/Geometry/", "\n");
-//    fprintf(f, "%s%s", "-Metos3DProfileMaskFile                             landSeaMask.petsc", "\n");
-//    fprintf(f, "%s%s", "-Metos3DProfileVolumeFile                           volumes.petsc", "\n");
-//
-//    // tracer
-//    fprintf(f, "%s%d%s", "-Metos3DTracerCount                                 ", ctx.ny, "\n");
-//    fprintf(f, "%s%s%s", "-Metos3DTracerInitValue                             ", ystr, "\n");
-//    fprintf(f, "%s%s", "-Metos3DTracerOutputDirectory                       /scratch/jpi/", "\n");
-//    fprintf(f, "%s%s%s", "-Metos3DTracerOutputFile                            ", ctx.yout, "\n");
-//
-//    // parameter
-//    fprintf(f, "%s%d%s", "-Metos3DParameterCount                              ", ctx.nu, "\n");
-//    fprintf(f, "%s%s%s", "-Metos3DParameterValue                              ", ustr, "\n");
 //
 //    // boundary
 //    fprintf(f, "%s%s", "-Metos3DBoundaryConditionCount                      2", "\n");
