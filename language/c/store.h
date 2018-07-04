@@ -1,10 +1,9 @@
 #ifndef STORE_H
 #define STORE_H 1
 
-#include <petsctao.h>
-#include "petscviewerhdf5.h"
+#include "context.h"
 
-void store(void);
+PetscErrorCode store(context*);
 
 #endif /* !STORE_H */
 

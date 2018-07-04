@@ -3,7 +3,7 @@
 // option
 #undef  __FUNCT__
 #define __FUNCT__ "option"
-PetscErrorCode option(Vec u, char* optionfile) {
+PetscErrorCode option(char *file_path, context *ctx) {
     char ystr[PETSC_MAX_PATH_LEN];
     char ywrk[PETSC_MAX_PATH_LEN];
     char ustr[PETSC_MAX_PATH_LEN];
@@ -34,7 +34,7 @@ PetscErrorCode option(Vec u, char* optionfile) {
     VecRestoreArrayRead(u, &uarr);
     
     FILE *f;
-    f = fopen(optionfile, "w");
+    f = fopen(file_path, "w");
     
     // debug
     fprintf(f, "%s%s", "-Metos3DDebugLevel                                  1", "\n");

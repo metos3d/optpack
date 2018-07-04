@@ -3,7 +3,7 @@
 
 #include "context.h"
 
-PetscScalar misfit(void);
+PetscScalar misfit(Vec*, context*);
 
 #endif /* !MISFIT_H */
 

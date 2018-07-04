@@ -3,6 +3,6 @@
 
 #include "context.h"
 
-PetscErrorCode option(Vec, char*);
+PetscErrorCode option(char*, context*);
 
 #endif /* !OPTION_H */
