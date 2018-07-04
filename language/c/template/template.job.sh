@@ -33,7 +33,7 @@
 cd $PBS_O_WORKDIR
 
 export SCRATCH="/scratch/${PBS_JOBID/0:}/"
-. ./{experiment[name]}/petsc.env.sh
+. ./c/petsc.env.sh
 ./{experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.exe -tao_monitor &> {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt
 
 qstat -f ${PBS_JOBID/0:}

@@ -24,7 +24,6 @@ system('echo ''# PPID:    '' $PPID');
 
 % paths
 addpath('matlab');
-addpath('model');
 
 % initialization
 ctx         = context;
