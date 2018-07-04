@@ -5,13 +5,16 @@
 #define __FUNCT__ "average"
 Vec* average(Vec* y, context* ctx) {
     int i, start;
+    
     // zero yd
     for (i=0; i<ctx->ndata; i++) VecZeroEntries(ctx->yd[i]);
+    
     // 00, annual
     // 01 - 12, monthly
     // 13 - 16, seasonal
     // annual
     for (i=0; i<ctx->nt; i++) VecAXPY(ctx->yd[0], 1.0/(double)ctx->nt, y[i]);
+    
     // monthly
     start = 0;    for (i=0; i<240; i++) VecAXPY(ctx->yd[1],  12.0/(double)ctx->nt, y[start+i]);
     start = 240;  for (i=0; i<240; i++) VecAXPY(ctx->yd[2],  12.0/(double)ctx->nt, y[start+i]);
@@ -25,6 +28,7 @@ Vec* average(Vec* y, context* ctx) {
     start = 2160; for (i=0; i<240; i++) VecAXPY(ctx->yd[10], 12.0/(double)ctx->nt, y[start+i]);
     start = 2400; for (i=0; i<240; i++) VecAXPY(ctx->yd[11], 12.0/(double)ctx->nt, y[start+i]);
     start = 2640; for (i=0; i<240; i++) VecAXPY(ctx->yd[12], 12.0/(double)ctx->nt, y[start+i]);
+    
     // seasonal
     start = 0;    for (i=0; i<720; i++) VecAXPY(ctx->yd[13], 4.0/(double)ctx->nt, y[start+i]);
     start = 720;  for (i=0; i<720; i++) VecAXPY(ctx->yd[14], 4.0/(double)ctx->nt, y[start+i]);

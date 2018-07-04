@@ -16,25 +16,24 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# object files
-TAOOBJSC = \
-	c-petsc-tao/run.o \
-	c-petsc-tao/objective.o \
-	c-petsc-tao/model.o \
-	c-petsc-tao/option.o \
-	c-petsc-tao/misfit.o \
-	c-petsc-tao/init.o \
+# environment variables to set
+#   PROGRAM         the name of the execytable
+#   EXPERIMENT      experiment specific object file
 
-# executable
-PROGRAM = c-petsc-tao/run.exe
+# object files
+OPTPACK = \
+	c/average.o \
+	c/data.o
 
 ALL: $(PROGRAM)
 CFLAGS =
 FFLAGS =
-CLEANFILES = $(TAOOBJSC) $(PROGRAM)
+CLEANFILES = $(OPTPACK) $(EXPERIMENT) $(PROGRAM)
 
 include $(PETSC_DIR)/lib/petsc/conf/variables
 include $(PETSC_DIR)/lib/petsc/conf/rules
 
-$(PROGRAM): $(TAOOBJSC) chkopts
-	-$(CLINKER) -o $@ $(TAOOBJSC) $(PETSC_LIB)
+$(PROGRAM): $(OPTPACK) $(EXPERIMENT) chkopts
+	-$(CLINKER) -o $@ $(OPTPACK) $(EXPERIMENT) $(PETSC_LIB)
+
+

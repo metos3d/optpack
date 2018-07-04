@@ -101,11 +101,11 @@ int main(int argc, char **args) {{
     TaoSetVariableBounds(tao, ctx->lb, ctx->ub);
 
     // objective
-    TaoSetObjectiveRoutine(tao, objective, PETSC_NULL);
-    TaoSetGradientRoutine(tao, TaoDefaultComputeGradient, PETSC_NULL);
+//    TaoSetObjectiveRoutine(tao, objective, PETSC_NULL);
+//    TaoSetGradientRoutine(tao, TaoDefaultComputeGradient, PETSC_NULL);
 
     // optimization
-    TaoSetFromOptions(tao);
+//    TaoSetFromOptions(tao);
     TaoSolve(tao);
     TaoView(tao, PETSC_VIEWER_STDOUT_WORLD);
 
