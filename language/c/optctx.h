@@ -6,79 +6,35 @@
 
 // context data type
 typedef struct {
+    // petsc specific
     MPI_Comm        comm;
-    char            *expname;
-    char            *modname;
-    PetscScalar     *y0;
-    char            *yout;
-    PetscInt        i;
-    PetscInt        nu;
-    Vec             u;
-    PetscInt        ny;
-    PetscInt        nx;
-    PetscInt        nt;
-    Vec             *y;
-    PetscInt        ndata;
-    Vec             *yd;
-    Vec             J;
+    // id
+    char            *expname;       // name of experiment
+    PetscInt        nexp;           // experiment number
+    // model
+    char            *modname;       // name of bgc model
+    PetscInt        ny;             // number of tracers
+    PetscInt        nx;             // vector length
+    PetscInt        nt;             // number of time steps
+    char            *y0;            // initial concentration
+    char            *yout;          // output file name(s)
+    // parameters
+    PetscInt        nu;             // number of parameters
+    Vec             u0;             // initial parameter set
+    Vec             ud;             // reference parameter set
+    Vec             lb;             // lower bounds
+    Vec             ub;             // upper bounds
+    // data
+    PetscInt        ndata;          // number of data
+    Vec             *yd;            // data
+    // optimization
+//    void            *options;       // algorithm options
+    PetscInt        i;              // current iteration
+    Vec             u;              // current parameter set
+    Vec             *y;             // current state
+    Vec             J;              // current objective
     // log
-    char            logfile[PETSC_MAX_PATH_LEN];
+    char            logfile[PETSC_MAX_PATH_LEN];    // name of log file
 } OptCtx;
 
-#endif /* !OPTCTX_H */
 
-//# id
-//expname = []        # name of experiment
-//nexp    = []        # experiment number
-//# model
-//modname = []        # name of bgc model
-//ny      = []        # number of tracers
-//nx      = []        # vector length
-//nt      = []        # number of time steps
-//y0      = []        # initial concentration
-//yout    = []        # output file name(s)
-//# parameters
-//nu      = []        # number of parameters
-//u0      = []        # initial parameter set
-//ud      = []        # reference parameter set
-//lb      = []        # lower bounds
-//ub      = []        # upper bounds
-//# data
-//ndata   = []        # number of data
-//yd      = []        # data
-//# optimization
-//options = []        # algorithm options
-//i       = []        # current iteration
-//u       = []        # current parameter set
-//y       = []        # current state
-//J       = []        # current objective
-//# log
-//logfile = []        # name of log file
-
-//% id
-//expname = [];       % name of experiment
-//nexp    = [];       % experiment number
-//% model
-//modname = [];       % name of bgc model
-//ny      = [];       % number of tracers
-//nx      = [];       % vector length
-//nt      = [];       % number of time steps
-//y0      = [];       % initial concentration
-//yout    = [];       % output file name(s)
-//% parameters
-//nu      = [];       % number of parameters
-//u0      = [];       % initial parameter set
-//ud      = [];       % reference parameter set
-//lb      = [];       % lower bounds
-//ub      = [];       % upper bounds
-//% data
-//ndata   = [];       % number of data
-//yd      = [];       % data
-//% optimization
-//options = [];       % algorithm options
-//i       = [];       % current iteration
-//u       = [];       % current parameter set
-//y       = [];       % current state
-//J       = [];       % current objective
-//% log
-//logfile = [];       % name of log file
