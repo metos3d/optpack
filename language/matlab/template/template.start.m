@@ -49,15 +49,7 @@ ctx.yout    = '{model[yout]}';
 
 % parameters
 ctx.nu      = {parameter[nu]};
-if ctx.nexp == 1;
-    % inital experiment, use hard-coded parameter set
-    ctx.u0 = {parameter[u0]};
-else;
-    % consecutive experiment, load optimal parameter set from previous optimization
-    logfile = [ctx.expname filesep ctx.expname '.' ctx.modname '.' num2str(ctx.nexp-1) '.mat'];
-    load(logfile, 'uopt');
-    ctx.u0 = uopt';   % transposed
-end;
+ctx.u0      = {parameter[u0]};
 ctx.ud      = {parameter[ud]};    % not used, info only
 ctx.lb      = {parameter[lb]};
 ctx.ub      = {parameter[ub]};
