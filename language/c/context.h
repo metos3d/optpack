@@ -35,7 +35,7 @@ typedef struct {
     Vec             J;              // current objective
     // log
     char            logfile[PETSC_MAX_PATH_LEN];    // name of log file
-} Context;
+} context;
 
 #endif /* !CONTEXT_H */
 

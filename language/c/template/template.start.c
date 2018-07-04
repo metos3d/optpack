@@ -32,7 +32,7 @@ int main(int argc, char **args) {{
     system("echo '# PPID:    ' $PPID");
 
     // initialization
-    Context ctx;
+    context ctx;
 
     // optimization context
     ctx.comm     = PETSC_COMM_WORLD;
