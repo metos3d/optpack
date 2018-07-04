@@ -79,11 +79,12 @@ def create_job_script(expname, exp_config, nexp, niter):
 # ---------------------------------------------------------------------------------------------------------------------
 def create_start_script(expname, exp_config, nexp, niter):
     
-    start_template_text = read_template("template.start.py")
+    extension_code = exp_config["language"]["code"]
+    start_template_text = read_template("template.start." + extension_code)
     start_text = format_text(start_template_text, exp_config, nexp, niter)
     
     modname = exp_config["model"]["name"]
-    start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start.py")
+    start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start." + extension_code)
     print(start_text_file)
     
     write_text_file(start_text_file, start_text)
@@ -112,8 +113,9 @@ def prepare_new_experiment(exp_config, expname, niter):
 def continue_experiment(exp_config, expname, niter):
     print("Continuing experiment ...            " + expname)
 
+    extension_data = exp_config["language"]["data"]
     modname = exp_config["model"]["name"]
-    log_file_pattern = os.path.join(expname, expname + "." + modname + ".*.h5")
+    log_file_pattern = os.path.join(expname, expname + "." + modname + ".*." + extension_data)
     print("Checking pattern ...                 {0}".format(log_file_pattern))
     log_file_list = glob.glob(log_file_pattern)
     
@@ -163,8 +165,6 @@ $> python {0} new exp-01 10'''.format(sys.argv[0]))
     # strip any trailing path separators
     expname = os.path.normpath(expname)
     exp_config["experiment"] = {"name": expname}
-    print(exp_config)
-    sys.exit(1)
 
     if command=="new":
         if os.path.exists(expname):
