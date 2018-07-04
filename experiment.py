@@ -79,6 +79,19 @@ def create_job_script(expname, exp_config, nexp, niter):
 # ---------------------------------------------------------------------------------------------------------------------
 def create_start_script(expname, exp_config, nexp, niter):
     
+    # format parameter list
+    # u0, ud, lb, ub
+    # nu
+    nu = exp_config["parameter"]["nu"]
+    u0 = exp_config["parameter"]["u0"]
+    ud = exp_config["parameter"]["ud"]
+    lb = exp_config["parameter"]["lb"]
+    ub = exp_config["parameter"]["ub"]
+    exp_config["parameter"]["u0"] = ','.join(['{:.16e}']*nu).format(*u0)
+    exp_config["parameter"]["ud"] = ','.join(['{:.16e}']*nu).format(*ud)
+    exp_config["parameter"]["lb"] = ','.join(['{:.16e}']*nu).format(*lb)
+    exp_config["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
+
     extension_code = exp_config["language"]["code"]
     start_template_text = read_template("template.start." + extension_code)
     start_text = format_text(start_template_text, exp_config, nexp, niter)
@@ -130,17 +143,10 @@ def continue_experiment(exp_config, expname, niter):
 
     print("Reading last result ...")
     uopt = h5py.File(log_file_list[-1])["uopt"][0,:]
-
+    exp_config["parameter"]["u0"] = uopt
+    
     nexp = nexp + 1
     print("Continuing with optimization run ... {0}".format(nexp))
-
-    u0str = "["
-    for ui in uopt:
-        uistr = "%.16e" % ui
-        print("Using parameters ...                 {0}".format(uistr))
-        u0str = u0str + uistr + ","
-    u0str = u0str[:-1] + "]"
-    exp_config["parameter"]["u0"] = u0str
 
     print("Creating job script ...              ", end="")
     create_job_script(expname, exp_config, str(nexp), niter)

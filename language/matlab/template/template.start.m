@@ -49,10 +49,10 @@ ctx.yout    = '{model[yout]}';
 
 % parameters
 ctx.nu      = {parameter[nu]};
-ctx.u0      = {parameter[u0]};
-ctx.ud      = {parameter[ud]};    % not used, info only
-ctx.lb      = {parameter[lb]};
-ctx.ub      = {parameter[ub]};
+ctx.u0      = [{parameter[u0]}];
+ctx.ud      = [{parameter[ud]}];    % not used, info only
+ctx.lb      = [{parameter[lb]}];
+ctx.ub      = [{parameter[ub]}];
 
 % data
 ctx.ndata   = 17;

@@ -49,10 +49,10 @@ ctx.yout    = "{model[yout]}"
 
 # parameters
 ctx.nu      = {parameter[nu]}
-ctx.u0      = np.array({parameter[u0]})
-ctx.ud      = np.array({parameter[ud]})    # not used, info only
-ctx.lb      = np.array({parameter[lb]})
-ctx.ub      = np.array({parameter[ub]})
+ctx.u0      = np.array([{parameter[u0]}])
+ctx.ud      = np.array([{parameter[ud]}])    # not used, info only
+ctx.lb      = np.array([{parameter[lb]}])
+ctx.ub      = np.array([{parameter[ub]}])
 
 # data
 ctx.ndata   = 17

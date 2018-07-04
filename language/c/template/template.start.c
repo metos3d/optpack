@@ -55,15 +55,10 @@ int main(int argc, char **args) {
 
     // parameter
     ctx.nu      = {parameter[nu]};
-    PetscScalar U0[] = {parameter[u0]};
-    PetscScalar UD[] = {parameter[ud]};     // not used, info only
-    PetscScalar LB[] = {parameter[lb]};
-    PetscScalar UB[] = {parameter[ub]};
-
-//    ctx.u0      = {};
-//    ctx.ud      = {};    % not used, info only
-//    ctx.lb      = {};
-//    ctx.ub      = {};
+    PetscScalar U0[] = {{parameter[u0]}};
+    PetscScalar UD[] = {{parameter[ud]}};     // not used, info only
+    PetscScalar LB[] = {{parameter[lb]}};
+    PetscScalar UB[] = {{parameter[ub]}};
     
     // parameter
     Vec u, ud, lb, ub;
@@ -79,7 +74,7 @@ int main(int argc, char **args) {
     VecSetSizes(ud, PETSC_DECIDE, ctx.nu);
     VecSetSizes(lb, PETSC_DECIDE, ctx.nu);
     VecSetSizes(ub, PETSC_DECIDE, ctx.nu);
-    VecPlaceArray(u, u0);
+    VecPlaceArray(u, U0);
     VecPlaceArray(ud, UD);
     VecPlaceArray(lb, LB);
     VecPlaceArray(ub, UB);
