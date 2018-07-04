@@ -1,7 +1,7 @@
 #ifndef MISFIT_H
 #define MISFIT_H 1
 
-#include "optctx.h"
+#include "context.h"
 
 PetscScalar misfit(void);
 
