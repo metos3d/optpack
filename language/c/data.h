@@ -3,7 +3,7 @@
 
 #include "context.h"
 
-Vec* data(Context*);
+Vec* data(context*);
 
 #endif /* !DATA_H */
 
