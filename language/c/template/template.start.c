@@ -16,11 +16,12 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+#include "data.h"
 #include "objective.h"
 
 #undef  __FUNCT__
 #define __FUNCT__ "main"
-int main(int argc, char **args) {
+int main(int argc, char **args) {{
     // petsc
     PetscInitialize(&argc, &args, PETSC_NULL, PETSC_NULL);
     PetscPushErrorHandler(PetscAbortErrorHandler, NULL);
@@ -31,19 +32,19 @@ int main(int argc, char **args) {
     system("echo '# PPID:    ' $PPID");
 
     // initialization
-    OptCtx ctx;
+    Context ctx;
 
     // optimization context
     ctx.comm     = PETSC_COMM_WORLD;
     ctx.expname  = "{experiment[name]}";
     ctx.nexp     = {nexp};
 
-    //% algorithm
-    //options     = [];
-    //options     = optimset(options, 'algorithm', 'interior-point');
-    //options     = optimset(options, 'display', 'iter');
-    //options     = optimset(options, 'maxiter', {niter});
-    //ctx.options = options;
+    // tao, optimizer, algorithm
+    Tao tao;
+    TaoCreate(ctx.comm, &tao);
+    TaoSetType(tao, TAOBLMVM);
+    TaoSetMaximumIterations(tao, {niter});
+    TaoSetMonitor(tao, TaoMonitorDefault, NULL, NULL);
 
     // model
     ctx.modname = "{model[name]}";
@@ -55,38 +56,34 @@ int main(int argc, char **args) {
 
     // parameter
     ctx.nu      = {parameter[nu]};
-    PetscScalar U0[] = {{parameter[u0]}};
-    PetscScalar UD[] = {{parameter[ud]}};     // not used, info only
-    PetscScalar LB[] = {{parameter[lb]}};
-    PetscScalar UB[] = {{parameter[ub]}};
-    
-    // parameter
-    Vec u, ud, lb, ub;
-    VecCreate(ctx.comm, &u);
-    VecCreate(ctx.comm, &ud);
-    VecCreate(ctx.comm, &lb);
-    VecCreate(ctx.comm, &ub);
-    VecSetType(u, VECSTANDARD);
-    VecSetType(ud, VECSTANDARD);
-    VecSetType(lb, VECSTANDARD);
-    VecSetType(ub, VECSTANDARD);
-    VecSetSizes(u, PETSC_DECIDE, ctx.nu);
-    VecSetSizes(ud, PETSC_DECIDE, ctx.nu);
-    VecSetSizes(lb, PETSC_DECIDE, ctx.nu);
-    VecSetSizes(ub, PETSC_DECIDE, ctx.nu);
-    VecPlaceArray(u, U0);
-    VecPlaceArray(ud, UD);
-    VecPlaceArray(lb, LB);
-    VecPlaceArray(ub, UB);
-    PetscObjectSetName((PetscObject)ud, "ud");
-    PetscObjectSetName((PetscObject)lb, "lb");
-    PetscObjectSetName((PetscObject)ub, "ub");
-    // for storage
-    VecDuplicate(u, &ctx.u);
+    PetscScalar U0[] = {{{parameter[u0]}}};
+    PetscScalar UD[] = {{{parameter[ud]}}};     // not used, info only
+    PetscScalar LB[] = {{{parameter[lb]}}};
+    PetscScalar UB[] = {{{parameter[ub]}}};
+    VecCreate(ctx.comm, &ctx.u);
+    VecCreate(ctx.comm, &ctx.ud);
+    VecCreate(ctx.comm, &ctx.lb);
+    VecCreate(ctx.comm, &ctx.ub);
+    VecSetType(ctx.u, VECSTANDARD);
+    VecSetType(ctx.ud, VECSTANDARD);
+    VecSetType(ctx.lb, VECSTANDARD);
+    VecSetType(ctx.ub, VECSTANDARD);
+    VecSetSizes(ctx.u, PETSC_DECIDE, ctx.nu);
+    VecSetSizes(ctx.ud, PETSC_DECIDE, ctx.nu);
+    VecSetSizes(ctx.lb, PETSC_DECIDE, ctx.nu);
+    VecSetSizes(ctx.ub, PETSC_DECIDE, ctx.nu);
+    VecPlaceArray(ctx.u, U0);
+    VecPlaceArray(ctx.ud, UD);
+    VecPlaceArray(ctx.lb, LB);
+    VecPlaceArray(ctx.ub, UB);
     PetscObjectSetName((PetscObject)ctx.u, "u");
+    PetscObjectSetName((PetscObject)ctx.ud, "ud");
+    PetscObjectSetName((PetscObject)ctx.lb, "lb");
+    PetscObjectSetName((PetscObject)ctx.ub, "ub");
 
-//    ctx.i        = 1;
-//    ctx.ndata    = 17;
+    // data
+    ctx.ndata   = 17;
+    ctx.yd      = data(&ctx);
 
 //    // prepare y, yd
 //    PetscErrorCode init(void) {
@@ -152,15 +149,11 @@ int main(int argc, char **args) {
 //        return(0);
 //    }
 
-
-    // tao, optimizer
-    Tao tao;
-    TaoCreate(ctx.comm, &tao);
-    TaoSetType(tao, TAOBLMVM);
+    //    ctx.i        = 1;
 
     // parameter vector, bounds
-    TaoSetInitialVector(tao, u);
-    TaoSetVariableBounds(tao, lb, ub);
+    TaoSetInitialVector(tao, ctx.u);
+    TaoSetVariableBounds(tao, ctx.lb, ctx.ub);
 
     // objective
     TaoSetObjectiveRoutine(tao, objective, PETSC_NULL);
@@ -173,28 +166,24 @@ int main(int argc, char **args) {
 
     // clean up
     TaoDestroy(&tao);
-    VecDestroyVecs(ctx.ndata, &ctx.y);
+//    VecDestroyVecs(ctx.ndata, &ctx.y);
     VecDestroyVecs(ctx.ndata, &ctx.yd);
-    VecDestroy(&ctx.u);
-    VecDestroy(&ctx.J);
-    VecResetArray(u);
-    VecResetArray(ud);
-    VecResetArray(lb);
-    VecResetArray(ub);
-    VecDestroy(&u);
-    VecDestroy(&ud);
-    VecDestroy(&lb);
-    VecDestroy(&ub);
+//    VecDestroy(&ctx.u);
+//    VecDestroy(&ctx.J);
+//    VecResetArray(u);
+//    VecResetArray(ud);
+//    VecResetArray(lb);
+//    VecResetArray(ub);
+//    VecDestroy(&u);
+//    VecDestroy(&ud);
+//    VecDestroy(&lb);
+//    VecDestroy(&ub);
+    
     PetscPopErrorHandler();
     PetscFinalize();
     return 0;
-}
+}}
 
-//
-//
-//% data
-//ctx.ndata   = 17;
-//ctx.yd      = data(ctx);
 //
 //% optimization
 //ctx.i       = 1;

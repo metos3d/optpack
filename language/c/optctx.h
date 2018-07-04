@@ -1,5 +1,5 @@
-#ifndef OPTCTX_H
-#define OPTCTX_H 1
+#ifndef CONTEXT_H
+#define CONTEXT_H 1
 
 #include <petsctao.h>
 #include "petscviewerhdf5.h"
@@ -35,6 +35,8 @@ typedef struct {
     Vec             J;              // current objective
     // log
     char            logfile[PETSC_MAX_PATH_LEN];    // name of log file
-} OptCtx;
+} Context;
+
+#endif /* !CONTEXT_H */
 
 
