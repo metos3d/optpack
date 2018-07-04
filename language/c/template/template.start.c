@@ -86,35 +86,36 @@ int main(int argc, char **args) {{
     ctx->ndata  = 17;
     ctx->yd     = data(ctx);
 
+    // optimization
+    ctx->i      = 1;
+    // state, y
+    VecDuplicateVecs(ctx->yd[0], ctx->ndata, &ctx->y);
+    // misfit, J
+    VecCreate(ctx->comm, &ctx->J);
+    VecSetType(ctx->J, VECSTANDARD);
+    PetscObjectSetName((PetscObject)ctx->J, "J");
+    VecSetSizes(ctx->J, PETSC_DECIDE, ctx->ndata);
 
-    //    ctx.i        = 1;
-    //        // state, y
-    //        VecDuplicateVecs(ctx.yd[0], ctx.ndata, &ctx.y);
-//        // misfit, J
-//        VecCreate(ctx.comm, &ctx.J);
-//        VecSetType(ctx.J, VECSTANDARD);
-//        PetscObjectSetName((PetscObject)ctx.J, "J");
-//        VecSetSizes(ctx.J, PETSC_DECIDE, 17);
+    // log
+    sprintf(ctx->logfile, "%s/%s.%s.%d.h5", ctx->expname, ctx->expname, ctx->modname, ctx->nexp);
 
     // parameter vector, bounds
     TaoSetInitialVector(tao, ctx->u);
     TaoSetVariableBounds(tao, ctx->lb, ctx->ub);
 
     // objective
-//    TaoSetObjectiveRoutine(tao, objective, PETSC_NULL);
-//    TaoSetGradientRoutine(tao, TaoDefaultComputeGradient, PETSC_NULL);
+    TaoSetObjectiveRoutine(tao, objective, (void*)ctx);
+    TaoSetGradientRoutine(tao, TaoDefaultComputeGradient, PETSC_NULL);
 
     // optimization
-//    TaoSetFromOptions(tao);
     TaoSolve(tao);
     TaoView(tao, PETSC_VIEWER_STDOUT_WORLD);
 
     // clean up
     TaoDestroy(&tao);
-//    VecDestroyVecs(ctx.ndata, &ctx.y);
+    VecDestroyVecs(ctx->ndata, &ctx.y);
     VecDestroyVecs(ctx->ndata, &ctx->yd);
-//    VecDestroy(&ctx.u);
-//    VecDestroy(&ctx.J);
+    VecDestroy(&ctx->J);
     VecResetArray(ctx->u);
     VecResetArray(ctx->ud);
     VecResetArray(ctx->lb);
@@ -129,16 +130,7 @@ int main(int argc, char **args) {{
     return 0;
 }}
 
-//
-//% optimization
-//ctx.i       = 1;
-//
-//% log
-//ctx.logfile = [ctx.expname filesep ctx.expname '.' ctx.modname '.' num2str(ctx.nexp) '.mat'];
-//
-//% optimization
-//[uopt,Jopt,exitflag,output,lambda,grad,hessian] = fmincon(@(u) objective(u,ctx),ctx.u0,[],[],[],[],ctx.lb,ctx.ub,[],ctx.options)
-//
+
 //% store optimal parameter set and corresponding objective value
 //uopt = uopt';   % transposed
 //save(ctx.logfile, 'uopt', 'Jopt', '-append')

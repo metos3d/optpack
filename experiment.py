@@ -123,6 +123,7 @@ def prepare_new_experiment(exp_config, expname, niter):
 # if c compile
 #PROGRAM=twin/twin.N.1.start.exe make -f c/Makefile
 #sunip194@nesh-fe1:N> PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
+#PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
 
 # ---------------------------------------------------------------------------------------------------------------------
 # continue experiment
@@ -196,7 +197,5 @@ $> python {0} new exp-01 10'''.format(sys.argv[0]))
         print("Unknown command ... " + command)
         print("Exiting ...")
         sys.exit(1)
-
-
 
 
