@@ -86,40 +86,6 @@ int main(int argc, char **args) {{
     ctx->ndata  = 17;
     ctx->yd     = data(ctx);
 
-//    // prepare y, yd
-//    PetscErrorCode init(void) {
-//
-//        // yd
-//        for (i=0; i<ctx.ndata; i++) VecZeroEntries(ctx.yd[i]);
-//
-//        // 00, annual
-//        // 01 - 12, monthly
-//        // 13 - 16, seasonal
-//        // annual
-//        for (i=0; i<ctx.nt; i++) VecAXPY(ctx.yd[0], 1.0/(double)ctx.nt, yw[i]);
-//        // monthly
-//        start = 0;    for (i=0; i<240; i++) VecAXPY(ctx.yd[1],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 240;  for (i=0; i<240; i++) VecAXPY(ctx.yd[2],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 480;  for (i=0; i<240; i++) VecAXPY(ctx.yd[3],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 720;  for (i=0; i<240; i++) VecAXPY(ctx.yd[4],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 960;  for (i=0; i<240; i++) VecAXPY(ctx.yd[5],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 1200; for (i=0; i<240; i++) VecAXPY(ctx.yd[6],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 1440; for (i=0; i<240; i++) VecAXPY(ctx.yd[7],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 1680; for (i=0; i<240; i++) VecAXPY(ctx.yd[8],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 1920; for (i=0; i<240; i++) VecAXPY(ctx.yd[9],  12.0/(double)ctx.nt, yw[start+i]);
-//        start = 2160; for (i=0; i<240; i++) VecAXPY(ctx.yd[10], 12.0/(double)ctx.nt, yw[start+i]);
-//        start = 2400; for (i=0; i<240; i++) VecAXPY(ctx.yd[11], 12.0/(double)ctx.nt, yw[start+i]);
-//        start = 2640; for (i=0; i<240; i++) VecAXPY(ctx.yd[12], 12.0/(double)ctx.nt, yw[start+i]);
-//        // seasonal
-//        start = 0;    for (i=0; i<720; i++) VecAXPY(ctx.yd[13], 4.0/(double)ctx.nt, yw[start+i]);
-//        start = 720;  for (i=0; i<720; i++) VecAXPY(ctx.yd[14], 4.0/(double)ctx.nt, yw[start+i]);
-//        start = 1440; for (i=0; i<720; i++) VecAXPY(ctx.yd[15], 4.0/(double)ctx.nt, yw[start+i]);
-//        start = 2160; for (i=0; i<720; i++) VecAXPY(ctx.yd[16], 4.0/(double)ctx.nt, yw[start+i]);
-//
-//        // clean up yw
-//        VecDestroyVecs(ctx.nt, &yw);
-//        return(0);
-//    }
 
     //    ctx.i        = 1;
     //        // state, y
@@ -149,15 +115,15 @@ int main(int argc, char **args) {{
     VecDestroyVecs(ctx->ndata, &ctx->yd);
 //    VecDestroy(&ctx.u);
 //    VecDestroy(&ctx.J);
-//    VecResetArray(u);
-//    VecResetArray(ud);
-//    VecResetArray(lb);
-//    VecResetArray(ub);
-//    VecDestroy(&u);
-//    VecDestroy(&ud);
-//    VecDestroy(&lb);
-//    VecDestroy(&ub);
-    
+    VecResetArray(ctx->u);
+    VecResetArray(ctx->ud);
+    VecResetArray(ctx->lb);
+    VecResetArray(ctx->ub);
+    VecDestroy(&ctx->u);
+    VecDestroy(&ctx->ud);
+    VecDestroy(&ctx->lb);
+    VecDestroy(&ctx->ub);
+    // petsc
     PetscPopErrorHandler();
     PetscFinalize();
     return 0;
@@ -193,9 +159,9 @@ int main(int argc, char **args) {{
 //    VecView(ud, viewer);
 //    // store yd
 //    int i;
-//    for (i=0; i<ctx.ndata; i++) {
+//    for (i=0; i<ctx.ndata; i++) {{
 //        PetscViewerHDF5SetTimestep(viewer, i);
 //        PetscObjectSetName((PetscObject)ctx.yd[i], "yd");
 //        VecView(ctx.yd[i], viewer);
-//    }
+//    }}
 //    PetscViewerDestroy(&viewer);
