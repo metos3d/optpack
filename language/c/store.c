@@ -85,5 +85,26 @@ PetscErrorCode store(context* ctx) {
     return(0);
 }
 
+// store
+//
+
+
+//    // initial log file creation
+//    PetscViewer viewer;
+//    sprintf(ctx.logfile, "%s.%s.h5", ctx.expname, ctx.modname);
+//    PetscViewerHDF5Open(ctx.comm, ctx.logfile, FILE_MODE_WRITE, &viewer);
+//    // store ud, lb, ub
+//    VecView(lb, viewer);
+//    VecView(ub, viewer);
+//    VecView(ud, viewer);
+//    // store yd
+//    int i;
+//    for (i=0; i<ctx.ndata; i++) {{
+//        PetscViewerHDF5SetTimestep(viewer, i);
+//        PetscObjectSetName((PetscObject)ctx.yd[i], "yd");
+//        VecView(ctx.yd[i], viewer);
+//    }}
+//    PetscViewerDestroy(&viewer);
+
 
 

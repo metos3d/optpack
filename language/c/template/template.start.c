@@ -81,6 +81,9 @@ int main(int argc, char **args) {{
     PetscObjectSetName((PetscObject)ctx->ud, "ud");
     PetscObjectSetName((PetscObject)ctx->lb, "lb");
     PetscObjectSetName((PetscObject)ctx->ub, "ub");
+    Vec u;
+    VecDuplicate(ctx->u, &u);
+    PetscObjectSetName((PetscObject)u, "u");
 
     // data
     ctx->ndata  = 17;
@@ -100,8 +103,6 @@ int main(int argc, char **args) {{
     sprintf(ctx->logfile, "%s/%s.%s.%d.h5", ctx->expname, ctx->expname, ctx->modname, ctx->nexp);
 
     // parameter vector, bounds
-    Vec u;
-    VecDuplicate(ctx->u, &u);
     TaoSetInitialVector(tao, u);
     TaoSetVariableBounds(tao, ctx->lb, ctx->ub);
 
@@ -138,25 +139,8 @@ int main(int argc, char **args) {{
 //uopt = uopt';   % transposed
 //save(ctx.logfile, 'uopt', 'Jopt', '-append')
 
-
+//PetscErrorCode TaoGetSolutionVector(Tao tao, Vec *X)
+//PetscErrorCode TaoGetSolutionStatus(Tao tao, PetscInt *its, PetscReal *f, PetscReal *gnorm, PetscReal *cnorm, PetscReal *xdiff, TaoConvergedReason *reason)
 //
-// store
-//
 
 
-//    // initial log file creation
-//    PetscViewer viewer;
-//    sprintf(ctx.logfile, "%s.%s.h5", ctx.expname, ctx.modname);
-//    PetscViewerHDF5Open(ctx.comm, ctx.logfile, FILE_MODE_WRITE, &viewer);
-//    // store ud, lb, ub
-//    VecView(lb, viewer);
-//    VecView(ub, viewer);
-//    VecView(ud, viewer);
-//    // store yd
-//    int i;
-//    for (i=0; i<ctx.ndata; i++) {{
-//        PetscViewerHDF5SetTimestep(viewer, i);
-//        PetscObjectSetName((PetscObject)ctx.yd[i], "yd");
-//        VecView(ctx.yd[i], viewer);
-//    }}
-//    PetscViewerDestroy(&viewer);

@@ -61,6 +61,7 @@ PetscScalar misfit(Vec *y, context *ctx) {
     Jan = 0.0;
     
     // info
+//    if (i%500==0) PetscPrintf(ctx->comm, "%s\n", file_path);
     printf("# J:        %.16e\n", Jan);
     return Jan;
 }

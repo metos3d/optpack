@@ -5,20 +5,22 @@
 Vec* model(Vec u, context *ctx) {
     int i, start;
     const PetscScalar* uarr;
-
+    
     // info
     VecGetArrayRead(u, &uarr);
     for(i=0; i<ctx->nu; i++) PetscPrintf(ctx->comm, "# u:        %.16e\n", uarr[i]);
     VecRestoreArrayRead(u, &uarr);
     
-//    // option file
-//    char optionfile[PETSC_MAX_PATH_LEN];
-//    char optionpath[PETSC_MAX_PATH_LEN];
-//    sprintf(optionfile, "%03d%s", ctx.i, ".option.sh");
-//    sprintf(optionpath, "%s%s", "model/option/", optionfile);
-//    PetscPrintf(ctx.comm, "# option:   %s\n", optionpath);
-//    // write option file
-//    option(u, optionpath);
+    // store current parameter set
+    VecCopy(u, ctx->u);
+    
+    // option file
+    char optionfile[PETSC_MAX_PATH_LEN];
+    char optionfilepath[PETSC_MAX_PATH_LEN];
+    sprintf(optionfile, "%s.%s.%d.%03d%s", ctx->expname, ctx->modname, ctx->nexp, ctx->i, ".option.sh");
+    sprintf(optionfilepath, "%s/option/%s", ctx->expname, optionfile);
+    // write option file
+    option(optionfilepath, ctx);
     
 //    // run
 //    int status;
@@ -82,5 +84,60 @@ Vec* model(Vec u, context *ctx) {
 }
 
 
+//
+//# run
+//logfile = ctx.expname + "." + ctx.modname + "." + "{:d}".format(ctx.nexp) + "." + "{:03d}".format(ctx.i) + ".log.txt"
+//logfilepath = ctx.expname + "/log/" + logfile
+//runcmd = ". model/petsc.env.sh; " + \
+//"mpiexec " + os.environ["NQSII_MPIOPTS"] + " ./model/metos3d-simpack-" + ctx.modname + ".exe " + \
+//optionfilepath + " > " + logfilepath
+//#    print("# run:      " + runcmd, flush=True)
+//status = os.system(runcmd)
+//
+//# read result from scratch
+//readpath = os.environ["SCRATCH"]
+//nx = ctx.nx
+//nt = ctx.nt
+//y = np.zeros((nt,nx))       # note, c order
+//for i in range(nt):
+//filepath = readpath + "{:04d}".format(i) + "-N.petsc"
+//#        if i%500==0: print("# {}".format(filepath), flush=True)
+//y[i,:] = read_petsc_vector(filepath);
+//
+//# clean scratch
+//cleancmd = "rm " + readpath + "*"
+//#    print("# clean:    " + cleancmd, flush=True)
+//status = os.system(cleancmd)
+//
+//return y
 
+
+//
+//% run
+//logfile = [ctx.expname '.' ctx.modname '.' num2str(ctx.nexp) '.' num2str(ctx.i, '%03d') '.log.txt'];
+//logfilepath = [ctx.expname '/log/' logfile];
+//runcmd = ['. model/petsc.env.sh; '...
+//          'mpiexec ' getenv('NQSII_MPIOPTS') ' ./model/metos3d-simpack-' ctx.modname '.exe ' ...
+//          optionfilepath ' > ' logfilepath];
+//disp(['# run:      ' runcmd])
+//[status, result] = system(runcmd);
+//%    disp(['# status:   ' num2str(status)])
+//
+//% read result from scratch
+//readpath = getenv('SCRATCH');
+//nx = ctx.nx;
+//nt = ctx.nt;
+//y = zeros(nx, nt);
+//for i = 1:nt;
+//filepath = [readpath num2str(i-1, '%04d') '-N.petsc'];
+//%        if mod(i,500)==0 disp(['# ' filepath]), end;
+//y(:, i) = readPETScVector(filepath);
+//end;
+//
+//% clean scratch
+//cleancmd = ['rm ' readpath '*'];
+//disp(['# clean:    ' cleancmd])
+//[status, result] = system(cleancmd);
+//%    disp(['# status:   ' num2str(status)])
+//end
 

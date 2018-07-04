@@ -18,8 +18,6 @@ function option(filepath,ctx)
 %
 % option(filepath,ctx)
 
-%    disp(['# option:   ' filepath])
-
     ny      = num2str(ctx.ny);
     y0      = ctx.y0;
     ypath   = getenv('SCRATCH');
