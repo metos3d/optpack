@@ -48,7 +48,7 @@ PetscErrorCode option(char *filepath, context *ctx) {
     
     // geometry
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DGeometryType                                Profile", "\n");
-    strcat(text, line); sprintf(line, "%s%s", "-Metos3DProfileInputDirectory                       data/TMM/2.8/Geometry/", "\n");
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DProfileInputDirectory                       model/data/TMM/2.8/Geometry/", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DProfileMaskFile                             landSeaMask.petsc", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DProfileVolumeFile                           volumes.petsc", "\n");
 
@@ -64,7 +64,7 @@ PetscErrorCode option(char *filepath, context *ctx) {
 
     // boundary
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DBoundaryConditionCount                      2", "\n");
-    strcat(text, line); sprintf(line, "%s%s", "-Metos3DBoundaryConditionInputDirectory             data/TMM/2.8/Forcing/BoundaryCondition/", "\n");
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DBoundaryConditionInputDirectory             model/data/TMM/2.8/Forcing/BoundaryCondition/", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DBoundaryConditionName                       Latitude,IceCover", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DLatitudeCount                               1", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DLatitudeFileFormat                          latitude.petsc", "\n");
@@ -73,7 +73,7 @@ PetscErrorCode option(char *filepath, context *ctx) {
 
     // domain
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DDomainConditionCount                        2", "\n");
-    strcat(text, line); sprintf(line, "%s%s", "-Metos3DDomainConditionInputDirectory               data/TMM/2.8/Forcing/DomainCondition/", "\n");
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DDomainConditionInputDirectory               model/data/TMM/2.8/Forcing/DomainCondition/", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DDomainConditionName                         LayerDepth,LayerHeight", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DLayerDepthCount                             1", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DLayerDepthFileFormat                        z.petsc", "\n");
@@ -82,7 +82,7 @@ PetscErrorCode option(char *filepath, context *ctx) {
 
     // transport
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DTransportType                               Matrix", "\n");
-    strcat(text, line); sprintf(line, "%s%s", "-Metos3DMatrixInputDirectory                        data/TMM/2.8/Transport/Matrix5_4/1dt/", "\n");
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DMatrixInputDirectory                        model/data/TMM/2.8/Transport/Matrix5_4/1dt/", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DMatrixCount                                 12", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DMatrixExplicitFileFormat                    Ae_$02d.petsc", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DMatrixImplicitFileFormat                    Ai_$02d.petsc", "\n");

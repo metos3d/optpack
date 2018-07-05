@@ -45,7 +45,6 @@ int main(int argc, char **args) {{
     TaoCreate(ctx->comm, &tao);
     TaoSetType(tao, TAOBLMVM);
     TaoSetMaximumIterations(tao, {niter});
-    TaoSetMonitor(tao, TaoMonitorDefault, NULL, NULL);
 
     // model
     ctx->modname    = "{model[name]}";
@@ -150,5 +149,13 @@ int main(int argc, char **args) {{
 //PetscErrorCode TaoGetSolutionVector(Tao tao, Vec *X)
 //PetscErrorCode TaoGetSolutionStatus(Tao tao, PetscInt *its, PetscReal *f, PetscReal *gnorm, PetscReal *cnorm, PetscReal *xdiff, TaoConvergedReason *reason)
 //
+
+//// store u, J, use PETSc viewer for convience
+//PetscViewer viewer;
+//PetscViewerHDF5Open(ctx->comm, ctx->logfile, FILE_MODE_APPEND, &viewer);
+//PetscViewerHDF5SetTimestep(viewer, ctx->i-1);
+//VecView(ctx->u, viewer);
+//VecView(ctx->J, viewer);
+//PetscViewerDestroy(&viewer);
 
 
