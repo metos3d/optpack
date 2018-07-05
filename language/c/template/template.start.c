@@ -140,7 +140,6 @@ int main(int argc, char **args) {{
     VecView(Jopt, viewer);
     PetscViewerDestroy(&viewer);
     
-    VecDestroy(&uopt);
     VecDestroy(&Jopt);
 
     // clean up
