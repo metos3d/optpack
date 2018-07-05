@@ -94,11 +94,11 @@ PetscErrorCode option(char *filepath, context *ctx) {
 
     // solver
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DSolverType                                  Spinup", "\n");
-//    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupCount                                 3000", "\n");
-    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupCount                                 1", "\n");
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupCount                                 3000", "\n");
+//    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupCount                                 1", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupMonitor", "\n");
-//    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupMonitorModuloStep                     3000,1", "\n");
-    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupMonitorModuloStep                     1,1", "\n");
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupMonitorModuloStep                     3000,1", "\n");
+//    strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupMonitorModuloStep                     1,1", "\n");
     strcat(text, line); sprintf(line, "%s%s", "-Metos3DSpinupMonitorFileFormatPrefix               ,$00004d-", "\n");
     strcat(text, line);
     
