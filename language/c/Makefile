@@ -17,7 +17,7 @@
 #
 
 # environment variables to set
-#   PROGRAM         the name of the execytable
+#   PROGRAM         the name of the executable
 #   EXPERIMENT      experiment specific object file
 
 # object files
