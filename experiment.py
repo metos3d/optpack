@@ -120,12 +120,6 @@ def prepare_new_experiment(exp_config, expname, niter):
     print("Creating initial start script ...    ", end="")
     create_start_script(expname, exp_config, "1", niter)
 
-# if c compile
-#. ./c/petsc.env.sh
-#PROGRAM=twin/twin.N.1.start.exe make -f c/Makefile
-#sunip194@nesh-fe1:N> PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
-#PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
-
 # ---------------------------------------------------------------------------------------------------------------------
 # continue experiment
 # ---------------------------------------------------------------------------------------------------------------------
@@ -198,5 +192,21 @@ $> python {0} new exp-01 10'''.format(sys.argv[0]))
         print("Unknown command ... " + command)
         print("Exiting ...")
         sys.exit(1)
+
+    # compile, if c
+    if exp_config["language"]["name"]=="c":
+        experiment_pattern = os.path.join(expname, expname + "." + modname + "." + nexp + ".start.")
+        print("Compiling executable ...             {0}.exe".format(experiment_pattern))
+        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile".format(experiment_pattern))
+
+#modname = exp_config["model"]["name"]
+#start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start." + extension_code)
+
+# if c compile
+#
+#PROGRAM=twin/twin.N.1.start.exe make -f c/Makefile
+#sunip194@nesh-fe1:N> PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
+#PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
+#    language_name = exp_config["language"]["name"]
 
 

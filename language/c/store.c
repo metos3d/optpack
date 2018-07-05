@@ -37,9 +37,9 @@ PetscErrorCode store(context* ctx) {
     if (ctx->i==1) {
         PetscViewerHDF5Open(ctx->comm, ctx->logfile, FILE_MODE_WRITE, &viewer);
         // store ud, lb, ub
-        VecView(lb, viewer);
-        VecView(ub, viewer);
-        VecView(ud, viewer);
+        VecView(ctx->lb, viewer);
+        VecView(ctx->ub, viewer);
+        VecView(ctx->ud, viewer);
         // store yd
         for (i=0; i<ctx->ndata; i++) {
             PetscViewerHDF5SetTimestep(viewer, i);
@@ -70,7 +70,7 @@ PetscErrorCode store(context* ctx) {
         // create initial dataset
         dims[0] = 1;
         dims[1] = 1;
-        dims[2] = ctx.nx;
+        dims[2] = ctx->nx;
         maxDims[0] = H5S_UNLIMITED;
         maxDims[1] = H5S_UNLIMITED;
         maxDims[2] = dims[2];

@@ -120,6 +120,29 @@ int main(int argc, char **args) {{
     TaoSolve(tao);
     TaoView(tao, PETSC_VIEWER_STDOUT_WORLD);
 
+    // store optimal parameter set and corresponding objective value
+    Vec uopt, Jopt;
+    PetscReal jopt;
+    PetscViewer viewer;
+    
+    TaoGetSolutionVector(tao, &uopt);
+    PetscObjectSetName((PetscObject)uopt, "uopt");
+    
+    TaoGetSolutionStatus(tao, NULL, &jopt, NULL, NULL, NULL, NULL);
+    VecCreate(ctx->comm, &Jopt);
+    VecSetType(Jopt, VECSTANDARD);
+    PetscObjectSetName((PetscObject)Jopt, "Jopt");
+    VecSetSizes(Jopt, PETSC_DECIDE, 1);
+    VecSetValue(Jopt, 0, jopt, INSERT_VALUES);
+
+    PetscViewerHDF5Open(ctx->comm, ctx->logfile, FILE_MODE_APPEND, &viewer);
+    VecView(uopt, viewer);
+    VecView(Jopt, viewer);
+    PetscViewerDestroy(&viewer);
+    
+    VecDestroy(&uopt);
+    VecDestroy(&Jopt);
+
     // clean up
     TaoDestroy(&tao);
     VecDestroyVecs(ctx->ndata, &ctx->y);
@@ -141,21 +164,5 @@ int main(int argc, char **args) {{
     return 0;
 }}
 
-
-//% store optimal parameter set and corresponding objective value
-//uopt = uopt';   % transposed
-//save(ctx.logfile, 'uopt', 'Jopt', '-append')
-
-//PetscErrorCode TaoGetSolutionVector(Tao tao, Vec *X)
-//PetscErrorCode TaoGetSolutionStatus(Tao tao, PetscInt *its, PetscReal *f, PetscReal *gnorm, PetscReal *cnorm, PetscReal *xdiff, TaoConvergedReason *reason)
-//
-
-//// store u, J, use PETSc viewer for convience
-//PetscViewer viewer;
-//PetscViewerHDF5Open(ctx->comm, ctx->logfile, FILE_MODE_APPEND, &viewer);
-//PetscViewerHDF5SetTimestep(viewer, ctx->i-1);
-//VecView(ctx->u, viewer);
-//VecView(ctx->J, viewer);
-//PetscViewerDestroy(&viewer);
 
 
