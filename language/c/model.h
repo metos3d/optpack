@@ -3,6 +3,8 @@
 
 #include "option.h"
 
-Vec* model(Vec, context*);
+PetscErrorCode model(Vec*, Vec, context*);
 
 #endif /* !MODEL_H */
+
+

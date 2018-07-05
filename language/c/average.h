@@ -3,7 +3,8 @@
 
 #include "context.h"
 
-Vec* average(Vec*, context*);
+PetscErrorCode average(Vec*, Vec*, context*);
 
 #endif /* !AVERAGE_H */
+
 

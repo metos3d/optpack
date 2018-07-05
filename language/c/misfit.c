@@ -3,7 +3,7 @@
 // misfit
 #undef  __FUNCT__
 #define __FUNCT__ "misfit"
-PetscScalar misfit(Vec *y, context *ctx) {
+PetscErrorCode misfit(PetscReal *J, Vec *y, context *ctx) {
     PetscScalar Jan;
     PetscScalar Jjan, Jfeb, Jmar, Japr, Jmay, Jjun, Jjul, Jaug, Jsep, Joct, Jnov, Jdec;
     PetscScalar Jwin, Jspr, Jsum, Jaut;
@@ -59,11 +59,11 @@ PetscScalar misfit(Vec *y, context *ctx) {
 //    VecSetValue(ctx.J, 16, Jaut, INSERT_VALUES);
 
     Jan = 0.0;
+    *J = Jan;
     
-    // info
-//    if (i%500==0) PetscPrintf(ctx->comm, "%s\n", file_path);
-    printf("# J:        %.16e\n", Jan);
-    return Jan;
+    PetscPrintf(ctx->comm, "# J:        %.16e\n", Jan);
+    
+    return(0);
 }
 
 

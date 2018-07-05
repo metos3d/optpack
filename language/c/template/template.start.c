@@ -54,6 +54,11 @@ int main(int argc, char **args) {{
     ctx->nt         = {model[nt]};
     ctx->y0         = "{model[y0]}";
     ctx->yout       = "{model[yout]}";
+    // create model state template vector
+    Vec ytmp
+    VecCreate(ctx->comm, &ytmp);
+    VecSetType(ytmp, VECSTANDARD);
+    VecSetSizes(ytmp, PETSC_DECIDE, ctx->nx);
 
     // parameter
     Vec u;
@@ -85,14 +90,15 @@ int main(int argc, char **args) {{
     VecDuplicate(u, &ctx->u);
     PetscObjectSetName((PetscObject)ctx->u, "u");
 
-    // data
+    // data, yd
     ctx->ndata  = 17;
-    ctx->yd     = data(ctx);
+    VecDuplicateVecs(ytmp, ctx->ndata, &ctx->yd);
+    data(ctx->yd, ctx);
 
     // optimization
     ctx->i      = 1;
     // state, y
-    VecDuplicateVecs(ctx->yd[0], ctx->ndata, &ctx->y);
+    VecDuplicateVecs(ytmp, ctx->ndata, &ctx->y);
     // misfit, J
     VecCreate(ctx->comm, &ctx->J);
     VecSetType(ctx->J, VECSTANDARD);
@@ -129,6 +135,7 @@ int main(int argc, char **args) {{
     VecDestroy(&ctx->lb);
     VecDestroy(&ctx->ub);
     VecDestroy(&u);
+    VecDestroy(&ytmp);
     // petsc
     PetscPopErrorHandler();
     PetscFinalize();

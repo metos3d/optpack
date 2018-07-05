@@ -3,7 +3,7 @@
 
 #include "context.h"
 
-Vec* data(context*);
+PetscErrorCode data(Vec*, context*);
 
 #endif /* !DATA_H */
 

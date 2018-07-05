@@ -121,6 +121,7 @@ def prepare_new_experiment(exp_config, expname, niter):
     create_start_script(expname, exp_config, "1", niter)
 
 # if c compile
+#. ./c/petsc.env.sh
 #PROGRAM=twin/twin.N.1.start.exe make -f c/Makefile
 #sunip194@nesh-fe1:N> PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
 #PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
