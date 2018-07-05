@@ -31,7 +31,7 @@ PetscErrorCode objective(Tao tao, Vec u, PetscReal *J, void *objctx) {
     
     model(y, u, ctx);
     misfit(J, y, ctx);
-    *J = 0.0;
+//    *J = 0.0;
     
     // free trajectory
     VecDestroyVecs(ctx->nt, &y);

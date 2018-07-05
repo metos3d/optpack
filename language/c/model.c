@@ -56,14 +56,14 @@ PetscErrorCode model(Vec *y, Vec u, context *ctx) {
     strcpy(runcmd, ". model/petsc.env.sh; ");
     sprintf(runcmdpart, "%s%s%s%s%s%s%s%s", "mpiexec ", getenv("NQSII_MPIOPTS"), " ./model/metos3d-simpack-", ctx->modname, ".exe ", optionfilepath, " > ", logfilepath);
     strcat(runcmd, runcmdpart);
-    PetscPrintf(ctx->comm, "# run:      %s\n", runcmd);
+//    PetscPrintf(ctx->comm, "# run:      %s\n", runcmd);
     status = system(runcmd);
     
     // read result from scratch
     strcpy(readpath, getenv("SCRATCH"));
     for (i=0; i<ctx->nt; i++) {
         sprintf(readfilepath, "%s%04d%s", readpath, i, "-N.petsc");
-        if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", readfilepath);
+//        if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", readfilepath);
         PetscViewerBinaryOpen(ctx->comm, readfilepath, FILE_MODE_READ, &viewer);
         VecLoad(y[i], viewer);
         PetscViewerDestroy(&viewer);
@@ -71,7 +71,7 @@ PetscErrorCode model(Vec *y, Vec u, context *ctx) {
 
     // clean scratch
     sprintf(cleancmd, "%s%s%s", "rm ", readpath, "*");
-    PetscPrintf(ctx->comm, "# clean:    %s\n", cleancmd);
+//    PetscPrintf(ctx->comm, "# clean:    %s\n", cleancmd);
     status = system(cleancmd);
 
     return(0);

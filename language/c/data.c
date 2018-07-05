@@ -32,7 +32,7 @@ PetscErrorCode data(Vec *yd, context *ctx) {
     VecDuplicateVecs(yd[0], ctx->nt, &yt);
     for (i=0; i<ctx->nt; i++) {
         sprintf(file_path, "%s%s%s%04d%s", "../../../../twin-data/", ctx->modname, "/work/", i, "-N.petsc");
-        if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", file_path);
+//        if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", file_path);
         PetscViewerBinaryOpen(ctx->comm, file_path, FILE_MODE_READ, &viewer);
         VecLoad(yt[i], viewer);
         PetscViewerDestroy(&viewer);
