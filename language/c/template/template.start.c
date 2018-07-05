@@ -55,7 +55,7 @@ int main(int argc, char **args) {{
     ctx->y0         = "{model[y0]}";
     ctx->yout       = "{model[yout]}";
     // create model state template vector
-    Vec ytmp
+    Vec ytmp;
     VecCreate(ctx->comm, &ytmp);
     VecSetType(ytmp, VECSTANDARD);
     VecSetSizes(ytmp, PETSC_DECIDE, ctx->nx);
@@ -91,12 +91,12 @@ int main(int argc, char **args) {{
     PetscObjectSetName((PetscObject)ctx->u, "u");
 
     // data, yd
-    ctx->ndata  = 17;
+    ctx->ndata = 17;
     VecDuplicateVecs(ytmp, ctx->ndata, &ctx->yd);
     data(ctx->yd, ctx);
 
     // optimization
-    ctx->i      = 1;
+    ctx->i = 1;
     // state, y
     VecDuplicateVecs(ytmp, ctx->ndata, &ctx->y);
     // misfit, J

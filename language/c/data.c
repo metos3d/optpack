@@ -11,7 +11,7 @@ PetscErrorCode data(Vec *yd, context *ctx) {
     PetscViewer viewer;
 
     // load trajectory
-    VecDuplicateVecs(ytmp, ctx->nt, &yt);
+    VecDuplicateVecs(yd[0], ctx->nt, &yt);
     for (i=0; i<ctx->nt; i++) {
         sprintf(file_path, "%s%s%s%04d%s", "../../../../twin-data/", ctx->modname, "/work/", i, "-N.petsc");
         if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", file_path);
