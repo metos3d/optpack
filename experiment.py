@@ -61,9 +61,34 @@ def write_text_file(file_path, text):
     file.close()
 
 # ---------------------------------------------------------------------------------------------------------------------
+# compile if c
+# ---------------------------------------------------------------------------------------------------------------------
+def compile_if_c(exp_config, expname, nexp):
+    if exp_config["language"]["name"]=="c":
+        modname = exp_config["model"]["name"]
+        experiment_pattern = os.path.join(expname, expname + "." + modname + "." + nexp + ".start.")
+        print("Compiling executable ...             {0}.exe".format(experiment_pattern))
+        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile".format(experiment_pattern))
+
+
+#modname = exp_config["model"]["name"]
+#start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start." + extension_code)
+
+# if c compile
+#
+#PROGRAM=twin/twin.N.1.start.exe make -f c/Makefile
+#sunip194@nesh-fe1:N> PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
+#PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
+#    language_name = exp_config["language"]["name"]
+
+#if exp_config["language"]["name"]=="c":
+#        pass
+#    pass
+
+# ---------------------------------------------------------------------------------------------------------------------
 # create job script
 # ---------------------------------------------------------------------------------------------------------------------
-def create_job_script(expname, exp_config, nexp, niter):
+def create_job_script(exp_config, expname, nexp, niter):
     
     job_template_text = read_template("template.job.sh")
     job_text = format_text(job_template_text, exp_config, nexp, niter)
@@ -77,7 +102,7 @@ def create_job_script(expname, exp_config, nexp, niter):
 # ---------------------------------------------------------------------------------------------------------------------
 # create start script
 # ---------------------------------------------------------------------------------------------------------------------
-def create_start_script(expname, exp_config, nexp, niter):
+def create_start_script(exp_config, expname, nexp, niter):
     
     # format parameter list
     # u0, ud, lb, ub
@@ -115,10 +140,13 @@ def prepare_new_experiment(exp_config, expname, niter):
     print("Creating log directory ...           {0}/log".format(expname))
     os.system("mkdir {0}/log".format(expname))
     
+    nexp = "1"
     print("Creating initial job script ...      ", end="")
-    create_job_script(expname, exp_config, "1", niter)
+    create_job_script(exp_config, expname, nexp, niter)
     print("Creating initial start script ...    ", end="")
-    create_start_script(expname, exp_config, "1", niter)
+    create_start_script(exp_config, expname, nexp, niter)
+
+    compile_if_c(exp_config, expname, nexp)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # continue experiment
@@ -145,13 +173,15 @@ def continue_experiment(exp_config, expname, niter):
     uopt = h5py.File(log_file_list[-1])["uopt"][0,:]
     exp_config["parameter"]["u0"] = uopt
     
-    nexp = nexp + 1
+    nexp = str(nexp + 1)
     print("Continuing with optimization run ... {0}".format(nexp))
 
     print("Creating job script ...              ", end="")
-    create_job_script(expname, exp_config, str(nexp), niter)
+    create_job_script(exp_config, expname, nexp, niter)
     print("Creating start script ...            ", end="")
-    create_start_script(expname, exp_config, str(nexp), niter)
+    create_start_scriptexp_config, expname, nexp, niter)
+
+    compile_if_c(exp_config, expname, nexp)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # main
@@ -193,20 +223,5 @@ $> python {0} new exp-01 10'''.format(sys.argv[0]))
         print("Exiting ...")
         sys.exit(1)
 
-    # compile, if c
-    if exp_config["language"]["name"]=="c":
-        experiment_pattern = os.path.join(expname, expname + "." + modname + "." + nexp + ".start.")
-        print("Compiling executable ...             {0}.exe".format(experiment_pattern))
-        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile".format(experiment_pattern))
-
-#modname = exp_config["model"]["name"]
-#start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start." + extension_code)
-
-# if c compile
-#
-#PROGRAM=twin/twin.N.1.start.exe make -f c/Makefile
-#sunip194@nesh-fe1:N> PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
-#PROGRAM=twin/twin.N.1.start.exe EXPERIMENT=twin/twin.N.1.start.o make -f c/Makefile
-#    language_name = exp_config["language"]["name"]
 
 
