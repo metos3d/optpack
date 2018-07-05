@@ -128,8 +128,8 @@ ln -s {1}/simpack/
 ln -s {1}/metos3d/Makefile
 
 # compile
-#make BGC=model/{0} clean &> /dev/null
-#make BGC=model/{0} &> /dev/null
+make BGC=model/{0} clean &> /dev/null
+make BGC=model/{0} &> /dev/null
 '''.format(model_name, model_metos3d_path))
     
     copy_from = "optpack/language/{0}/template/template.job.sh".format(language_name)

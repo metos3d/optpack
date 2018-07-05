@@ -22,13 +22,20 @@
 #define __FUNCT__ "objective"
 PetscErrorCode objective(Tao tao, Vec u, PetscReal *J, void *objctx) {
     context *ctx = (context*)objctx;
+    Vec *y;
 
     PetscPrintf(ctx->comm, "# i:        %03d\n", ctx->i);
 
-    model(ctx->y, u, ctx);
-    misfit(J, ctx->y, ctx);
-//    *J = 0.0;
+    // create intermediate storage for state trajectory
+    VecDuplicateVecs(ctx->y[0], ctx->nt, &y);
     
+    model(y, u, ctx);
+    misfit(J, y, ctx);
+    *J = 0.0;
+    
+    // free trajectory
+    VecDestroyVecs(ctx->nt, &y);
+
     store(ctx);
     ctx->i = ctx->i+1;
     

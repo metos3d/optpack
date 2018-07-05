@@ -31,7 +31,6 @@ PetscErrorCode model(Vec *y, Vec u, context *ctx) {
     char readpath       [PETSC_MAX_PATH_LEN];
     char readfilepath   [PETSC_MAX_PATH_LEN];
     char cleancmd       [PETSC_MAX_PATH_LEN];
-    Vec *yt;
     PetscViewer viewer;
     const PetscScalar* uarr;
     
@@ -62,16 +61,13 @@ PetscErrorCode model(Vec *y, Vec u, context *ctx) {
     
     // read result from scratch
     strcpy(readpath, getenv("SCRATCH"));
-    VecDuplicateVecs(ctx->y[0], ctx->nt, &yt);
     for (i=0; i<ctx->nt; i++) {
         sprintf(readfilepath, "%s%04d%s", readpath, i, "-N.petsc");
         if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", readfilepath);
         PetscViewerBinaryOpen(ctx->comm, readfilepath, FILE_MODE_READ, &viewer);
-        VecLoad(yt[i], viewer);
+        VecLoad(y[i], viewer);
         PetscViewerDestroy(&viewer);
     }
-    average(y, yt, ctx);
-    VecDestroyVecs(ctx->nt, &yt);
 
     // clean scratch
     sprintf(cleancmd, "%s%s%s", "rm ", readpath, "*");
