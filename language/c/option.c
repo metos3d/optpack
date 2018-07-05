@@ -55,54 +55,77 @@ PetscErrorCode option(char *file_path, context *ctx) {
     sprintf(line, "%s%s%s", "-Metos3DParameterValue                              ", ustr, "\n");
     strcat(text, line);
 
-    printf(text);
+    // boundary
+    sprintf(line, "%s%s", "-Metos3DBoundaryConditionCount                      2", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DBoundaryConditionInputDirectory             data/TMM/2.8/Forcing/BoundaryCondition/", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DBoundaryConditionName                       Latitude,IceCover", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DLatitudeCount                               1", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DLatitudeFileFormat                          latitude.petsc", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DIceCoverCount                               12", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DIceCoverFileFormat                          fice_$02d.petsc", "\n");
+    strcat(text, line);
 
+    // domain
+    sprintf(line, "%s%s", "-Metos3DDomainConditionCount                        2", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DDomainConditionInputDirectory               data/TMM/2.8/Forcing/DomainCondition/", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DDomainConditionName                         LayerDepth,LayerHeight", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DLayerDepthCount                             1", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DLayerDepthFileFormat                        z.petsc", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DLayerHeightCount                            1", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DLayerHeightFileFormat                       dz.petsc", "\n");
+    strcat(text, line);
+
+    // transport
+    sprintf(line, "%s%s", "-Metos3DTransportType                               Matrix", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DMatrixInputDirectory                        data/TMM/2.8/Transport/Matrix5_4/1dt/", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DMatrixCount                                 12", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DMatrixExplicitFileFormat                    Ae_$02d.petsc", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DMatrixImplicitFileFormat                    Ai_$02d.petsc", "\n");
+    strcat(text, line);
+
+    // time step
+    sprintf(line, "%s%s", "-Metos3DTimeStepStart                               0.0", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DTimeStepCount                               2880", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DTimeStep                                    0.0003472222222222", "\n");
+    strcat(text, line);
+
+    // solver
+    sprintf(line, "%s%s", "-Metos3DSolverType                                  Spinup", "\n");
+    strcat(text, line);
+//    sprintf(line, "%s%s", "-Metos3DSpinupCount                                 3000", "\n");
+    sprintf(line, "%s%s", "-Metos3DSpinupCount                                 1", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DSpinupMonitor", "\n");
+    strcat(text, line);
+//    sprintf(line, "%s%s", "-Metos3DSpinupMonitorModuloStep                     3000,1", "\n");
+    sprintf(line, "%s%s", "-Metos3DSpinupMonitorModuloStep                     1,1", "\n");
+    strcat(text, line);
+    sprintf(line, "%s%s", "-Metos3DSpinupMonitorFileFormatPrefix               ,$00004d-", "\n");
+    strcat(text, line);
     
-//
-//    // boundary
-//    fprintf(f, "%s%s", "-Metos3DBoundaryConditionCount                      2", "\n");
-//    fprintf(f, "%s%s", "-Metos3DBoundaryConditionInputDirectory             data/TMM/2.8/Forcing/BoundaryCondition/", "\n");
-//    fprintf(f, "%s%s", "-Metos3DBoundaryConditionName                       Latitude,IceCover", "\n");
-//    fprintf(f, "%s%s", "-Metos3DLatitudeCount                               1", "\n");
-//    fprintf(f, "%s%s", "-Metos3DLatitudeFileFormat                          latitude.petsc", "\n");
-//    fprintf(f, "%s%s", "-Metos3DIceCoverCount                               12", "\n");
-//    fprintf(f, "%s%s", "-Metos3DIceCoverFileFormat                          fice_$02d.petsc", "\n");
-//
-//    // domain
-//    fprintf(f, "%s%s", "-Metos3DDomainConditionCount                        2", "\n");
-//    fprintf(f, "%s%s", "-Metos3DDomainConditionInputDirectory               data/TMM/2.8/Forcing/DomainCondition/", "\n");
-//    fprintf(f, "%s%s", "-Metos3DDomainConditionName                         LayerDepth,LayerHeight", "\n");
-//    fprintf(f, "%s%s", "-Metos3DLayerDepthCount                             1", "\n");
-//    fprintf(f, "%s%s", "-Metos3DLayerDepthFileFormat                        z.petsc", "\n");
-//    fprintf(f, "%s%s", "-Metos3DLayerHeightCount                            1", "\n");
-//    fprintf(f, "%s%s", "-Metos3DLayerHeightFileFormat                       dz.petsc", "\n");
-//
-//    // transport
-//    fprintf(f, "%s%s", "-Metos3DTransportType                               Matrix", "\n");
-//    fprintf(f, "%s%s", "-Metos3DMatrixInputDirectory                        data/TMM/2.8/Transport/Matrix5_4/1dt/", "\n");
-//    fprintf(f, "%s%s", "-Metos3DMatrixCount                                 12", "\n");
-//    fprintf(f, "%s%s", "-Metos3DMatrixExplicitFileFormat                    Ae_$02d.petsc", "\n");
-//    fprintf(f, "%s%s", "-Metos3DMatrixImplicitFileFormat                    Ai_$02d.petsc", "\n");
-//
-//    // time step
-//    fprintf(f, "%s%s", "-Metos3DTimeStepStart                               0.0", "\n");
-//    fprintf(f, "%s%s", "-Metos3DTimeStepCount                               2880", "\n");
-//    fprintf(f, "%s%s", "-Metos3DTimeStep                                    0.0003472222222222", "\n");
-//
-//    // solver
-//    fprintf(f, "%s%s", "-Metos3DSolverType                                  Spinup", "\n");
-//    fprintf(f, "%s%s", "-Metos3DSpinupCount                                 3000", "\n");
-////    fprintf(f, "%s%s", "-Metos3DSpinupCount                                 1", "\n");
-//    fprintf(f, "%s%s", "-Metos3DSpinupMonitor", "\n");
-//    fprintf(f, "%s%s", "-Metos3DSpinupMonitorModuloStep                     3000,1", "\n");
-////    fprintf(f, "%s%s", "-Metos3DSpinupMonitorModuloStep                     1,1", "\n");
-//    fprintf(f, "%s%s", "-Metos3DSpinupMonitorFileFormatPrefix               ,$00004d-", "\n");
-//
+    FILE *f;
+    f = fopen(file_path, "w");
+    fprintf(f, text);
+    fclose(f);
     
-//    FILE *f;
-//    f = fopen(file_path, "w");
-//    fprintf(f, text);
-//    fclose(f);
     return(0);
 }
 
