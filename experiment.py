@@ -156,7 +156,7 @@ def continue_experiment(exp_config, expname, niter):
         print("Found log file ...                   {0}".format(log_file))
 
     print("Reading last result ...")
-    uopt = h5py.File(log_file_list[-1])["uopt"][0,:]
+    uopt = h5py.File(log_file_list[-1])["uopt"][...].flatten()
     exp_config["parameter"]["u0"] = uopt
     
     nexp = str(nexp + 1)
