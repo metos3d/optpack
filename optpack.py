@@ -77,63 +77,33 @@ if __name__ == "__main__":
     optpack_conf_path = os.path.join(optpack_path, "optpack.conf.yaml")
     print("Reading optpack configuration .......... " + optpack_conf_path)
     optpack_conf = parse_yaml_file(optpack_conf_path)
-#    print(optpack_conf)
 
     experiment_conf_path = sys.argv[1]
     print("Reading experiment configuration ....... " + experiment_conf_path)
     experiment_conf = parse_yaml_file(experiment_conf_path)
-#    print(experiment_conf)
-
-    experiment_name = experiment_conf["experiment"]["name"]
-    print("Experiment name ........................ " + experiment_name)
 
     model_conf_file = experiment_conf["experiment"]["model"]
-    print("Reading model configuration ............ " + model_conf_file)
     model_conf_path = os.path.join(optpack_path, "conf/model/" + model_conf_file)
+    print("Reading model configuration ............ " + model_conf_path)
     model_conf = parse_yaml_file(model_conf_path)
-#    print(model_conf)
 
     job_conf_file = experiment_conf["experiment"]["job"]
-    print("Reading job configuration .............. " + job_conf_file)
     job_conf_path = os.path.join(optpack_path, "conf/job/" + job_conf_file)
+    print("Reading job configuration .............. " + job_conf_path)
     job_conf = parse_yaml_file(job_conf_path)
-#    print(job_conf)
 
     opt_conf_file = experiment_conf["experiment"]["opt"]
-    print("Reading optimization configuration ..... " + opt_conf_file)
     opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
+    print("Reading optimization configuration ..... " + opt_conf_path)
     opt_conf = parse_yaml_file(opt_conf_path)
-#    print(opt_conf)
 
+    experiment_name = experiment_conf["experiment"]["name"]
+    print("Preparing experiment ................... " + experiment_name)
+    if os.path.exists(experiment_name):
+        print("Directory already exists ...")
+        print("Exiting ...")
+        sys.exit(1)
 
-
-
-#    model_name = sys.argv[1]
-#    if not model_name in model_list:
-#        print("Model not known ... " + model_name)
-#        print("Choose from ... ", ", ".join(model_list))
-#        print("Exiting ...")
-#        sys.exit(1)
-#
-#    language_name = sys.argv[2]
-#    if not language_name in language_list:
-#        print("Language not known ... " + language_name)
-#        print("Choose from ... ", ", ".join(language_list))
-#        print("Exiting ...")
-#        sys.exit(1)
-#
-#    optpack_path = os.path.abspath(os.path.dirname(__file__))
-#    conf_file_path = os.path.join(optpack_path, "optpack.conf.yaml")
-#    print("Reading optpack configuration .......... " + conf_file_path)
-#    conf_optpack = parse_yaml_file(conf_file_path)
-#
-#    print("Preparing model suite .................. " + model_name)
-#
-#    if os.path.exists(model_name):
-#        print("Directory already exists ...")
-#        print("Exiting ...")
-#        sys.exit(1)
-#
 #    print("Creating directory ..................... {0}/".format(model_name))
 #    os.system("mkdir {0}".format(model_name))
 #
@@ -239,3 +209,22 @@ if __name__ == "__main__":
 #        print("[model-name]     ", ", ".join(model_list))
 #        print("[language]       ", ", ".join(language_list))
 #        print("")
+
+#    model_name = sys.argv[1]
+#    if not model_name in model_list:
+#        print("Model not known ... " + model_name)
+#        print("Choose from ... ", ", ".join(model_list))
+#        print("Exiting ...")
+#        sys.exit(1)
+#
+#    language_name = sys.argv[2]
+#    if not language_name in language_list:
+#        print("Language not known ... " + language_name)
+#        print("Choose from ... ", ", ".join(language_list))
+#        print("Exiting ...")
+#        sys.exit(1)
+
+#    optpack_path = os.path.abspath(os.path.dirname(__file__))
+#    conf_file_path = os.path.join(optpack_path, "optpack.conf.yaml")
+#    print("Reading optpack configuration .......... " + conf_file_path)
+#    conf_optpack = parse_yaml_file(conf_file_path)
