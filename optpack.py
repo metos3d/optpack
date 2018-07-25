@@ -123,9 +123,9 @@ cd {0}/model/;
 source ./petsc.env.sh
 
 # links
-ln -s {1}/data/data/
-ln -s {1}/model/model/
-ln -s {1}/simpack/
+ln -s {1}/data/data
+ln -s {1}/model/model
+ln -s {1}/simpack
 ln -s {1}/metos3d/Makefile
 
 # compile
