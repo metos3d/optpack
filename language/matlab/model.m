@@ -46,7 +46,7 @@ function y = model(u,ctx)
     for i = 1:nt;
         filepath = [readpath num2str(i-1, '%04d') '-N.petsc'];
 %        if mod(i,500)==0 disp(['# ' filepath]), end;
-        y(:, i) = readPETScVector(filepath);
+        y(:, i) = read_petsc_vector(filepath);
     end;
 
     % clean scratch
