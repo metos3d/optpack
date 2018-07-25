@@ -92,7 +92,8 @@ if __name__ == "__main__":
         print("Exiting ...")
         sys.exit(1)
 
-    conf_file_path = os.path.join(os.path.dirname(__file__), "optpack.conf.yaml")
+    optpack_path = os.path.dirname(__file__)
+    conf_file_path = os.path.join(optpack_path, "optpack.conf.yaml")
     print("Reading optpack configuration .......... " + conf_file_path)
     conf_optpack = parse_yaml_file(conf_file_path)
 
@@ -132,21 +133,21 @@ make BGC=model/{0} clean &> /dev/null
 make BGC=model/{0} &> /dev/null
 '''.format(model_name, model_metos3d_path))
     
-    copy_from = os.path.dirname(__file__) + "/language/{0}/template/template.job.sh".format(language_name)
+    copy_from = optpack_path + "/language/{0}/template/template.job.sh".format(language_name)
     copy_to = "{0}/template.job.sh".format(model_name)
     print("Copying job template ............. from: {0}".format(copy_from))
     print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
     extension_code = language_extensions[language_name]["code"]
-    copy_from = os.path.dirname(__file__) + "/language/{0}/template/template.start.{1}".format(language_name, extension_code)
+    copy_from = optpack_path + "/language/{0}/template/template.start.{1}".format(language_name, extension_code)
     copy_to = "{0}/template.start.{1}".format(model_name, extension_code)
     print("Copying start template ........... from: {0}".format(copy_from))
     print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
     extension_data = language_extensions[language_name]["data"]
-    copy_from = os.path.dirname(__file__) + "/experiment/{0}.conf.yaml".format(model_name)
+    copy_from = optpack_path + "/experiment/{0}.conf.yaml".format(model_name)
     copy_to = "{0}/experiment.conf.yaml".format(model_name)
     print("Preparing experiment configuration ..... " + copy_to)
     print("Formatting template .................... " + copy_from)
@@ -155,7 +156,7 @@ make BGC=model/{0} &> /dev/null
     experiment_conf = format_text(experiment_conf_template, format_conf)
     write_text_file(copy_to, experiment_conf)
 
-    copy_from = os.path.dirname(__file__) + "/experiment.py"
+    copy_from = optpack_path + "/experiment.py"
     copy_to = "{0}/experiment.py".format(model_name)
     print("Copying experiment script ........ from: {0}".format(copy_from))
     print("                                     to: {0}".format(copy_to))
@@ -168,13 +169,13 @@ make BGC=model/{0} &> /dev/null
 
     if language_name=="c":
         copy_to = "{0}/{1}/.".format(model_name, language_name)
-        copy_from = os.path.dirname(__file__) + "/language/{0}/*.c".format(language_name)
+        copy_from = optpack_path + "/language/{0}/*.c".format(language_name)
         print("Copying codes .................... from: {0}".format(copy_from))
         os.system("cp {0} {1}".format(copy_from, copy_to))
-        copy_from = os.path.dirname(__file__) + "/language/{0}/*.h".format(language_name)
+        copy_from = optpack_path + "/language/{0}/*.h".format(language_name)
         print("                                   from: {0}".format(copy_from))
         os.system("cp {0} {1}".format(copy_from, copy_to))
-        copy_from = os.path.dirname(__file__) + "/language/{0}/Makefile".format(language_name)
+        copy_from = optpack_path + "/language/{0}/Makefile".format(language_name)
         print("                                   from: {0}".format(copy_from))
         print("                                     to: {0}".format(copy_to))
         os.system("cp {0} {1}".format(copy_from, copy_to))
@@ -186,7 +187,7 @@ make BGC=model/{0} &> /dev/null
             print("                                     to: {0}".format(copy_to))
             os.system("cp {0} {1}".format(copy_from, copy_to))
     else:
-        copy_from = os.path.dirname(__file__) + "/language/{0}/*.{1}".format(language_name, extension_code)
+        copy_from = optpack_path + "/language/{0}/*.{1}".format(language_name, extension_code)
         copy_to = "{0}/{1}/.".format(model_name, language_name)
         print("Copying codes .................... from: {0}".format(copy_from))
         print("                                     to: {0}".format(copy_to))
