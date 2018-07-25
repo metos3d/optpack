@@ -33,9 +33,10 @@
 cd $PBS_O_WORKDIR
 
 export SCRATCH="/scratch/${PBS_JOBID/0:}/"
+export MPIRUN="{job[mpirun]}"
 module load matlab2017a
 matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.m > /dev/null
 
-qstat -f ${PBS_JOBID/0:}
+qstat -f ${{PBS_JOBID/0:}}
 
 
