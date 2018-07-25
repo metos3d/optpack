@@ -107,18 +107,18 @@ if __name__ == "__main__":
     print("Creating directory ..................... {0}/".format(experiment_name))
     os.system("mkdir {0}".format(experiment_name))
 
-    model_name = model_conf["model"]["name"]
-    print("Creating directory ..................... {0}/model/".format(model_name))
-    os.system("mkdir {0}/model/".format(model_name))
+    print("Creating directory ..................... {0}/model/".format(experiment_name))
+    os.system("mkdir {0}/model/".format(experiment_name))
 
     copy_from = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["petsc"]))
-    copy_to = "{0}/model/petsc.env.sh".format(model_name)
+    copy_to = "{0}/model/petsc.env.sh".format(experiment_name)
     print("Copying environment file ......... from: {0}".format(copy_from))
     print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
+    model_name = model_conf["model"]["name"]
     model_metos3d_path = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["metos3d"]))
-    print("Compiling executable ................... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
+    print("Compiling executable ................... {0}/model/metos3d-simpack-{1}.exe".format(experiment_name, model_name))
     os.system('''
 cd {0}/model/;
 source ./petsc.env.sh
@@ -130,9 +130,9 @@ ln -s {1}/simpack
 ln -s {1}/metos3d/Makefile
 
 # compile
-make BGC=model/{0} clean &> /dev/null
-make BGC=model/{0} &> /dev/null
-'''.format(model_name, model_metos3d_path))
+make BGC=model/{2} clean &> /dev/null
+make BGC=model/{2} &> /dev/null
+'''.format(experiment_name, model_metos3d_path, model_name))
 
 
 
