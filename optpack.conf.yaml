@@ -16,11 +16,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+#
 # optpack configuration
+#
+# we assume the follwoing directory structure:
+#   metos3d/
+#       data/
+#       metos3d/
+#       model/
+#       optpack/
+#       simpack/
+#   petsc/
+#       petsc.env.sh
 
 model:
     # petsc version that will be used for metos3d,
-    # absolute (or relative, not recommended) path for petsc shell script,
+    # absolute or relativ path for petsc shell script,
     # where the petsc environment is set (compilers, sequential and/or parallel, variables),
     #
     # example:
@@ -29,17 +40,17 @@ model:
     #   export PETSC_DIR=/sfs/fs2/work-sh1/sunip194/papers/optref/petsc/petsc-3.3-p7
     #   export PETSC_ARCH=arch-linux2-c-opt
     #
-    petsc:      /sfs/fs2/work-sh1/sunip194/papers/optref/petsc/de.uni-kiel.rz.nesh-fe.petsc-3.3-p7.opt.sh
+    petsc:      ../../petsc/petsc.env.sh
 
-    # absolute (or relative, not recommended) path for metos3d,
+    # absolute or relative path for metos3d,
     # where the data, metos3d, simpack and model repositories are located
-    metos3d:     /sfs/fs2/work-sh1/sunip194/papers/optref/metos3d
+    metos3d:     ../
 
-language:
-    # petsc version that will be used for optimization, if the c-petsc-tao algorithms are used,
-    # otherwise this option is not required
-    c:
-        petsc:      /sfs/fs2/work-sh1/sunip194/papers/optref/petsc/de.uni-kiel.rz.nesh-fe.petsc-3.9.0.opt.sh
+#language:
+#    # petsc version that will be used for optimization, if the c-petsc-tao algorithms are used,
+#    # otherwise this option is not required
+#    c:
+#        petsc:      /sfs/fs2/work-sh1/sunip194/papers/optref/petsc/de.uni-kiel.rz.nesh-fe.petsc-3.9.0.opt.sh
 
 #data:
 #    path: ???

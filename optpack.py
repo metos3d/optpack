@@ -132,7 +132,11 @@ ln -s {1}/metos3d/Makefile
 make BGC=model/{0} clean &> /dev/null
 make BGC=model/{0} &> /dev/null
 '''.format(model_name, model_metos3d_path))
-    
+
+
+
+
+
     copy_from = optpack_path + "/language/{0}/template/template.job.sh".format(language_name)
     copy_to = "{0}/template.job.sh".format(model_name)
     print("Copying job template ............. from: {0}".format(copy_from))
