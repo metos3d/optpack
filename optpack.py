@@ -92,7 +92,7 @@ if __name__ == "__main__":
         print("Exiting ...")
         sys.exit(1)
 
-    optpack_path = os.path.dirname(__file__)
+    optpack_path = os.path.abspath(os.path.dirname(__file__))
     conf_file_path = os.path.join(optpack_path, "optpack.conf.yaml")
     print("Reading optpack configuration .......... " + conf_file_path)
     conf_optpack = parse_yaml_file(conf_file_path)
