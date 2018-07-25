@@ -69,7 +69,7 @@ if __name__ == "__main__":
     
     if len(sys.argv[:]) < 2:
         print("usage: python {0} [experiment-conf-file]".format(sys.argv[0]))
-        print("")
+#        print("")
 #        print("options:")
 #        print("[model-name]     ", ", ".join(model_list))
 #        print("[language]       ", ", ".join(language_list))
@@ -89,9 +89,29 @@ if __name__ == "__main__":
     experiment_conf = parse_yaml_file(experiment_conf_path)
     print(experiment_conf)
 
-    
-    
-    
+    print("Experiment name ........................ " + experiment_conf["name"])
+
+    model_conf_file = experiment_conf["model"]
+    print("Reading model configuration ............ " + model_conf_file)
+    model_conf_path = os.path.join(optpack_path, "conf/model/" + model_conf_file)
+    model_conf = parse_yaml_file(model_conf_path)
+    print(model_conf)
+
+    job_conf_file = experiment_conf["job"]
+    print("Reading job configuration .............. " + job_conf_file)
+    job_conf_path = os.path.join(optpack_path, "conf/job/" + job_conf_file)
+    job_conf = parse_yaml_file(job_conf_path)
+    print(job_conf)
+
+    opt_conf_file = experiment_conf["opt"]
+    print("Reading optimization configuration ..... " + opt_conf_file)
+    opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
+    opt_conf = parse_yaml_file(opt_conf_path)
+    print(opt_conf)
+
+
+
+
 #    model_name = sys.argv[1]
 #    if not model_name in model_list:
 #        print("Model not known ... " + model_name)
