@@ -111,13 +111,13 @@ if __name__ == "__main__":
     print("Creating directory ..................... {0}/model/".format(model_name))
     os.system("mkdir {0}/model/".format(model_name))
 
-    copy_from = os.path.normpath(os.path.join(optpack_path, conf_optpack["model"]["petsc"]))
+    copy_from = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["petsc"]))
     copy_to = "{0}/model/petsc.env.sh".format(model_name)
     print("Copying environment file ......... from: {0}".format(copy_from))
     print("                                     to: {0}".format(copy_to))
     os.system("cp {0} {1}".format(copy_from, copy_to))
 
-    model_metos3d_path = os.path.normpath(os.path.join(optpack_path, conf_optpack["model"]["metos3d"]))
+    model_metos3d_path = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["metos3d"]))
     print("Compiling executable ................... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
     os.system('''
 cd {0}/model/;
