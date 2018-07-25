@@ -16,14 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-language:
-    name:   {language[name]}
-    code:   {language[code]}
-    data:   {language[data]}
-
-optimization:
+opt:
+    language:   matlab
     algorithm:  interior-point
     display:    iter
-    maxiter:    {niter}
 
 

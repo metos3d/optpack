@@ -29,34 +29,34 @@ def parse_yaml_file(yaml_file_path):
     yaml_file.close()
     return conf_dict
 
-# ---------------------------------------------------------------------------------------------------------------------
-# read template
-# ---------------------------------------------------------------------------------------------------------------------
-def read_template(template_file_path):
-    template_file = open(template_file_path, "r")
-    template_text = template_file.read()
-    template_file.close()
-    return template_text
-
-# ---------------------------------------------------------------------------------------------------------------------
-# format text
-# ---------------------------------------------------------------------------------------------------------------------
-def format_text(text_template, config_dict):
-    text = ""
-    for line in text_template.splitlines(keepends=True):
-        try:
-            text = text + line.format(**config_dict)
-        except KeyError:
-            text = text + line
-    return text
-
-# ---------------------------------------------------------------------------------------------------------------------
-# write text file
-# ---------------------------------------------------------------------------------------------------------------------
-def write_text_file(file_path, text):
-    file = open(file_path, "w")
-    file.write(text)
-    file.close()
+## ---------------------------------------------------------------------------------------------------------------------
+## read template
+## ---------------------------------------------------------------------------------------------------------------------
+#def read_template(template_file_path):
+#    template_file = open(template_file_path, "r")
+#    template_text = template_file.read()
+#    template_file.close()
+#    return template_text
+#
+## ---------------------------------------------------------------------------------------------------------------------
+## format text
+## ---------------------------------------------------------------------------------------------------------------------
+#def format_text(text_template, config_dict):
+#    text = ""
+#    for line in text_template.splitlines(keepends=True):
+#        try:
+#            text = text + line.format(**config_dict)
+#        except KeyError:
+#            text = text + line
+#    return text
+#
+## ---------------------------------------------------------------------------------------------------------------------
+## write text file
+## ---------------------------------------------------------------------------------------------------------------------
+#def write_text_file(file_path, text):
+#    file = open(file_path, "w")
+#    file.write(text)
+#    file.close()
 
 # ---------------------------------------------------------------------------------------------------------------------
 # main
@@ -67,71 +67,85 @@ if __name__ == "__main__":
     language_list = ["matlab", "python", "c"]
     language_extensions = {"matlab": {"code": "m", "data": "mat"}, "python": {"code": "py", "data": "h5"}, "c": {"code": "c", "data": "h5"}}
     
-    if len(sys.argv[:]) < 3:
-        print("usage: python {0} [model-name] [language]".format(sys.argv[0]))
+    if len(sys.argv[:]) < 2:
+        print("usage: python {0} [experiment-conf-file]".format(sys.argv[0]))
         print("")
-        print("options:")
-        print("[model-name]     ", ", ".join(model_list))
-        print("[language]       ", ", ".join(language_list))
-        print("")
+#        print("options:")
+#        print("[model-name]     ", ", ".join(model_list))
+#        print("[language]       ", ", ".join(language_list))
+#        print("")
         print("example:")
-        print("$> python {0} N matlab".format(sys.argv[0]))
+        print("$> python {0} TW.MAT-IP.N.conf.yaml".format(sys.argv[0]))
         sys.exit(0)
-    
-    model_name = sys.argv[1]
-    if not model_name in model_list:
-        print("Model not known ... " + model_name)
-        print("Choose from ... ", ", ".join(model_list))
-        print("Exiting ...")
-        sys.exit(1)
-    
-    language_name = sys.argv[2]
-    if not language_name in language_list:
-        print("Language not known ... " + language_name)
-        print("Choose from ... ", ", ".join(language_list))
-        print("Exiting ...")
-        sys.exit(1)
 
     optpack_path = os.path.abspath(os.path.dirname(__file__))
-    conf_file_path = os.path.join(optpack_path, "optpack.conf.yaml")
-    print("Reading optpack configuration .......... " + conf_file_path)
-    conf_optpack = parse_yaml_file(conf_file_path)
+    optpack_conf_path = os.path.join(optpack_path, "optpack.conf.yaml")
+    print("Reading optpack configuration .......... " + optpack_conf_path)
+    optpack_conf = parse_yaml_file(optpack_conf_path)
+    print(optpack_conf)
 
-    print("Preparing model suite .................. " + model_name)
+    experiment_conf_path = sys.argv[1]
+    print("Reading experiment configuration ....... " + experiment_conf_path)
+    experiment_conf = parse_yaml_file(experiment_conf_path)
+    print(experiment_conf)
 
-    if os.path.exists(model_name):
-        print("Directory already exists ...")
-        print("Exiting ...")
-        sys.exit(1)
-        
-    print("Creating directory ..................... {0}/".format(model_name))
-    os.system("mkdir {0}".format(model_name))
     
-    print("Creating directory ..................... {0}/model/".format(model_name))
-    os.system("mkdir {0}/model/".format(model_name))
-
-    copy_from = os.path.normpath(os.path.join(optpack_path, conf_optpack["model"]["petsc"]))
-    copy_to = "{0}/model/petsc.env.sh".format(model_name)
-    print("Copying environment file ......... from: {0}".format(copy_from))
-    print("                                     to: {0}".format(copy_to))
-    os.system("cp {0} {1}".format(copy_from, copy_to))
     
-    model_metos3d_path = os.path.normpath(os.path.join(optpack_path, conf_optpack["model"]["metos3d"]))
-    print("Compiling executable ................... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
-    os.system('''
-cd {0}/model/;
-source ./petsc.env.sh
-
-# links
-ln -s {1}/data/data
-ln -s {1}/model/model
-ln -s {1}/simpack
-ln -s {1}/metos3d/Makefile
-
-# compile
-make BGC=model/{0} clean &> /dev/null
-make BGC=model/{0} &> /dev/null
-'''.format(model_name, model_metos3d_path))
+    
+#    model_name = sys.argv[1]
+#    if not model_name in model_list:
+#        print("Model not known ... " + model_name)
+#        print("Choose from ... ", ", ".join(model_list))
+#        print("Exiting ...")
+#        sys.exit(1)
+#
+#    language_name = sys.argv[2]
+#    if not language_name in language_list:
+#        print("Language not known ... " + language_name)
+#        print("Choose from ... ", ", ".join(language_list))
+#        print("Exiting ...")
+#        sys.exit(1)
+#
+#    optpack_path = os.path.abspath(os.path.dirname(__file__))
+#    conf_file_path = os.path.join(optpack_path, "optpack.conf.yaml")
+#    print("Reading optpack configuration .......... " + conf_file_path)
+#    conf_optpack = parse_yaml_file(conf_file_path)
+#
+#    print("Preparing model suite .................. " + model_name)
+#
+#    if os.path.exists(model_name):
+#        print("Directory already exists ...")
+#        print("Exiting ...")
+#        sys.exit(1)
+#
+#    print("Creating directory ..................... {0}/".format(model_name))
+#    os.system("mkdir {0}".format(model_name))
+#
+#    print("Creating directory ..................... {0}/model/".format(model_name))
+#    os.system("mkdir {0}/model/".format(model_name))
+#
+#    copy_from = os.path.normpath(os.path.join(optpack_path, conf_optpack["model"]["petsc"]))
+#    copy_to = "{0}/model/petsc.env.sh".format(model_name)
+#    print("Copying environment file ......... from: {0}".format(copy_from))
+#    print("                                     to: {0}".format(copy_to))
+#    os.system("cp {0} {1}".format(copy_from, copy_to))
+#
+#    model_metos3d_path = os.path.normpath(os.path.join(optpack_path, conf_optpack["model"]["metos3d"]))
+#    print("Compiling executable ................... {0}/model/metos3d-simpack-{0}.exe".format(model_name))
+#    os.system('''
+#cd {0}/model/;
+#source ./petsc.env.sh
+#
+## links
+#ln -s {1}/data/data
+#ln -s {1}/model/model
+#ln -s {1}/simpack
+#ln -s {1}/metos3d/Makefile
+#
+## compile
+#make BGC=model/{0} clean &> /dev/null
+#make BGC=model/{0} &> /dev/null
+#'''.format(model_name, model_metos3d_path))
 
 
 
