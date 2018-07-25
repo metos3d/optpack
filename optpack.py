@@ -89,21 +89,22 @@ if __name__ == "__main__":
     experiment_conf = parse_yaml_file(experiment_conf_path)
     print(experiment_conf)
 
-    print("Experiment name ........................ " + experiment_conf["name"])
+    experiment_name = experiment_conf["experiment"]["name"]
+    print("Experiment name ........................ " + experiment_name)
 
-    model_conf_file = experiment_conf["model"]
+    model_conf_file = experiment_conf["experiment"]["model"]
     print("Reading model configuration ............ " + model_conf_file)
     model_conf_path = os.path.join(optpack_path, "conf/model/" + model_conf_file)
     model_conf = parse_yaml_file(model_conf_path)
     print(model_conf)
 
-    job_conf_file = experiment_conf["job"]
+    job_conf_file = experiment_conf["experiment"]["job"]
     print("Reading job configuration .............. " + job_conf_file)
     job_conf_path = os.path.join(optpack_path, "conf/job/" + job_conf_file)
     job_conf = parse_yaml_file(job_conf_path)
     print(job_conf)
 
-    opt_conf_file = experiment_conf["opt"]
+    opt_conf_file = experiment_conf["experiment"]["opt"]
     print("Reading optimization configuration ..... " + opt_conf_file)
     opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
     opt_conf = parse_yaml_file(opt_conf_path)
