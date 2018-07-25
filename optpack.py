@@ -69,11 +69,6 @@ if __name__ == "__main__":
     
     if len(sys.argv[:]) < 2:
         print("usage: python {0} [experiment-conf-file]".format(sys.argv[0]))
-#        print("")
-#        print("options:")
-#        print("[model-name]     ", ", ".join(model_list))
-#        print("[language]       ", ", ".join(language_list))
-#        print("")
         print("example:")
         print("$> python {0} TW.MAT-IP.N.conf.yaml".format(sys.argv[0]))
         sys.exit(0)
@@ -82,12 +77,12 @@ if __name__ == "__main__":
     optpack_conf_path = os.path.join(optpack_path, "optpack.conf.yaml")
     print("Reading optpack configuration .......... " + optpack_conf_path)
     optpack_conf = parse_yaml_file(optpack_conf_path)
-    print(optpack_conf)
+#    print(optpack_conf)
 
     experiment_conf_path = sys.argv[1]
     print("Reading experiment configuration ....... " + experiment_conf_path)
     experiment_conf = parse_yaml_file(experiment_conf_path)
-    print(experiment_conf)
+#    print(experiment_conf)
 
     experiment_name = experiment_conf["experiment"]["name"]
     print("Experiment name ........................ " + experiment_name)
@@ -96,19 +91,19 @@ if __name__ == "__main__":
     print("Reading model configuration ............ " + model_conf_file)
     model_conf_path = os.path.join(optpack_path, "conf/model/" + model_conf_file)
     model_conf = parse_yaml_file(model_conf_path)
-    print(model_conf)
+#    print(model_conf)
 
     job_conf_file = experiment_conf["experiment"]["job"]
     print("Reading job configuration .............. " + job_conf_file)
     job_conf_path = os.path.join(optpack_path, "conf/job/" + job_conf_file)
     job_conf = parse_yaml_file(job_conf_path)
-    print(job_conf)
+#    print(job_conf)
 
     opt_conf_file = experiment_conf["experiment"]["opt"]
     print("Reading optimization configuration ..... " + opt_conf_file)
     opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
     opt_conf = parse_yaml_file(opt_conf_path)
-    print(opt_conf)
+#    print(opt_conf)
 
 
 
@@ -235,3 +230,12 @@ if __name__ == "__main__":
 
 
 
+#
+#   DUMP
+#
+
+#        print("")
+#        print("options:")
+#        print("[model-name]     ", ", ".join(model_list))
+#        print("[language]       ", ", ".join(language_list))
+#        print("")
