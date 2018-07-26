@@ -58,6 +58,9 @@ PetscErrorCode option(char *filepath, context *ctx) {
     strcat(text, line); sprintf(line, "%s%s%s", "-Metos3DTracerOutputDirectory                       ", getenv("SCRATCH"), "\n");
     strcat(text, line); sprintf(line, "%s%s%s", "-Metos3DTracerOutputFile                            ", ctx->yout, "\n");
 
+    // diagnostic
+    strcat(text, line); sprintf(line, "%s%s", "-Metos3DDiagnosticCount                             0", "\n");
+
     // parameter
     strcat(text, line); sprintf(line, "%s%d%s", "-Metos3DParameterCount                              ", ctx->nu, "\n");
     strcat(text, line); sprintf(line, "%s%s%s", "-Metos3DParameterValue                              ", ustr, "\n");
