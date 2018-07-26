@@ -42,6 +42,9 @@ function option(filepath,ctx)
     text = [text '-Metos3DTracerOutputDirectory                       ' ypath '\n'];
     text = [text '-Metos3DTracerOutputFile                            ' yout '\n'];
 
+    % diagnostic
+    text = [text '-Metos3DDiagnosticCount                             0' '\n'];
+
     % parameter
     text = [text '-Metos3DParameterCount                              ' nu '\n'];
     text = [text '-Metos3DParameterValue                              ' u '\n'];
