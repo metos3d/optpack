@@ -122,8 +122,8 @@ def prepare_new_experiment(experiment_conf, experiment_name, number_of_iteration
     print("Compiling executable ................... {0}/model/metos3d-simpack-{1}.exe".format(experiment_name, model_name))
     os.system('''
 cd {0}/model/;
-source ./petsc.env.sh &> /dev/null
-#source ./petsc.env.sh
+#source ./petsc.env.sh &> /dev/null
+source ./petsc.env.sh
 
 # links
 ln -s {1}/data/data
@@ -132,10 +132,10 @@ ln -s {1}/simpack
 ln -s {1}/metos3d/Makefile
 
 # compile
-make BGC=model/{2} clean &> /dev/null
-make BGC=model/{2} &> /dev/null
-#make BGC=model/{2} clean
-#make BGC=model/{2}
+#make BGC=model/{2} clean &> /dev/null
+#make BGC=model/{2} &> /dev/null
+make BGC=model/{2} clean
+make BGC=model/{2}
 '''.format(experiment_name, model_metos3d_path, model_name))
 
     opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
