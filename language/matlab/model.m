@@ -24,13 +24,13 @@ function y = model(u,ctx)
     ctx.u = u;
 
     % option
-    optionfile = [ctx.expname '.' ctx.modname '.' num2str(ctx.nexp) '.' num2str(ctx.i, '%03d') '.option.sh'];
-    optionfilepath = [ctx.expname '/option/' optionfile];
+    optionfile = [ctx.expname '.' num2str(ctx.nexp) '.' num2str(ctx.i, '%03d') '.option.sh'];
+    optionfilepath = ['model/option/' optionfile];
     option(optionfilepath,ctx);
 
     % run
-    logfile = [ctx.expname '.' ctx.modname '.' num2str(ctx.nexp) '.' num2str(ctx.i, '%03d') '.log.txt'];
-    logfilepath = [ctx.expname '/log/' logfile];
+    logfile = [ctx.expname '.' num2str(ctx.nexp) '.' num2str(ctx.i, '%03d') '.log.txt'];
+    logfilepath = ['model/log/' logfile];
     runcmd = ['. model/petsc.env.sh; '...
               getenv('MPIRUN') ' ./model/metos3d-simpack-' ctx.modname '.exe ' ...
               optionfilepath ' > ' logfilepath];
