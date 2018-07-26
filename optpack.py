@@ -22,7 +22,7 @@ import yaml
 
 #model_list = ["N", "N-DOP", "NP-DOP", "NPZ-DOP", "NPZD-DOP"]
 #language_list = ["matlab", "python", "c"]
-#language_extensions = {"matlab": {"code": "m", "data": "mat"}, "python": {"code": "py", "data": "h5"}, "c": {"code": "c", "data": "h5"}}
+language_extensions = {"matlab": {"code": "m", "data": "mat"}, "python": {"code": "py", "data": "h5"}, "c": {"code": "c", "data": "h5"}}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # parse yaml file
@@ -94,6 +94,36 @@ def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, ex
     write_text_file(job_text_file, job_text)
 
 # ---------------------------------------------------------------------------------------------------------------------
+# create start script
+# ---------------------------------------------------------------------------------------------------------------------
+def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
+
+    language = opt_conf["opt"]["language"]
+    extension_code = language_extensions[language]["code"]
+
+    start_text_file = os.path.join(experiment_name, experiment_name + "." + experiment_number + ".start." + extension_code)
+    print(start_text_file)
+
+    # format parameter list
+    # u0, ud, lb, ub
+    # nu
+    nu = model_conf["parameter"]["nu"]
+    u0 = model_conf["parameter"]["u0"]
+    ud = model_conf["parameter"]["ud"]
+    lb = model_conf["parameter"]["lb"]
+    ub = model_conf["parameter"]["ub"]
+    exp_config["parameter"]["u0"] = ','.join(['{:.16e}']*nu).format(*u0)
+    exp_config["parameter"]["ud"] = ','.join(['{:.16e}']*nu).format(*ud)
+    exp_config["parameter"]["lb"] = ','.join(['{:.16e}']*nu).format(*lb)
+    exp_config["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
+    
+    start_template_text = read_template("{0}/{1}/template/template.start.{2}".format(experiment_name, language, extension_code))
+    conf_dict = dict(experiment_conf, **model_conf, **job_conf)
+    start_text = format_text(start_template_text, conf_dict, number_of_iterations)
+    
+    write_text_file(start_text_file, start_text)
+
+# ---------------------------------------------------------------------------------------------------------------------
 # prepare new experiment
 # ---------------------------------------------------------------------------------------------------------------------
 def prepare_new_experiment(experiment_conf, experiment_name, number_of_iterations):
@@ -151,9 +181,9 @@ make BGC=model/{2}
     print("Creating initial job script ............ ", end="")
     create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
-#    print("Creating initial start script ...    ", end="")
-#    create_start_script(exp_config, expname, nexp, niter)
-#
+    print("Creating initial start script .......... ", end="")
+    create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
+
 #    compile_if_c(exp_config, expname, nexp)
 
 # ---------------------------------------------------------------------------------------------------------------------

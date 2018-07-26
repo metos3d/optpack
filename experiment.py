@@ -85,33 +85,33 @@ def compile_if_c(exp_config, expname, nexp):
 #    
 #    write_text_file(job_text_file, job_text)
 
-# ---------------------------------------------------------------------------------------------------------------------
-# create start script
-# ---------------------------------------------------------------------------------------------------------------------
-def create_start_script(exp_config, expname, nexp, niter):
-    
-    # format parameter list
-    # u0, ud, lb, ub
-    # nu
-    nu = exp_config["parameter"]["nu"]
-    u0 = exp_config["parameter"]["u0"]
-    ud = exp_config["parameter"]["ud"]
-    lb = exp_config["parameter"]["lb"]
-    ub = exp_config["parameter"]["ub"]
-    exp_config["parameter"]["u0"] = ','.join(['{:.16e}']*nu).format(*u0)
-    exp_config["parameter"]["ud"] = ','.join(['{:.16e}']*nu).format(*ud)
-    exp_config["parameter"]["lb"] = ','.join(['{:.16e}']*nu).format(*lb)
-    exp_config["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
-
-    extension_code = exp_config["language"]["code"]
-    start_template_text = read_template("template.start." + extension_code)
-    start_text = format_text(start_template_text, exp_config, nexp, niter)
-    
-    modname = exp_config["model"]["name"]
-    start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start." + extension_code)
-    print(start_text_file)
-    
-    write_text_file(start_text_file, start_text)
+## ---------------------------------------------------------------------------------------------------------------------
+## create start script
+## ---------------------------------------------------------------------------------------------------------------------
+#def create_start_script(exp_config, expname, nexp, niter):
+#    
+#    # format parameter list
+#    # u0, ud, lb, ub
+#    # nu
+#    nu = exp_config["parameter"]["nu"]
+#    u0 = exp_config["parameter"]["u0"]
+#    ud = exp_config["parameter"]["ud"]
+#    lb = exp_config["parameter"]["lb"]
+#    ub = exp_config["parameter"]["ub"]
+#    exp_config["parameter"]["u0"] = ','.join(['{:.16e}']*nu).format(*u0)
+#    exp_config["parameter"]["ud"] = ','.join(['{:.16e}']*nu).format(*ud)
+#    exp_config["parameter"]["lb"] = ','.join(['{:.16e}']*nu).format(*lb)
+#    exp_config["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
+#
+#    extension_code = exp_config["language"]["code"]
+#    start_template_text = read_template("template.start." + extension_code)
+#    start_text = format_text(start_template_text, exp_config, nexp, niter)
+#    
+#    modname = exp_config["model"]["name"]
+#    start_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".start." + extension_code)
+#    print(start_text_file)
+#    
+#    write_text_file(start_text_file, start_text)
 
 ## ---------------------------------------------------------------------------------------------------------------------
 ## prepare new experiment
