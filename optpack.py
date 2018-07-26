@@ -129,8 +129,8 @@ def read_configuration(file):
     print("Reading configuration .................. " + file)
     if not os.path.exists(file):
         print("File not found ...")
-        print("Checking default location ...")
         optpack_path = os.path.abspath(os.path.dirname(__file__))
+        print("Checking default location .............. " + optpack_path)
         file = os.path.join(optpack_path, file)
         if not os.path.exists(file):
             print("File not found ...")
