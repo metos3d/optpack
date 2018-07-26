@@ -125,7 +125,7 @@ def create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experim
 # ---------------------------------------------------------------------------------------------------------------------
 # compile if c
 # ---------------------------------------------------------------------------------------------------------------------
-def compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number):    
+def compile_if_c(opt_conf, experiment_name, experiment_number):
     if opt_conf["opt"]["language"]=="c":
         executable_base = experiment_name + ".start." + experiment_number
         print("Compiling executable ................... {0}.exe".format(executable_base))
@@ -203,13 +203,15 @@ make BGC=model/{2}
     print("Creating initial start script .......... ", end="")
     create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
-    compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number)
+    compile_if_c(opt_conf, experiment_name, experiment_number)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # continue experiment
 # ---------------------------------------------------------------------------------------------------------------------
 def continue_experiment(experiment_conf, experiment_name, number_of_iterations):
     print("Continuing experiment ...")
+
+    optpack_conf = read_configuration("optpack.conf.yaml")
 
     opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
     language = opt_conf["opt"]["language"]
@@ -242,7 +244,7 @@ def continue_experiment(experiment_conf, experiment_name, number_of_iterations):
     print("Creating initial start script .......... ", end="")
     create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
-    compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number)
+    compile_if_c(opt_conf, experiment_name, experiment_number)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # main
