@@ -112,10 +112,10 @@ def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, 
     ud = model_conf["parameter"]["ud"]
     lb = model_conf["parameter"]["lb"]
     ub = model_conf["parameter"]["ub"]
-    exp_config["parameter"]["u0"] = ','.join(['{:.16e}']*nu).format(*u0)
-    exp_config["parameter"]["ud"] = ','.join(['{:.16e}']*nu).format(*ud)
-    exp_config["parameter"]["lb"] = ','.join(['{:.16e}']*nu).format(*lb)
-    exp_config["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
+    model_conf["parameter"]["u0"] = ','.join(['{:.16e}']*nu).format(*u0)
+    model_conf["parameter"]["ud"] = ','.join(['{:.16e}']*nu).format(*ud)
+    model_conf["parameter"]["lb"] = ','.join(['{:.16e}']*nu).format(*lb)
+    model_conf["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
     
     start_template_text = read_template("{0}/{1}/template/template.start.{2}".format(experiment_name, language, extension_code))
     conf_dict = dict(experiment_conf, **model_conf, **job_conf)
