@@ -43,7 +43,7 @@ int main(int argc, char **args) {{
     // tao, optimizer, algorithm
     Tao tao;
     TaoCreate(ctx->comm, &tao);
-    TaoSetType(tao, TAOBLMVM);
+    TaoSetType(tao, {opt[algorithm]});
     TaoSetMaximumIterations(tao, {niter});
 
     // model

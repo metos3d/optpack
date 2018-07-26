@@ -17,25 +17,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#PBS -T intmpi
-#PBS -b {job[nodes]}
-#PBS -l cpunum_job={job[cores]}
-#PBS -l elapstim_req={job[walltime]}
-#PBS -l memsz_job=10gb
-#PBS -N {experiment[name]}.{model[name]}.{nexp}
-#PBS -o {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.job.out.txt
-#PBS -j o
-#PBS -q {job[queue]}
+#SBATCH --job-name={experiment[name]}.{nexp}
+#SBATCH --output={experiment[name]}}.job.{nexp}.out.txt
+#SBATCH --error={experiment[name]}.job.{nexp}.out.txt
+#SBATCH --nodes={job[nodes]}
+#SBATCH --tasks-per-node={job[cores]}
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=10G
+#SBATCH --time={job[walltime]}
+#SBATCH --partition={job[queue]}
+#SBATCH --qos={job[queue]}
 
-# Note: We use a directory in '/scratch', because it is a local, fast storage located on the master node.
-# All other directories are network mounted paths and, as such, significantly slower.
-# On the NEC Linux cluster the ratio is usually better than 1:10.
-cd $PBS_O_WORKDIR
+export SCRATCH="${{TMPDIR}}/"
+export MPIRUN="{job[mpirun]}"
 
-export SCRATCH="/scratch/${PBS_JOBID/0:}/"
-. ./c/petsc.env.sh
-./{experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.exe -tao_monitor &> {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt
+cd {experiment[name]}/
+./{experiment[name]}.start.{nexp}.exe {opt[display]} &> {experiment[name]}.out.{nexp}.txt
 
-qstat -f ${PBS_JOBID/0:}
+scontrol show job $SLURM_JOBID
 
 
