@@ -23,7 +23,7 @@
 #PBS -l elapstim_req={job[walltime]}
 #PBS -l memsz_job=10gb
 #PBS -N {experiment[name]}.{nexp}
-#PBS -o {experiment[name]}/{experiment[name]}.job.{nexp}.out.txt
+#PBS -o {experiment[name]}.job.{nexp}.out.txt
 #PBS -j o
 #PBS -q {job[queue]}
 
@@ -35,7 +35,9 @@ cd $PBS_O_WORKDIR
 export SCRATCH="/scratch/${{PBS_JOBID/0:}}/"
 export MPIRUN="{job[mpirun]}"
 module load matlab2017a
-matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.out.{nexp}.txt < {experiment[name]}/{experiment[name]}.start.{nexp}.m > /dev/null
+
+cd {experiment[name]}/
+matlab -nodisplay -logfile {experiment[name]}.out.{nexp}.txt < {experiment[name]}.start.{nexp}.m > /dev/null
 
 qstat -f ${{PBS_JOBID/0:}}
 

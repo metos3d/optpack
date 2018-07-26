@@ -18,8 +18,8 @@
 #
 
 #SBATCH --job-name={experiment[name]}.{nexp}
-#SBATCH --output={experiment[name]}/{experiment[name]}}.job.{nexp}.out.txt
-#SBATCH --error={experiment[name]}/{experiment[name]}.job.{nexp}.out.txt
+#SBATCH --output={experiment[name]}}.job.{nexp}.out.txt
+#SBATCH --error={experiment[name]}.job.{nexp}.out.txt
 #SBATCH --nodes={job[nodes]}
 #SBATCH --tasks-per-node={job[cores]}
 #SBATCH --cpus-per-task=1
@@ -31,7 +31,9 @@
 export SCRATCH="${{TMPDIR}}/"
 export MPIRUN="{job[mpirun]}"
 module load matlab2015a
-matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.out.{nexp}.txt < {experiment[name]}/{experiment[name]}.start.{nexp}.m > /dev/null
+
+cd {experiment[name]}/
+matlab -nodisplay -logfile {experiment[name]}.out.{nexp}.txt < {experiment[name]}.start.{nexp}.m > /dev/null
 
 scontrol show job $SLURM_JOBID
 
