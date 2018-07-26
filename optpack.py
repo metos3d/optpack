@@ -127,7 +127,7 @@ def create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experim
 # ---------------------------------------------------------------------------------------------------------------------
 def compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number):    
     if opt_conf["opt"]["language"]=="c":
-        executable_base = experiment_name + ".start." + experiment_number)
+        executable_base = experiment_name + ".start." + experiment_number
         print("Compiling executable ................... {0}.exe".format(executable_base))
         os.system('''
 cd {0}/;

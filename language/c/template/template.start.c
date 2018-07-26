@@ -105,7 +105,7 @@ int main(int argc, char **args) {{
     VecSetSizes(ctx->J, PETSC_DECIDE, ctx->ndata);
 
     // log
-    sprintf(ctx->logfile, "%s/%s.%s.%d.h5", ctx->expname, ctx->expname, ctx->modname, ctx->nexp);
+    sprintf(ctx->logfile, "%s.%d.h5", ctx->expname, ctx->nexp);
 
     // parameter vector, bounds
     TaoSetInitialVector(tao, u);
