@@ -78,14 +78,12 @@ def read_configuration(file):
 # ---------------------------------------------------------------------------------------------------------------------
 # create job script
 # ---------------------------------------------------------------------------------------------------------------------
-def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
+def create_job_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
 
     job_text_file = os.path.join(experiment_name, experiment_name + ".job." + experiment_number + ".sh")
     print(job_text_file)
 
-    job_conf = read_configuration(experiment_conf["experiment"]["job"])
     template_file = job_conf["job"]["template"]
-
     language = opt_conf["opt"]["language"]
     job_template_text = read_template("{0}/{1}/template/{2}".format(experiment_name, language, template_file))
     conf_dict = dict(experiment_conf, **model_conf, **job_conf, **opt_conf)
@@ -96,7 +94,7 @@ def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, ex
 # ---------------------------------------------------------------------------------------------------------------------
 # create start script
 # ---------------------------------------------------------------------------------------------------------------------
-def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
+def create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
 
     language = opt_conf["opt"]["language"]
     extension_code = language_extensions[language]["code"]
@@ -118,7 +116,6 @@ def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, 
     model_conf["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
     
     start_template_text = read_template("{0}/{1}/template/template.start.{2}".format(experiment_name, language, extension_code))
-    job_conf = read_configuration(experiment_conf["experiment"]["job"])
     conf_dict = dict(experiment_conf, **model_conf, **job_conf, **opt_conf)
     start_text = format_text(start_template_text, conf_dict, experiment_number, number_of_iterations)
     
@@ -178,12 +175,13 @@ make BGC=model/{2}
     print("                                     to: {0}".format(copy_to))
     os.system("cp -r {0} {1}".format(copy_from, copy_to))
 
+    job_conf = read_configuration(experiment_conf["experiment"]["job"])
     experiment_number = "1"
     print("Creating initial job script ............ ", end="")
-    create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
+    create_job_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
     print("Creating initial start script .......... ", end="")
-    create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
+    create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
 #    compile_if_c(exp_config, expname, nexp)
 
