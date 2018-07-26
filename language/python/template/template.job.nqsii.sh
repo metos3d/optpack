@@ -22,8 +22,8 @@
 #PBS -l cpunum_job={job[cores]}
 #PBS -l elapstim_req={job[walltime]}
 #PBS -l memsz_job=10gb
-#PBS -N {experiment[name]}.{model[name]}.{nexp}
-#PBS -o {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.job.out.txt
+#PBS -N {experiment[name]}.{nexp}
+#PBS -o {experiment[name]}.job.{nexp}.out.txt
 #PBS -j o
 #PBS -q {job[queue]}
 
@@ -32,9 +32,12 @@
 # On the NEC Linux cluster the ratio is usually better than 1:10.
 cd $PBS_O_WORKDIR
 
-export SCRATCH="/scratch/${PBS_JOBID/0:}/"
-python {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.py &> {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt
+export SCRATCH="/scratch/${{PBS_JOBID/0:}}/"
+export MPIRUN="{job[mpirun]}"
 
-qstat -f ${PBS_JOBID/0:}
+cd {experiment[name]}/
+python {experiment[name]}.start.{nexp}.py &> {experiment[name]}.out.{nexp}.txt
+
+qstat -f ${{PBS_JOBID/0:}}
 
 

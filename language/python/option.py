@@ -47,6 +47,9 @@ def option(filepath, ctx):
     text = text + "-Metos3DTracerOutputDirectory                       " + ypath + "\n"
     text = text + "-Metos3DTracerOutputFile                            " + yout + "\n"
 
+    # diagnostic
+    text = text + "-Metos3DDiagnosticCount                             0" + "\n"
+
     # parameter
     text = text + "-Metos3DParameterCount                              " + nu + "\n"
     text = text + "-Metos3DParameterValue                              " + u + "\n"
@@ -83,9 +86,11 @@ def option(filepath, ctx):
 
     # solver
     text = text + "-Metos3DSolverType                                  Spinup" + "\n"
-    text = text + "-Metos3DSpinupCount                                 3000" + "\n"
+#    text = text + "-Metos3DSpinupCount                                 3000" + "\n"
+    text = text + "-Metos3DSpinupCount                                 1" + "\n"
     text = text + "-Metos3DSpinupMonitor" + "\n"
-    text = text + "-Metos3DSpinupMonitorModuloStep                     3000,1" + "\n"
+#    text = text + "-Metos3DSpinupMonitorModuloStep                     3000,1" + "\n"
+    text = text + "-Metos3DSpinupMonitorModuloStep                     1,1" + "\n"
     text = text + "-Metos3DSpinupMonitorFileFormatPrefix               ,$00004d-" + "\n"
 
     # write to file

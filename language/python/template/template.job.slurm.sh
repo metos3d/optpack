@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # Metos3D: A Marine Ecosystem Toolkit for Optimization and Simulation in 3-D
 # Copyright (C) 2018  Jaroslaw Piwonski, CAU, jpi@informatik.uni-kiel.de
@@ -16,22 +17,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import numpy as np
+#SBATCH --job-name={experiment[name]}.{nexp}
+#SBATCH --output={experiment[name]}}.job.{nexp}.out.txt
+#SBATCH --error={experiment[name]}.job.{nexp}.out.txt
+#SBATCH --nodes={job[nodes]}
+#SBATCH --tasks-per-node={job[cores]}
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=10G
+#SBATCH --time={job[walltime]}
+#SBATCH --partition={job[queue]}
+#SBATCH --qos={job[queue]}
 
-from python.read_petsc_vector import read_petsc_vector
-from python.average import average
+export SCRATCH="${{TMPDIR}}/"
+export MPIRUN="{job[mpirun]}"
 
-def data(ctx):
-    datapath = "../../twin-data/" + ctx.modname + "/work/"
-    nx = ctx.nx
-    nt = ctx.nt
-    y = np.zeros((nt,nx))   # note, c order
-    for i in range(nt):
-        filepath = datapath + "{:04d}".format(i) + "-N.petsc"
-        if i%500==0: print("# {}".format(filepath), flush=True)
-        y[i,:] = read_petsc_vector(filepath)
-    yd = average(y, ctx)
+cd {experiment[name]}/
+python {experiment[name]}.start.{nexp}.py &> {experiment[name]}.out.{nexp}.txt
 
-    return yd
+scontrol show job $SLURM_JOBID
 
 

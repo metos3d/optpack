@@ -30,17 +30,17 @@ def model(u, ctx):
     ctx.u = u
 
     # option
-    optionfile = ctx.expname + "." + ctx.modname + "." + "{:d}".format(ctx.nexp) + "." + "{:03d}".format(ctx.i) + ".option.sh"
-    optionfilepath = ctx.expname + "/option/" + optionfile
+    optionfile = ctx.expname + "." + "{:d}".format(ctx.nexp) + "." + "{:03d}".format(ctx.i) + ".option.sh"
+    optionfilepath = "model/option/" + optionfile
     option(optionfilepath, ctx)
 
     # run
-    logfile = ctx.expname + "." + ctx.modname + "." + "{:d}".format(ctx.nexp) + "." + "{:03d}".format(ctx.i) + ".log.txt"
-    logfilepath = ctx.expname + "/log/" + logfile
+    logfile = ctx.expname + "." + "{:d}".format(ctx.nexp) + "." + "{:03d}".format(ctx.i) + ".log.txt"
+    logfilepath = "model/log/" + logfile
     runcmd = ". model/petsc.env.sh; " + \
-                "mpiexec " + os.environ["NQSII_MPIOPTS"] + " ./model/metos3d-simpack-" + ctx.modname + ".exe " + \
+                os.environ["MPIRUN"] + " ./model/metos3d-simpack-" + ctx.modname + ".exe " + \
               optionfilepath + " > " + logfilepath
-#    print("# run:      " + runcmd, flush=True)
+    print("# run:      " + runcmd, flush=True)
     status = os.system(runcmd)
 
     # read result from scratch
@@ -50,12 +50,12 @@ def model(u, ctx):
     y = np.zeros((nt,nx))       # note, c order
     for i in range(nt):
         filepath = readpath + "{:04d}".format(i) + "-N.petsc"
-#        if i%500==0: print("# {}".format(filepath), flush=True)
+        if i%500==0: print("# {}".format(filepath), flush=True)
         y[i,:] = read_petsc_vector(filepath);
 
     # clean scratch
     cleancmd = "rm " + readpath + "*"
-#    print("# clean:    " + cleancmd, flush=True)
+    print("# clean:    " + cleancmd, flush=True)
     status = os.system(cleancmd)
 
     return y

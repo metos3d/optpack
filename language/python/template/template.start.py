@@ -62,15 +62,15 @@ ctx.yd      = data(ctx)
 ctx.i       = 1
 
 # log
-ctx.logfile = os.path.join(ctx.expname, ctx.expname + "." + ctx.modname + "." + str(ctx.nexp) + ".h5")
+ctx.logfile = ctx.expname + "." + str(ctx.nexp) + ".h5"
 
 # algorithm
 options = dict()
-options["method"] = "L-BFGS-B"
+options["method"] = "{opt[algorithm]}"
 options["bounds"] = list(zip(ctx.lb, ctx.ub))
 options["options"] = dict()
 options["options"]["maxiter"] = {niter}
-options["options"]["disp"] = True
+options["options"]["disp"] = {opt[display]}
 ctx.options = options
 
 # optimization run
