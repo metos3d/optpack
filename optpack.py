@@ -155,24 +155,10 @@ if __name__ == "__main__":
     optpack_conf = read_configuration("optpack.conf.yaml")
     experiment_conf = read_configuration(experiment_conf_file)
 
-#    print("Reading experiment configuration ....... " + experiment_conf_file)
-#    experiment_conf = parse_yaml_file(experiment_conf_file)
-#
-#    model_conf_file = experiment_conf["experiment"]["model"]
-#    model_conf_path = os.path.join(optpack_path, "conf/model/" + model_conf_file)
-#    print("Reading model configuration ............ " + model_conf_path)
-#    model_conf = parse_yaml_file(model_conf_path)
-#
-#    job_conf_file = experiment_conf["experiment"]["job"]
-#    job_conf_path = os.path.join(optpack_path, "conf/job/" + job_conf_file)
-#    print("Reading job configuration .............. " + job_conf_path)
-#    job_conf = parse_yaml_file(job_conf_path)
-#
-#    opt_conf_file = experiment_conf["experiment"]["opt"]
-#    opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
-#    print("Reading optimization configuration ..... " + opt_conf_path)
-#    opt_conf = parse_yaml_file(opt_conf_path)
-#
+    model_conf = read_configuration(experiment_conf["experiment"]["model"])
+    job_conf = read_configuration(experiment_conf["experiment"]["job"])
+    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
+
 #    experiment_name = experiment_conf["experiment"]["name"]
 #    print("Processing experiment .................. " + experiment_name)
 #    if os.path.exists(experiment_name):
@@ -326,3 +312,22 @@ if __name__ == "__main__":
 #    print("Reading optpack configuration .......... " + optpack_conf_path)
 #    optpack_conf = parse_yaml_file(optpack_conf_path)
 #
+
+#    print("Reading experiment configuration ....... " + experiment_conf_file)
+#    experiment_conf = parse_yaml_file(experiment_conf_file)
+#
+
+#    model_conf_file = experiment_conf["experiment"]["model"]
+#    model_conf_path = os.path.join(optpack_path, "conf/model/" + model_conf_file)
+#    print("Reading model configuration ............ " + model_conf_path)
+#    model_conf = parse_yaml_file(model_conf_path)
+#
+#    job_conf_file = experiment_conf["experiment"]["job"]
+#    job_conf_path = os.path.join(optpack_path, "conf/job/" + job_conf_file)
+#    print("Reading job configuration .............. " + job_conf_path)
+#    job_conf = parse_yaml_file(job_conf_path)
+#
+#    opt_conf_file = experiment_conf["experiment"]["opt"]
+#    opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
+#    print("Reading optimization configuration ..... " + opt_conf_path)
+#    opt_conf = parse_yaml_file(opt_conf_path)
