@@ -65,7 +65,7 @@ def write_text_file(file_path, text):
 def read_configuration(file):
     print("Reading configuration .................. " + file)
     if not os.path.exists(file):
-        print("File not found ...")
+#        print("File not found ...")
         optpack_path = os.path.abspath(os.path.dirname(__file__))
         file = os.path.join(optpack_path, file)
         print("Reading configuration .................. " + file)
@@ -97,9 +97,12 @@ def prepare_new_experiment(experiment_conf, experiment_name, number_of_iteration
     
     print("Creating directory ..................... {0}/".format(experiment_name))
     os.system("mkdir {0}".format(experiment_name))
-
     print("Creating directory ..................... {0}/model/".format(experiment_name))
     os.system("mkdir {0}/model/".format(experiment_name))
+    print("Creating directory ..................... {0}/model/option".format(experiment_name))
+    os.system("mkdir {0}/model/option".format(experiment_name))
+    print("Creating directory ..................... {0}/model/log".format(experiment_name))
+    os.system("mkdir {0}/model/log".format(experiment_name))
     
     optpack_conf = read_configuration("optpack.conf.yaml")
     optpack_path = os.path.abspath(os.path.dirname(__file__))
@@ -130,15 +133,18 @@ make BGC=model/{2} clean
 make BGC=model/{2}
 '''.format(experiment_name, model_metos3d_path, model_name))
 
-    print("Creating option directory .............. {0}/option".format(experiment_name))
-    os.system("mkdir {0}/option".format(experiment_name))
-    print("Creating log directory ................. {0}/log".format(experiment_name))
-    os.system("mkdir {0}/log".format(experiment_name))
+    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
+    language = opt_conf["opt"]["language"]
+    print("Preparing language ..................... " + language)
+    copy_from = optpack_path + "/language/{0}".format(language)
+    copy_to = "{0}/.".format(experiment_name)
+    print("Copying codes .................... from: {0}".format(copy_from))
+    print("                                     to: {0}".format(copy_to))
+    os.system("cp -r {0} {1}".format(copy_from, copy_to))
+
 
 
 #    job_conf = read_configuration(experiment_conf["experiment"]["job"])
-#    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
-
 
 #    nexp = "1"
 #    print("Creating initial job script ...      ", end="")
@@ -234,12 +240,6 @@ if __name__ == "__main__":
 #    format_conf = {"language": {"name": language_name, "code": extension_code, "data": extension_data}}
 #    experiment_conf = format_text(experiment_conf_template, format_conf)
 #    write_text_file(copy_to, experiment_conf)
-#
-#    copy_from = optpack_path + "/experiment.py"
-#    copy_to = "{0}/experiment.py".format(model_name)
-#    print("Copying experiment script ........ from: {0}".format(copy_from))
-#    print("                                     to: {0}".format(copy_to))
-#    os.system("cp {0} {1}".format(copy_from, copy_to))
 #
 #    print("Preparing {0} codes ...".format(language_name))
 #    dir_name = "{0}/{1}/".format(model_name, language_name)
@@ -338,3 +338,10 @@ if __name__ == "__main__":
 
 #    print("Creating experiment directory ...    {0}/".format(expname))
 #    os.system("mkdir {0}".format(expname))
+
+#
+#    copy_from = optpack_path + "/experiment.py"
+#    copy_to = "{0}/experiment.py".format(model_name)
+#    print("Copying experiment script ........ from: {0}".format(copy_from))
+#    print("                                     to: {0}".format(copy_to))
+#    os.system("cp {0} {1}".format(copy_from, copy_to))
