@@ -103,7 +103,7 @@ def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, 
 
     start_text_file = os.path.join(experiment_name, experiment_name + "." + experiment_number + ".start." + extension_code)
     print(start_text_file)
-
+    
     # format parameter list
     # u0, ud, lb, ub
     # nu
@@ -118,6 +118,7 @@ def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, 
     model_conf["parameter"]["ub"] = ','.join(['{:.16e}']*nu).format(*ub)
     
     start_template_text = read_template("{0}/{1}/template/template.start.{2}".format(experiment_name, language, extension_code))
+    job_conf = read_configuration(experiment_conf["experiment"]["job"])
     conf_dict = dict(experiment_conf, **model_conf, **job_conf)
     start_text = format_text(start_template_text, conf_dict, number_of_iterations)
     
