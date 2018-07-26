@@ -89,11 +89,11 @@ def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, ex
     conf_dict = dict(experiment_conf, **model_conf, **job_conf)
     job_text = format_text(job_template_text, conf_dict, number_of_iterations)
 
-#    modname = exp_config["model"]["name"]
-#    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
-#    print(job_text_file)
-#    
-#    write_text_file(job_text_file, job_text)
+    model_name = model_conf["model"]["name"]
+    job_text_file = os.path.join(experiment_name, experiment_name + "." + model_name + ".job." + experiment_number + ".sh")
+    print(job_text_file)
+
+    write_text_file(job_text_file, job_text)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # prepare new experiment
