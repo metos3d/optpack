@@ -60,16 +60,16 @@
 #    file.write(text)
 #    file.close()
 
-# ---------------------------------------------------------------------------------------------------------------------
-# compile if c
-# ---------------------------------------------------------------------------------------------------------------------
-def compile_if_c(exp_config, expname, nexp):
-    if exp_config["language"]["name"]=="c":
-        modname = exp_config["model"]["name"]
-        experiment_pattern = os.path.join(expname, expname + "." + modname + "." + nexp + ".start")
-        print("Compiling executable ...             {0}.exe".format(experiment_pattern))
-        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile clean &> /dev/null".format(experiment_pattern))
-        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile &> /dev/null".format(experiment_pattern))
+## ---------------------------------------------------------------------------------------------------------------------
+## compile if c
+## ---------------------------------------------------------------------------------------------------------------------
+#def compile_if_c(exp_config, expname, nexp):
+#    if exp_config["language"]["name"]=="c":
+#        modname = exp_config["model"]["name"]
+#        experiment_pattern = os.path.join(expname, expname + "." + modname + "." + nexp + ".start")
+#        print("Compiling executable ...             {0}.exe".format(experiment_pattern))
+#        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile clean &> /dev/null".format(experiment_pattern))
+#        os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile &> /dev/null".format(experiment_pattern))
 
 ## ---------------------------------------------------------------------------------------------------------------------
 ## create job script

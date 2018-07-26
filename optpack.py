@@ -123,6 +123,26 @@ def create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experim
     write_text_file(start_text_file, start_text)
 
 # ---------------------------------------------------------------------------------------------------------------------
+# compile if c
+# ---------------------------------------------------------------------------------------------------------------------
+def compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number):    
+    if opt_conf["opt"]["language"]=="c":
+        executable_base = experiment_name + ".start." + experiment_number)
+        print("Compiling executable ................... {0}.exe".format(executable_base))
+        os.system('''
+cd {0}/;
+source model/petsc.env.sh;
+#PROGRAM={1}.exe OBJECT_FILE={1}.o make -f c/Makefile clean &> /dev/null
+PROGRAM={1}.exe OBJECT_FILE={1}.o make -f c/Makefile clean
+'''.format(experiment_name, executable_base))
+        os.system('''
+cd {0}/;
+source model/petsc.env.sh;
+#PROGRAM={1}.exe OBJECT_FILE={1}.o make -f c/Makefile &> /dev/null
+PROGRAM={1}.exe OBJECT_FILE={1}.o make -f c/Makefile
+'''.format(experiment_name, executable_base))
+
+# ---------------------------------------------------------------------------------------------------------------------
 # prepare new experiment
 # ---------------------------------------------------------------------------------------------------------------------
 def prepare_new_experiment(experiment_conf, experiment_name, number_of_iterations):
@@ -151,8 +171,8 @@ def prepare_new_experiment(experiment_conf, experiment_name, number_of_iteration
     print("Compiling executable ................... {0}/model/metos3d-simpack-{1}.exe".format(experiment_name, model_name))
     os.system('''
 cd {0}/model/;
-#source ./petsc.env.sh &> /dev/null
-source ./petsc.env.sh
+#source petsc.env.sh &> /dev/null
+source petsc.env.sh
 
 # links
 ln -s {1}/data/data
@@ -183,7 +203,7 @@ make BGC=model/{2}
     print("Creating initial start script .......... ", end="")
     create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
-#    compile_if_c(exp_config, expname, nexp)
+    compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # continue experiment
@@ -222,7 +242,7 @@ def continue_experiment(experiment_conf, experiment_name, number_of_iterations):
     print("Creating initial start script .......... ", end="")
     create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
-#    compile_if_c(exp_config, expname, nexp)
+    compile_if_c(experiment_conf, optpack_conf, model_conf, opt_conf, experiment_name, experiment_number)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # main

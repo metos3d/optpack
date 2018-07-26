@@ -18,7 +18,7 @@
 
 # environment variables to set
 #   PROGRAM         the name of the executable
-#   EXPERIMENT      experiment specific object file
+#   OBJECT_FILE     the name of the object file
 
 # object files
 OPTPACK = \
@@ -33,12 +33,12 @@ OPTPACK = \
 ALL: $(PROGRAM)
 CFLAGS = -I c/
 FFLAGS =
-CLEANFILES = $(OPTPACK) $(EXPERIMENT) $(PROGRAM)
+CLEANFILES = $(OPTPACK) $(OBJECT_FILE) $(PROGRAM)
 
 include $(PETSC_DIR)/lib/petsc/conf/variables
 include $(PETSC_DIR)/lib/petsc/conf/rules
 
-$(PROGRAM): $(OPTPACK) $(EXPERIMENT) chkopts
-	-$(CLINKER) -o $@ $(OPTPACK) $(EXPERIMENT) $(PETSC_LIB)
+$(PROGRAM): $(OPTPACK) $(OBJECT_FILE) chkopts
+	-$(CLINKER) -o $@ $(OPTPACK) $(OBJECT_FILE) $(PETSC_LIB)
 
 
