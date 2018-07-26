@@ -130,8 +130,10 @@ ln -s {1}/simpack
 ln -s {1}/metos3d/Makefile
 
 # compile
-make BGC=model/{2} clean &> /dev/null
-make BGC=model/{2} &> /dev/null
+#make BGC=model/{2} clean &> /dev/null
+#make BGC=model/{2} &> /dev/null
+make BGC=model/{2} clean
+make BGC=model/{2} &>
 '''.format(experiment_name, model_metos3d_path, model_name))
 
 
