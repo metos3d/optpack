@@ -88,7 +88,7 @@ def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, ex
 
     language = opt_conf["opt"]["language"]
     job_template_text = read_template("{0}/{1}/template/{2}".format(experiment_name, language, template_file))
-    conf_dict = dict(experiment_conf, **model_conf, **job_conf)
+    conf_dict = dict(experiment_conf, **model_conf, **job_conf, **opt_conf)
     job_text = format_text(job_template_text, conf_dict, experiment_number, number_of_iterations)
 
     write_text_file(job_text_file, job_text)
@@ -119,7 +119,7 @@ def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, 
     
     start_template_text = read_template("{0}/{1}/template/template.start.{2}".format(experiment_name, language, extension_code))
     job_conf = read_configuration(experiment_conf["experiment"]["job"])
-    conf_dict = dict(experiment_conf, **model_conf, **job_conf)
+    conf_dict = dict(experiment_conf, **model_conf, **job_conf, **opt_conf)
     start_text = format_text(start_template_text, conf_dict, experiment_number, number_of_iterations)
     
     write_text_file(start_text_file, start_text)
