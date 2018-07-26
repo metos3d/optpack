@@ -63,12 +63,66 @@ def parse_yaml_file(yaml_file_path):
 #    file.close()
 
 # ---------------------------------------------------------------------------------------------------------------------
+# read configuration
+# ---------------------------------------------------------------------------------------------------------------------
+def read_configuration(file):
+    print("Reading configuration .................. " + file)
+    if not os.path.exists(file):
+        print("File not found ...")
+        optpack_path = os.path.abspath(os.path.dirname(__file__))
+        file = os.path.join(optpack_path, file)
+        print("Reading configuration .................. " + file)
+        if not os.path.exists(file):
+            print("File not found ...")
+            print("Exiting ...")
+            sys.exit(1)
+    return parse_yaml_file(file)
+
+# ---------------------------------------------------------------------------------------------------------------------
 # prepare new experiment
 # ---------------------------------------------------------------------------------------------------------------------
-def prepare_new_experiment(exp_config, expname, niter):
+def prepare_new_experiment(experiment_conf, experiment_name, number_of_iterations):
     print("Preparing new experiment ...")
+    
+    print("Creating directory ..................... {0}/".format(experiment_name))
+    os.system("mkdir {0}".format(experiment_name))
+
+    print("Creating directory ..................... {0}/model/".format(experiment_name))
+    os.system("mkdir {0}/model/".format(experiment_name))
+    
+    optpack_conf = read_configuration("optpack.conf.yaml")
+    optpack_path = os.path.abspath(os.path.dirname(__file__))
+    copy_from = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["petsc"]))
+    copy_to = "{0}/model/petsc.env.sh".format(experiment_name)
+    print("Copying environment file ......... from: {0}".format(copy_from))
+    print("                                     to: {0}".format(copy_to))
+    os.system("cp {0} {1}".format(copy_from, copy_to))
+
+    model_conf = read_configuration(experiment_conf["experiment"]["model"])
+    model_name = model_conf["model"]["name"]
+    model_metos3d_path = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["metos3d"]))
+    print("Compiling executable ................... {0}/model/metos3d-simpack-{1}.exe".format(experiment_name, model_name))
+    os.system('''
+cd {0}/model/;
+source ./petsc.env.sh
+
+# links
+ln -s {1}/data/data
+ln -s {1}/model/model
+ln -s {1}/simpack
+ln -s {1}/metos3d/Makefile
+
+# compile
+#make BGC=model/{2} clean &> /dev/null
+#make BGC=model/{2} &> /dev/null
+make BGC=model/{2} clean
+make BGC=model/{2}
+'''.format(experiment_name, model_metos3d_path, model_name))
 
 
+
+#    job_conf = read_configuration(experiment_conf["experiment"]["job"])
+#    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
 
 
 
@@ -122,21 +176,6 @@ def continue_experiment(exp_config, expname, niter):
 #
 #compile_if_c(exp_config, expname, nexp)
 
-# ---------------------------------------------------------------------------------------------------------------------
-# read configuration
-# ---------------------------------------------------------------------------------------------------------------------
-def read_configuration(file):
-    print("Reading configuration .................. " + file)
-    if not os.path.exists(file):
-        print("File not found ...")
-        optpack_path = os.path.abspath(os.path.dirname(__file__))
-        file = os.path.join(optpack_path, file)
-        print("Reading configuration .................. " + file)
-        if not os.path.exists(file):
-            print("File not found ...")
-            print("Exiting ...")
-            sys.exit(1)
-    return parse_yaml_file(file)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # main
@@ -152,53 +191,16 @@ if __name__ == "__main__":
     experiment_conf_file = sys.argv[1]
     number_of_iterations = sys.argv[2]
 
-    optpack_conf = read_configuration("optpack.conf.yaml")
     experiment_conf = read_configuration(experiment_conf_file)
+    experiment_name = experiment_conf["experiment"]["name"]
 
-    model_conf = read_configuration(experiment_conf["experiment"]["model"])
-    job_conf = read_configuration(experiment_conf["experiment"]["job"])
-    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
+    print("Processing experiment .................. " + experiment_name)
+    if os.path.exists(experiment_name):
+        pass
+#        continue_experiment(exp_config, expname, niter)
+    else:
+        prepare_new_experiment(experiment_conf, experiment_name, number_of_iterations)
 
-#    experiment_name = experiment_conf["experiment"]["name"]
-#    print("Processing experiment .................. " + experiment_name)
-#    if os.path.exists(experiment_name):
-#        pass
-##        continue_experiment(exp_config, expname, niter)
-#    else:
-#        prepare_new_experiment(exp_config, expname, niter)
-#
-#
-#    print("Creating directory ..................... {0}/".format(experiment_name))
-#    os.system("mkdir {0}".format(experiment_name))
-#
-#    print("Creating directory ..................... {0}/model/".format(experiment_name))
-#    os.system("mkdir {0}/model/".format(experiment_name))
-#
-#    copy_from = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["petsc"]))
-#    copy_to = "{0}/model/petsc.env.sh".format(experiment_name)
-#    print("Copying environment file ......... from: {0}".format(copy_from))
-#    print("                                     to: {0}".format(copy_to))
-#    os.system("cp {0} {1}".format(copy_from, copy_to))
-#
-#    model_name = model_conf["model"]["name"]
-#    model_metos3d_path = os.path.normpath(os.path.join(optpack_path, optpack_conf["model"]["metos3d"]))
-#    print("Compiling executable ................... {0}/model/metos3d-simpack-{1}.exe".format(experiment_name, model_name))
-#    os.system('''
-#cd {0}/model/;
-#source ./petsc.env.sh
-#
-## links
-#ln -s {1}/data/data
-#ln -s {1}/model/model
-#ln -s {1}/simpack
-#ln -s {1}/metos3d/Makefile
-#
-## compile
-##make BGC=model/{2} clean &> /dev/null
-##make BGC=model/{2} &> /dev/null
-#make BGC=model/{2} clean
-#make BGC=model/{2}
-#'''.format(experiment_name, model_metos3d_path, model_name))
 
 
 
