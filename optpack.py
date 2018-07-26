@@ -101,7 +101,7 @@ def create_start_script(experiment_conf, model_conf, opt_conf, experiment_name, 
     language = opt_conf["opt"]["language"]
     extension_code = language_extensions[language]["code"]
 
-    start_text_file = os.path.join(experiment_name, experiment_name + "." + experiment_number + ".start." + extension_code)
+    start_text_file = os.path.join(experiment_name, experiment_name + ".start." + experiment_number + "." + extension_code)
     print(start_text_file)
     
     # format parameter list
