@@ -128,7 +128,7 @@ def continue_experiment(exp_config, expname, niter):
 def read_configuration(file):
     print("Reading configuration .................. " + file)
     if not os.path.exists(file):
-        print("File not found ...")
+        print("File not found .........................")
         optpack_path = os.path.abspath(os.path.dirname(__file__))
         print("Checking default location .............. " + optpack_path)
         file = os.path.join(optpack_path, file)
