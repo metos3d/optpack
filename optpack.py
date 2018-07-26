@@ -20,9 +20,9 @@ import sys
 import os
 import yaml
 
-model_list = ["N", "N-DOP", "NP-DOP", "NPZ-DOP", "NPZD-DOP"]
-language_list = ["matlab", "python", "c"]
-language_extensions = {"matlab": {"code": "m", "data": "mat"}, "python": {"code": "py", "data": "h5"}, "c": {"code": "c", "data": "h5"}}
+#model_list = ["N", "N-DOP", "NP-DOP", "NPZ-DOP", "NPZD-DOP"]
+#language_list = ["matlab", "python", "c"]
+#language_extensions = {"matlab": {"code": "m", "data": "mat"}, "python": {"code": "py", "data": "h5"}, "c": {"code": "c", "data": "h5"}}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # parse yaml file
@@ -33,34 +33,31 @@ def parse_yaml_file(yaml_file_path):
     yaml_file.close()
     return conf_dict
 
-## ---------------------------------------------------------------------------------------------------------------------
-## read template
-## ---------------------------------------------------------------------------------------------------------------------
-#def read_template(template_file_path):
-#    template_file = open(template_file_path, "r")
-#    template_text = template_file.read()
-#    template_file.close()
-#    return template_text
-#
-## ---------------------------------------------------------------------------------------------------------------------
-## format text
-## ---------------------------------------------------------------------------------------------------------------------
-#def format_text(text_template, config_dict):
-#    text = ""
-#    for line in text_template.splitlines(keepends=True):
-#        try:
-#            text = text + line.format(**config_dict)
-#        except KeyError:
-#            text = text + line
-#    return text
-#
-## ---------------------------------------------------------------------------------------------------------------------
-## write text file
-## ---------------------------------------------------------------------------------------------------------------------
-#def write_text_file(file_path, text):
-#    file = open(file_path, "w")
-#    file.write(text)
-#    file.close()
+# ---------------------------------------------------------------------------------------------------------------------
+# read template
+# ---------------------------------------------------------------------------------------------------------------------
+def read_template(template_file_path):
+    template_file = open(template_file_path, "r")
+    template_text = template_file.read()
+    template_file.close()
+    return template_text
+
+# ---------------------------------------------------------------------------------------------------------------------
+# format text
+# ---------------------------------------------------------------------------------------------------------------------
+def format_text(text_template, config_dict):
+    text = ""
+    for line in text_template.splitlines(keepends=True):
+        text = text + line.format(**config_dict)
+    return text
+
+# ---------------------------------------------------------------------------------------------------------------------
+# write text file
+# ---------------------------------------------------------------------------------------------------------------------
+def write_text_file(file_path, text):
+    file = open(file_path, "w")
+    file.write(text)
+    file.close()
 
 # ---------------------------------------------------------------------------------------------------------------------
 # read configuration
@@ -77,6 +74,20 @@ def read_configuration(file):
             print("Exiting ...")
             sys.exit(1)
     return parse_yaml_file(file)
+
+# ---------------------------------------------------------------------------------------------------------------------
+# create job script
+# ---------------------------------------------------------------------------------------------------------------------
+def create_job_script(exp_config, expname, nexp, niter):
+    
+    job_template_text = read_template("template.job.sh")
+    job_text = format_text(job_template_text, exp_config, nexp, niter)
+    
+    modname = exp_config["model"]["name"]
+    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
+    print(job_text_file)
+    
+    write_text_file(job_text_file, job_text)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # prepare new experiment
@@ -119,20 +130,16 @@ make BGC=model/{2} clean
 make BGC=model/{2}
 '''.format(experiment_name, model_metos3d_path, model_name))
 
+    print("Creating option directory .............. {0}/option".format(experiment_name))
+    os.system("mkdir {0}/option".format(experiment_name))
+    print("Creating log directory ................. {0}/log".format(experiment_name))
+    os.system("mkdir {0}/log".format(experiment_name))
 
 
 #    job_conf = read_configuration(experiment_conf["experiment"]["job"])
 #    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
 
 
-
-#    print("Creating experiment directory ...    {0}/".format(expname))
-#    os.system("mkdir {0}".format(expname))
-#    print("Creating option directory ...        {0}/option".format(expname))
-#    os.system("mkdir {0}/option".format(expname))
-#    print("Creating log directory ...           {0}/log".format(expname))
-#    os.system("mkdir {0}/log".format(expname))
-#
 #    nexp = "1"
 #    print("Creating initial job script ...      ", end="")
 #    create_job_script(exp_config, expname, nexp, niter)
@@ -144,7 +151,7 @@ make BGC=model/{2}
 # ---------------------------------------------------------------------------------------------------------------------
 # continue experiment
 # ---------------------------------------------------------------------------------------------------------------------
-def continue_experiment(exp_config, expname, niter):
+def continue_experiment(experiment_conf, experiment_name, number_of_iterations):
     print("Continuing experiment ...")
 
 #    extension_data = exp_config["language"]["data"]
@@ -196,8 +203,7 @@ if __name__ == "__main__":
 
     print("Processing experiment .................. " + experiment_name)
     if os.path.exists(experiment_name):
-        pass
-#        continue_experiment(exp_config, expname, niter)
+        continue_experiment(experiment_conf, experiment_name, number_of_iterations)
     else:
         prepare_new_experiment(experiment_conf, experiment_name, number_of_iterations)
 
@@ -298,10 +304,6 @@ if __name__ == "__main__":
 #    print("Reading optpack configuration .......... " + conf_file_path)
 #    conf_optpack = parse_yaml_file(conf_file_path)
 
-
-
-
-
 ##    '{:_<10}'.format('test')
 #
 #optpack_path = os.path.abspath(os.path.dirname(__file__))
@@ -333,3 +335,6 @@ if __name__ == "__main__":
 #    opt_conf_path = os.path.join(optpack_path, "conf/opt/" + opt_conf_file)
 #    print("Reading optimization configuration ..... " + opt_conf_path)
 #    opt_conf = parse_yaml_file(opt_conf_path)
+
+#    print("Creating experiment directory ...    {0}/".format(expname))
+#    os.system("mkdir {0}".format(expname))

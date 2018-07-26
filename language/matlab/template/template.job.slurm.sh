@@ -28,7 +28,7 @@
 #SBATCH --partition={job[queue]}
 #SBATCH --qos={job[queue]}
 
-export SCRATCH="${TMPDIR}/"
+export SCRATCH="${{TMPDIR}}/"
 export MPIRUN="{job[mpirun]}"
 module load matlab2015a
 matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.m > /dev/null

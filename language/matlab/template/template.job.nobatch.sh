@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-export SCRATCH="${TMPDIR}/"
+export SCRATCH="${{TMPDIR}}/"
 export MPIRUN="{job[mpirun]}"
 /home/matlab/linux/R2017b/bin/matlab -nodesktop -nodisplay -nosplash -nojvm -logfile {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.m > /dev/null
 

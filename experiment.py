@@ -22,43 +22,43 @@ import yaml
 import glob
 import h5py
 
-# ---------------------------------------------------------------------------------------------------------------------
-# parse yaml file
-# ---------------------------------------------------------------------------------------------------------------------
-def parse_yaml_file(yaml_file_path):
-    yaml_file = open(yaml_file_path, "r")
-    conf_dict = yaml.load(yaml_file)
-    yaml_file.close()
-    return conf_dict
+## ---------------------------------------------------------------------------------------------------------------------
+## parse yaml file
+## ---------------------------------------------------------------------------------------------------------------------
+#def parse_yaml_file(yaml_file_path):
+#    yaml_file = open(yaml_file_path, "r")
+#    conf_dict = yaml.load(yaml_file)
+#    yaml_file.close()
+#    return conf_dict
 
-# ---------------------------------------------------------------------------------------------------------------------
-# read template
-# ---------------------------------------------------------------------------------------------------------------------
-def read_template(template_file_path):
-    template_file = open(template_file_path, "r")
-    template_text = template_file.read()
-    template_file.close()
-    return template_text
+## ---------------------------------------------------------------------------------------------------------------------
+## read template
+## ---------------------------------------------------------------------------------------------------------------------
+#def read_template(template_file_path):
+#    template_file = open(template_file_path, "r")
+#    template_text = template_file.read()
+#    template_file.close()
+#    return template_text
 
-# ---------------------------------------------------------------------------------------------------------------------
-# format text
-# ---------------------------------------------------------------------------------------------------------------------
-def format_text(text_template, config_dict, nexp, niter):
-    text = ""
-    for line in text_template.splitlines(keepends=True):
-        try:
-            text = text + line.format(**config_dict, nexp=nexp, niter=niter)
-        except KeyError:
-            text = text + line
-    return text
+## ---------------------------------------------------------------------------------------------------------------------
+## format text
+## ---------------------------------------------------------------------------------------------------------------------
+#def format_text(text_template, config_dict, nexp, niter):
+#    text = ""
+#    for line in text_template.splitlines(keepends=True):
+#        try:
+#            text = text + line.format(**config_dict, nexp=nexp, niter=niter)
+#        except KeyError:
+#            text = text + line
+#    return text
 
-# ---------------------------------------------------------------------------------------------------------------------
-# write text file
-# ---------------------------------------------------------------------------------------------------------------------
-def write_text_file(file_path, text):
-    file = open(file_path, "w")
-    file.write(text)
-    file.close()
+## ---------------------------------------------------------------------------------------------------------------------
+## write text file
+## ---------------------------------------------------------------------------------------------------------------------
+#def write_text_file(file_path, text):
+#    file = open(file_path, "w")
+#    file.write(text)
+#    file.close()
 
 # ---------------------------------------------------------------------------------------------------------------------
 # compile if c
@@ -71,19 +71,19 @@ def compile_if_c(exp_config, expname, nexp):
         os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile clean &> /dev/null".format(experiment_pattern))
         os.system(". ./c/petsc.env.sh; PROGRAM={0}.exe EXPERIMENT={0}.o make -f c/Makefile &> /dev/null".format(experiment_pattern))
 
-# ---------------------------------------------------------------------------------------------------------------------
-# create job script
-# ---------------------------------------------------------------------------------------------------------------------
-def create_job_script(exp_config, expname, nexp, niter):
-    
-    job_template_text = read_template("template.job.sh")
-    job_text = format_text(job_template_text, exp_config, nexp, niter)
-
-    modname = exp_config["model"]["name"]
-    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
-    print(job_text_file)
-    
-    write_text_file(job_text_file, job_text)
+## ---------------------------------------------------------------------------------------------------------------------
+## create job script
+## ---------------------------------------------------------------------------------------------------------------------
+#def create_job_script(exp_config, expname, nexp, niter):
+#    
+#    job_template_text = read_template("template.job.sh")
+#    job_text = format_text(job_template_text, exp_config, nexp, niter)
+#
+#    modname = exp_config["model"]["name"]
+#    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
+#    print(job_text_file)
+#    
+#    write_text_file(job_text_file, job_text)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # create start script
