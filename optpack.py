@@ -78,16 +78,21 @@ def read_configuration(file):
 # ---------------------------------------------------------------------------------------------------------------------
 # create job script
 # ---------------------------------------------------------------------------------------------------------------------
-def create_job_script(exp_config, expname, nexp, niter):
+def create_job_script(experiment_conf, experiment_name, experiment_number, number_of_iterations):
     
-    job_template_text = read_template("template.job.sh")
-    job_text = format_text(job_template_text, exp_config, nexp, niter)
-    
-    modname = exp_config["model"]["name"]
-    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
-    print(job_text_file)
-    
-    write_text_file(job_text_file, job_text)
+    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
+    job_conf = read_configuration(experiment_conf["experiment"]["job"])
+
+#    language = opt_conf["opt"]["language"]
+#
+#    job_template_text = read_template("template.job.sh")
+#    job_text = format_text(job_template_text, exp_config, nexp, niter)
+#    
+#    modname = exp_config["model"]["name"]
+#    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
+#    print(job_text_file)
+#    
+#    write_text_file(job_text_file, job_text)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # prepare new experiment
@@ -118,7 +123,8 @@ def prepare_new_experiment(experiment_conf, experiment_name, number_of_iteration
     print("Compiling executable ................... {0}/model/metos3d-simpack-{1}.exe".format(experiment_name, model_name))
     os.system('''
 cd {0}/model/;
-source ./petsc.env.sh
+source ./petsc.env.sh &> /dev/null
+#source ./petsc.env.sh
 
 # links
 ln -s {1}/data/data
@@ -127,28 +133,24 @@ ln -s {1}/simpack
 ln -s {1}/metos3d/Makefile
 
 # compile
-#make BGC=model/{2} clean &> /dev/null
-#make BGC=model/{2} &> /dev/null
-make BGC=model/{2} clean
-make BGC=model/{2}
+make BGC=model/{2} clean &> /dev/null
+make BGC=model/{2} &> /dev/null
+#make BGC=model/{2} clean
+#make BGC=model/{2}
 '''.format(experiment_name, model_metos3d_path, model_name))
 
     opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
     language = opt_conf["opt"]["language"]
     print("Preparing language ..................... " + language)
     copy_from = optpack_path + "/language/{0}".format(language)
-    copy_to = "{0}/.".format(experiment_name)
+    copy_to = "{0}/{1}".format(experiment_name, language)
     print("Copying codes .................... from: {0}".format(copy_from))
     print("                                     to: {0}".format(copy_to))
     os.system("cp -r {0} {1}".format(copy_from, copy_to))
 
-
-
-#    job_conf = read_configuration(experiment_conf["experiment"]["job"])
-
-#    nexp = "1"
-#    print("Creating initial job script ...      ", end="")
-#    create_job_script(exp_config, expname, nexp, niter)
+    experiment_number = "1"
+    print("Creating initial job script ............ ", end="")
+    create_job_script(experiment_conf, experiment_name, experiment_number, number_of_iterations)
 #    print("Creating initial start script ...    ", end="")
 #    create_start_script(exp_config, expname, nexp, niter)
 #
