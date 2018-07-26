@@ -17,7 +17,7 @@
 #
 
 #
-# optpack configuration
+# default optpack configuration
 #
 # we assume the follwoing directory structure:
 #   metos3d/
@@ -35,9 +35,9 @@ model:
     # where the petsc environment is set (compilers, sequential and/or parallel, variables),
     #
     # example:
-    #   module load intel17.0.4
-    #   module load intelmpi17.0.4
-    #   export PETSC_DIR=/sfs/fs2/work-sh1/sunip194/papers/optref/petsc/petsc-3.3-p7
+    #   module load intel
+    #   module load intelmpi
+    #   export PETSC_DIR=/home/jsmith/petsc/petsc-3.7.7
     #   export PETSC_ARCH=arch-linux2-c-opt
     #
     petsc:      ../../petsc/petsc.env.sh
@@ -45,15 +45,5 @@ model:
     # absolute or relative path for metos3d,
     # where the data, metos3d, simpack and model repositories are located
     metos3d:     ../
-
-#language:
-#    # petsc version that will be used for optimization, if the c-petsc-tao algorithms are used,
-#    # otherwise this option is not required
-#    c:
-#        petsc:      /sfs/fs2/work-sh1/sunip194/papers/optref/petsc/de.uni-kiel.rz.nesh-fe.petsc-3.9.0.opt.sh
-
-#data:
-#    path: ???
-#    template: ???
 
 
