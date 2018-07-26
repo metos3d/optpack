@@ -34,8 +34,8 @@ ctx.nexp    = {nexp};
 
 % algorithm
 options     = [];
-options     = optimset(options, 'algorithm', 'interior-point');
-options     = optimset(options, 'display', 'iter');
+options     = optimset(options, 'algorithm', '{opt[algorithm]}');
+options     = optimset(options, 'display', '{opt[display]}');
 options     = optimset(options, 'maxiter', {niter});
 ctx.options = options;
 
@@ -70,5 +70,6 @@ ctx.logfile = [ctx.expname filesep ctx.expname '.' ctx.modname '.' num2str(ctx.n
 % store optimal parameter set and corresponding objective value
 uopt = uopt';   % transposed
 save(ctx.logfile, 'uopt', 'Jopt', '-append')
+
 
 
