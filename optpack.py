@@ -45,10 +45,10 @@ def read_template(template_file_path):
 # ---------------------------------------------------------------------------------------------------------------------
 # format text
 # ---------------------------------------------------------------------------------------------------------------------
-def format_text(text_template, config_dict):
+def format_text(text_template, config_dict, number_of_iterations):
     text = ""
     for line in text_template.splitlines(keepends=True):
-        text = text + line.format(**config_dict)
+        text = text + line.format(**config_dict, nexp=number_of_iterations)
     return text
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -78,16 +78,17 @@ def read_configuration(file):
 # ---------------------------------------------------------------------------------------------------------------------
 # create job script
 # ---------------------------------------------------------------------------------------------------------------------
-def create_job_script(experiment_conf, experiment_name, experiment_number, number_of_iterations):
-    
-    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
-    job_conf = read_configuration(experiment_conf["experiment"]["job"])
+def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
 
-#    language = opt_conf["opt"]["language"]
-#
-#    job_template_text = read_template("template.job.sh")
-#    job_text = format_text(job_template_text, exp_config, nexp, niter)
-#    
+    language = opt_conf["opt"]["language"]
+
+    job_conf = read_configuration(experiment_conf["experiment"]["job"])
+    template_file = job_conf["job"]["template"]
+
+    job_template_text = read_template("{0}/{1}/template/{2}".format(experiment_name, language, template_file))
+    conf_dict = dict(experiment_conf, **model_conf, **job_conf)
+    job_text = format_text(job_template_text, conf_dict, number_of_iterations)
+
 #    modname = exp_config["model"]["name"]
 #    job_text_file = os.path.join(expname, expname + "." + modname + "." + nexp + ".job.sh")
 #    print(job_text_file)
@@ -150,7 +151,8 @@ make BGC=model/{2} &> /dev/null
 
     experiment_number = "1"
     print("Creating initial job script ............ ", end="")
-    create_job_script(experiment_conf, experiment_name, experiment_number, number_of_iterations)
+    create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
+
 #    print("Creating initial start script ...    ", end="")
 #    create_start_script(exp_config, expname, nexp, niter)
 #
