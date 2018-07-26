@@ -18,7 +18,7 @@ function yd = data(ctx)
 %
 % yd = data(ctx)
 
-    datapath = ['../../../../twin-data/' ctx.modname '/work/'];
+    datapath = ['../../twin-data/' ctx.modname '/work/'];
     nt = ctx.nt;
     nx = ctx.nx;
     y = zeros(nx, nt);

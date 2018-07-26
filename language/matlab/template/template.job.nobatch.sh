@@ -19,6 +19,7 @@
 
 export SCRATCH="${{TMPDIR}}/"
 export MPIRUN="{job[mpirun]}"
+
 cd {experiment[name]}/
 /home/matlab/linux/R2017b/bin/matlab -nodesktop -nodisplay -nosplash -nojvm -logfile {experiment[name]}.out.{nexp}.txt < {experiment[name]}.start.{nexp}.m > /dev/null
 
