@@ -65,7 +65,6 @@ def write_text_file(file_path, text):
 def read_configuration(file):
     print("Reading configuration .................. " + file)
     if not os.path.exists(file):
-#        print("File not found ...")
         optpack_path = os.path.abspath(os.path.dirname(__file__))
         file = os.path.join(optpack_path, file)
         print("Reading configuration .................. " + file)
@@ -179,7 +178,6 @@ make BGC=model/{2}
     experiment_number = "1"
     print("Creating initial job script ............ ", end="")
     create_job_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
-
     print("Creating initial start script .......... ", end="")
     create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
 
@@ -191,35 +189,38 @@ make BGC=model/{2}
 def continue_experiment(experiment_conf, experiment_name, number_of_iterations):
     print("Continuing experiment ...")
 
-#    extension_data = exp_config["language"]["data"]
-#    modname = exp_config["model"]["name"]
-#    log_file_pattern = os.path.join(expname, expname + "." + modname + ".*." + extension_data)
-#    print("Checking pattern ...                 {0}".format(log_file_pattern))
-#    log_file_list = glob.glob(log_file_pattern)
-#
-#    nexp = len(log_file_list)
-#    if nexp==0:
-#        print("No previous runs found ... ")
-#        print("Exiting ...")
-#        sys.exit(1)
-#
-#    for log_file in log_file_list:
-#        print("Found log file ...                   {0}".format(log_file))
-#
-#    print("Reading last result ...")
-#    uopt = h5py.File(log_file_list[-1])["uopt"][...].flatten()
-#    exp_config["parameter"]["u0"] = uopt
-#
-#    nexp = str(nexp + 1)
-#    print("Continuing with optimization run ... {0}".format(nexp))
-#
-#print("Creating job script ...              ", end="")
-#create_job_script(exp_config, expname, nexp, niter)
-#print("Creating start script ...            ", end="")
-#create_start_script(exp_config, expname, nexp, niter)
-#
-#compile_if_c(exp_config, expname, nexp)
+    opt_conf = read_configuration(experiment_conf["experiment"]["opt"])
+    language = opt_conf["opt"]["language"]
 
+    extension_data = language_extensions[language]["data"]
+    log_file_pattern = os.path.join(experiment_name, experiment_name + ".*." + extension_data)
+    print("Checking pattern ....................... {0}".format(log_file_pattern))
+    log_file_list = glob.glob(log_file_pattern)
+
+    experiment_number = len(log_file_list)
+    if experiment_number==0:
+        print("No previous runs found ... ")
+        print("Exiting ...")
+        sys.exit(1)
+
+    for log_file in log_file_list:
+        print("Found log file ......................... {0}".format(log_file))
+
+    print("Reading last result ...")
+    uopt = h5py.File(log_file_list[-1])["uopt"][...].flatten()
+    model_conf = read_configuration(experiment_conf["experiment"]["model"])
+    model_conf["parameter"]["u0"] = uopt
+
+    experiment_number = str(experiment_number + 1)
+    print("Continuing with optimization run ....... {0}".format(experiment_number))
+
+    job_conf = read_configuration(experiment_conf["experiment"]["job"])
+    print("Creating initial job script ............ ", end="")
+    create_job_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
+    print("Creating initial start script .......... ", end="")
+    create_start_script(experiment_conf, model_conf, job_conf, opt_conf, experiment_name, experiment_number, number_of_iterations)
+
+#    compile_if_c(exp_config, expname, nexp)
 
 # ---------------------------------------------------------------------------------------------------------------------
 # main
@@ -249,59 +250,6 @@ if __name__ == "__main__":
 
 
 
-#    copy_from = optpack_path + "/language/{0}/template/template.job.sh".format(language_name)
-#    copy_to = "{0}/template.job.sh".format(model_name)
-#    print("Copying job template ............. from: {0}".format(copy_from))
-#    print("                                     to: {0}".format(copy_to))
-#    os.system("cp {0} {1}".format(copy_from, copy_to))
-#
-#    extension_code = language_extensions[language_name]["code"]
-#    copy_from = optpack_path + "/language/{0}/template/template.start.{1}".format(language_name, extension_code)
-#    copy_to = "{0}/template.start.{1}".format(model_name, extension_code)
-#    print("Copying start template ........... from: {0}".format(copy_from))
-#    print("                                     to: {0}".format(copy_to))
-#    os.system("cp {0} {1}".format(copy_from, copy_to))
-#
-#    extension_data = language_extensions[language_name]["data"]
-#    copy_from = optpack_path + "/experiment/{0}.conf.yaml".format(model_name)
-#    copy_to = "{0}/experiment.conf.yaml".format(model_name)
-#    print("Preparing experiment configuration ..... " + copy_to)
-#    print("Formatting template .................... " + copy_from)
-#    experiment_conf_template = read_template(copy_from)
-#    format_conf = {"language": {"name": language_name, "code": extension_code, "data": extension_data}}
-#    experiment_conf = format_text(experiment_conf_template, format_conf)
-#    write_text_file(copy_to, experiment_conf)
-#
-#    print("Preparing {0} codes ...".format(language_name))
-#    dir_name = "{0}/{1}/".format(model_name, language_name)
-#    print("Creating directory ..................... {0}".format(dir_name))
-#    os.system("mkdir {0}".format(dir_name))
-#
-#    if language_name=="c":
-#        copy_to = "{0}/{1}/.".format(model_name, language_name)
-#        copy_from = optpack_path + "/language/{0}/*.c".format(language_name)
-#        print("Copying codes .................... from: {0}".format(copy_from))
-#        os.system("cp {0} {1}".format(copy_from, copy_to))
-#        copy_from = optpack_path + "/language/{0}/*.h".format(language_name)
-#        print("                                   from: {0}".format(copy_from))
-#        os.system("cp {0} {1}".format(copy_from, copy_to))
-#        copy_from = optpack_path + "/language/{0}/Makefile".format(language_name)
-#        print("                                   from: {0}".format(copy_from))
-#        print("                                     to: {0}".format(copy_to))
-#        os.system("cp {0} {1}".format(copy_from, copy_to))
-#        # petsc for tao
-#        if conf_optpack.get("language"):
-#            copy_from = conf_optpack["language"]["c"]["petsc"]
-#            copy_to = "{0}/{1}/petsc.env.sh".format(model_name, language_name)
-#            print("                                   from: {0}".format(copy_from))
-#            print("                                     to: {0}".format(copy_to))
-#            os.system("cp {0} {1}".format(copy_from, copy_to))
-#    else:
-#        copy_from = optpack_path + "/language/{0}/*.{1}".format(language_name, extension_code)
-#        copy_to = "{0}/{1}/.".format(model_name, language_name)
-#        print("Copying codes .................... from: {0}".format(copy_from))
-#        print("                                     to: {0}".format(copy_to))
-#        os.system("cp {0} {1}".format(copy_from, copy_to))
 
 
 
@@ -376,3 +324,57 @@ if __name__ == "__main__":
 #    print("Copying experiment script ........ from: {0}".format(copy_from))
 #    print("                                     to: {0}".format(copy_to))
 #    os.system("cp {0} {1}".format(copy_from, copy_to))
+
+#    copy_from = optpack_path + "/language/{0}/template/template.job.sh".format(language_name)
+#    copy_to = "{0}/template.job.sh".format(model_name)
+#    print("Copying job template ............. from: {0}".format(copy_from))
+#    print("                                     to: {0}".format(copy_to))
+#    os.system("cp {0} {1}".format(copy_from, copy_to))
+#
+#    extension_code = language_extensions[language_name]["code"]
+#    copy_from = optpack_path + "/language/{0}/template/template.start.{1}".format(language_name, extension_code)
+#    copy_to = "{0}/template.start.{1}".format(model_name, extension_code)
+#    print("Copying start template ........... from: {0}".format(copy_from))
+#    print("                                     to: {0}".format(copy_to))
+#    os.system("cp {0} {1}".format(copy_from, copy_to))
+#
+#    extension_data = language_extensions[language_name]["data"]
+#    copy_from = optpack_path + "/experiment/{0}.conf.yaml".format(model_name)
+#    copy_to = "{0}/experiment.conf.yaml".format(model_name)
+#    print("Preparing experiment configuration ..... " + copy_to)
+#    print("Formatting template .................... " + copy_from)
+#    experiment_conf_template = read_template(copy_from)
+#    format_conf = {"language": {"name": language_name, "code": extension_code, "data": extension_data}}
+#    experiment_conf = format_text(experiment_conf_template, format_conf)
+#    write_text_file(copy_to, experiment_conf)
+#
+#    print("Preparing {0} codes ...".format(language_name))
+#    dir_name = "{0}/{1}/".format(model_name, language_name)
+#    print("Creating directory ..................... {0}".format(dir_name))
+#    os.system("mkdir {0}".format(dir_name))
+#
+#    if language_name=="c":
+#        copy_to = "{0}/{1}/.".format(model_name, language_name)
+#        copy_from = optpack_path + "/language/{0}/*.c".format(language_name)
+#        print("Copying codes .................... from: {0}".format(copy_from))
+#        os.system("cp {0} {1}".format(copy_from, copy_to))
+#        copy_from = optpack_path + "/language/{0}/*.h".format(language_name)
+#        print("                                   from: {0}".format(copy_from))
+#        os.system("cp {0} {1}".format(copy_from, copy_to))
+#        copy_from = optpack_path + "/language/{0}/Makefile".format(language_name)
+#        print("                                   from: {0}".format(copy_from))
+#        print("                                     to: {0}".format(copy_to))
+#        os.system("cp {0} {1}".format(copy_from, copy_to))
+#        # petsc for tao
+#        if conf_optpack.get("language"):
+#            copy_from = conf_optpack["language"]["c"]["petsc"]
+#            copy_to = "{0}/{1}/petsc.env.sh".format(model_name, language_name)
+#            print("                                   from: {0}".format(copy_from))
+#            print("                                     to: {0}".format(copy_to))
+#            os.system("cp {0} {1}".format(copy_from, copy_to))
+#    else:
+#        copy_from = optpack_path + "/language/{0}/*.{1}".format(language_name, extension_code)
+#        copy_to = "{0}/{1}/.".format(model_name, language_name)
+#        print("Copying codes .................... from: {0}".format(copy_from))
+#        print("                                     to: {0}".format(copy_to))
+#        os.system("cp {0} {1}".format(copy_from, copy_to))
