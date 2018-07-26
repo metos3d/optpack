@@ -62,7 +62,7 @@ ctx.yd      = data(ctx);
 ctx.i       = 1;
 
 % log
-ctx.logfile = [ctx.expname filesep ctx.expname '.' ctx.modname '.' num2str(ctx.nexp) '.mat'];
+ctx.logfile = [ctx.expname '.' num2str(ctx.nexp) '.mat'];
 
 % optimization
 [uopt,Jopt,exitflag,output,lambda,grad,hessian] = fmincon(@(u) objective(u,ctx),ctx.u0,[],[],[],[],ctx.lb,ctx.ub,[],ctx.options)
