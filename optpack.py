@@ -128,9 +128,9 @@ def continue_experiment(exp_config, expname, niter):
 def read_configuration(file):
     print("Reading configuration .................. " + file)
     if not os.path.exists(file):
-        print("File not found .........................")
+        print("File not found ...")
+        print("Checking default location ...")
         optpack_path = os.path.abspath(os.path.dirname(__file__))
-        print("Checking default location .............. " + optpack_path)
         file = os.path.join(optpack_path, file)
         if not os.path.exists(file):
             print("File not found ...")
@@ -154,13 +154,8 @@ if __name__ == "__main__":
     number_of_iterations = sys.argv[2]
 
     optpack_conf = read_configuration("optpack.conf.yaml")
-    print(optpack_conf)
+    experiment_conf = read_configuration(experiment_conf_file)
 
-#    optpack_path = os.path.abspath(os.path.dirname(__file__))
-#    optpack_conf_path = os.path.join(optpack_path, "optpack.conf.yaml")
-#    print("Reading optpack configuration .......... " + optpack_conf_path)
-#    optpack_conf = parse_yaml_file(optpack_conf_path)
-#
 #    print("Reading experiment configuration ....... " + experiment_conf_file)
 #    experiment_conf = parse_yaml_file(experiment_conf_file)
 #
@@ -325,3 +320,10 @@ if __name__ == "__main__":
 #optpack_path = os.path.abspath(os.path.dirname(__file__))
 #    optpack_conf_path = os.path.join(optpack_path, "optpack.conf.yaml")
 #    print("Reading optpack configuration .......... " + optpack_conf_path)
+
+
+#    optpack_path = os.path.abspath(os.path.dirname(__file__))
+#    optpack_conf_path = os.path.join(optpack_path, "optpack.conf.yaml")
+#    print("Reading optpack configuration .......... " + optpack_conf_path)
+#    optpack_conf = parse_yaml_file(optpack_conf_path)
+#
