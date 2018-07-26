@@ -18,10 +18,10 @@
 
 experiment:
     name:   TW.MAT-IP.N
-    model:  model.N.conf.yaml
-    job:    job.nobatch.conf.yaml       # hydra.informatik.uni-kiel.de
-#    job:    job.slurm.conf.yaml         # rzcluster.rz.uni-kiel.de
-#    job:    job.nqsii.conf.yaml         # nesh-fe.rz.informatik.uni-kiel.de
-    opt:    opt.mat-ip.conf.yaml
+    model:  conf/model/model.N.conf.yaml
+    job:    conf/job/job.nobatch.conf.yaml       # hydra.informatik.uni-kiel.de
+#    job:    conf/job/job.slurm.conf.yaml         # rzcluster.rz.uni-kiel.de
+#    job:    conf/job/job.nqsii.conf.yaml         # nesh-fe.rz.informatik.uni-kiel.de
+    opt:    conf/opt/opt.mat-ip.conf.yaml
 
 

@@ -113,101 +113,101 @@ def create_start_script(exp_config, expname, nexp, niter):
     
     write_text_file(start_text_file, start_text)
 
-# ---------------------------------------------------------------------------------------------------------------------
-# prepare new experiment
-# ---------------------------------------------------------------------------------------------------------------------
-def prepare_new_experiment(exp_config, expname, niter):
-    print("Preparing new experiment ...         " + expname)
-    
-    print("Creating experiment directory ...    {0}/".format(expname))
-    os.system("mkdir {0}".format(expname))
-    print("Creating option directory ...        {0}/option".format(expname))
-    os.system("mkdir {0}/option".format(expname))
-    print("Creating log directory ...           {0}/log".format(expname))
-    os.system("mkdir {0}/log".format(expname))
-    
-    nexp = "1"
-    print("Creating initial job script ...      ", end="")
-    create_job_script(exp_config, expname, nexp, niter)
-    print("Creating initial start script ...    ", end="")
-    create_start_script(exp_config, expname, nexp, niter)
+## ---------------------------------------------------------------------------------------------------------------------
+## prepare new experiment
+## ---------------------------------------------------------------------------------------------------------------------
+#def prepare_new_experiment(exp_config, expname, niter):
+#    print("Preparing new experiment ...         " + expname)
+#    
+#    print("Creating experiment directory ...    {0}/".format(expname))
+#    os.system("mkdir {0}".format(expname))
+#    print("Creating option directory ...        {0}/option".format(expname))
+#    os.system("mkdir {0}/option".format(expname))
+#    print("Creating log directory ...           {0}/log".format(expname))
+#    os.system("mkdir {0}/log".format(expname))
+#    
+#    nexp = "1"
+#    print("Creating initial job script ...      ", end="")
+#    create_job_script(exp_config, expname, nexp, niter)
+#    print("Creating initial start script ...    ", end="")
+#    create_start_script(exp_config, expname, nexp, niter)
+#
+#    compile_if_c(exp_config, expname, nexp)
 
-    compile_if_c(exp_config, expname, nexp)
+## ---------------------------------------------------------------------------------------------------------------------
+## continue experiment
+## ---------------------------------------------------------------------------------------------------------------------
+#def continue_experiment(exp_config, expname, niter):
+#    print("Continuing experiment ...            " + expname)
+#
+#    extension_data = exp_config["language"]["data"]
+#    modname = exp_config["model"]["name"]
+#    log_file_pattern = os.path.join(expname, expname + "." + modname + ".*." + extension_data)
+#    print("Checking pattern ...                 {0}".format(log_file_pattern))
+#    log_file_list = glob.glob(log_file_pattern)
+#    
+#    nexp = len(log_file_list)
+#    if nexp==0:
+#        print("No previous runs found ... ")
+#        print("Exiting ...")
+#        sys.exit(1)
+#    
+#    for log_file in log_file_list:
+#        print("Found log file ...                   {0}".format(log_file))
+#
+#    print("Reading last result ...")
+#    uopt = h5py.File(log_file_list[-1])["uopt"][...].flatten()
+#    exp_config["parameter"]["u0"] = uopt
+#    
+#    nexp = str(nexp + 1)
+#    print("Continuing with optimization run ... {0}".format(nexp))
+#
+#    print("Creating job script ...              ", end="")
+#    create_job_script(exp_config, expname, nexp, niter)
+#    print("Creating start script ...            ", end="")
+#    create_start_script(exp_config, expname, nexp, niter)
+#
+#    compile_if_c(exp_config, expname, nexp)
 
-# ---------------------------------------------------------------------------------------------------------------------
-# continue experiment
-# ---------------------------------------------------------------------------------------------------------------------
-def continue_experiment(exp_config, expname, niter):
-    print("Continuing experiment ...            " + expname)
-
-    extension_data = exp_config["language"]["data"]
-    modname = exp_config["model"]["name"]
-    log_file_pattern = os.path.join(expname, expname + "." + modname + ".*." + extension_data)
-    print("Checking pattern ...                 {0}".format(log_file_pattern))
-    log_file_list = glob.glob(log_file_pattern)
-    
-    nexp = len(log_file_list)
-    if nexp==0:
-        print("No previous runs found ... ")
-        print("Exiting ...")
-        sys.exit(1)
-    
-    for log_file in log_file_list:
-        print("Found log file ...                   {0}".format(log_file))
-
-    print("Reading last result ...")
-    uopt = h5py.File(log_file_list[-1])["uopt"][...].flatten()
-    exp_config["parameter"]["u0"] = uopt
-    
-    nexp = str(nexp + 1)
-    print("Continuing with optimization run ... {0}".format(nexp))
-
-    print("Creating job script ...              ", end="")
-    create_job_script(exp_config, expname, nexp, niter)
-    print("Creating start script ...            ", end="")
-    create_start_script(exp_config, expname, nexp, niter)
-
-    compile_if_c(exp_config, expname, nexp)
-
-# ---------------------------------------------------------------------------------------------------------------------
-# main
-# ---------------------------------------------------------------------------------------------------------------------
-if __name__ == "__main__":
-    if len(sys.argv[:]) < 4:
-        print('''usage: python {0} [new|continue] [experiment-name] [iteration-count]
-example:
-$> python {0} new exp-01 10'''.format(sys.argv[0]))
-        sys.exit(0)
-
-    command = sys.argv[1]
-    expname = sys.argv[2]
-    niter = sys.argv[3]
-
-    exp_config = parse_yaml_file("experiment.conf.yaml")
-    # strip any trailing path separators
-    expname = os.path.normpath(expname)
-    exp_config["experiment"] = {"name": expname}
-
-    if command=="new":
-        if os.path.exists(expname):
-            print("Directory already exists ... " + expname)
-            print("Exiting ...")
-            sys.exit(1)
-        
-        prepare_new_experiment(exp_config, expname, niter)
-
-    elif command=="continue":
-        if not os.path.exists(expname):
-            print("Experiment directory does not exists ... " + expname)
-            print("Exiting ...")
-            sys.exit(1)
-        
-        continue_experiment(exp_config, expname, niter)
-
-    else:
-        print("Unknown command ... " + command)
-        print("Exiting ...")
-        sys.exit(1)
+## ---------------------------------------------------------------------------------------------------------------------
+## main
+## ---------------------------------------------------------------------------------------------------------------------
+#if __name__ == "__main__":
+#    if len(sys.argv[:]) < 4:
+#        print('''usage: python {0} [new|continue] [experiment-name] [iteration-count]
+#example:
+#$> python {0} new exp-01 10'''.format(sys.argv[0]))
+#        sys.exit(0)
+#
+#    command = sys.argv[1]
+#    expname = sys.argv[2]
+#    niter = sys.argv[3]
+#
+#    exp_config = parse_yaml_file("experiment.conf.yaml")
+#    # strip any trailing path separators
+#    expname = os.path.normpath(expname)
+#    exp_config["experiment"] = {"name": expname}
+#
+#    if command=="new":
+#        if os.path.exists(expname):
+#            print("Directory already exists ... " + expname)
+#            print("Exiting ...")
+#            sys.exit(1)
+#
+#        prepare_new_experiment(exp_config, expname, niter)
+#
+#    elif command=="continue":
+#        if not os.path.exists(expname):
+#            print("Experiment directory does not exists ... " + expname)
+#            print("Exiting ...")
+#            sys.exit(1)
+#
+#        continue_experiment(exp_config, expname, niter)
+#
+#    else:
+#        print("Unknown command ... " + command)
+#        print("Exiting ...")
+#        sys.exit(1)
 
 
 
