@@ -17,9 +17,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#SBATCH --job-name={experiment[name]}.{model[name]}.{nexp}
-#SBATCH --output={experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.job.out.txt
-#SBATCH --error={experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.job.out.txt
+#SBATCH --job-name={experiment[name]}.{nexp}
+#SBATCH --output={experiment[name]}/{experiment[name]}}.{nexp}.job.out.txt
+#SBATCH --error={experiment[name]}/{experiment[name]}.{nexp}.job.out.txt
 #SBATCH --nodes={job[nodes]}
 #SBATCH --tasks-per-node={job[cores]}
 #SBATCH --cpus-per-task=1
@@ -31,7 +31,7 @@
 export SCRATCH="${{TMPDIR}}/"
 export MPIRUN="{job[mpirun]}"
 module load matlab2015a
-matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{model[name]}.{nexp}.start.m > /dev/null
+matlab -nodisplay -logfile {experiment[name]}/{experiment[name]}.{nexp}.out.txt < {experiment[name]}/{experiment[name]}.{nexp}.start.m > /dev/null
 
 scontrol show job $SLURM_JOBID
 

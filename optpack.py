@@ -80,18 +80,16 @@ def read_configuration(file):
 # ---------------------------------------------------------------------------------------------------------------------
 def create_job_script(experiment_conf, model_conf, opt_conf, experiment_name, experiment_number, number_of_iterations):
 
-    language = opt_conf["opt"]["language"]
+    job_text_file = os.path.join(experiment_name, experiment_name + ".job." + experiment_number + ".sh")
+    print(job_text_file)
 
     job_conf = read_configuration(experiment_conf["experiment"]["job"])
     template_file = job_conf["job"]["template"]
 
+    language = opt_conf["opt"]["language"]
     job_template_text = read_template("{0}/{1}/template/{2}".format(experiment_name, language, template_file))
     conf_dict = dict(experiment_conf, **model_conf, **job_conf)
     job_text = format_text(job_template_text, conf_dict, number_of_iterations)
-
-    model_name = model_conf["model"]["name"]
-    job_text_file = os.path.join(experiment_name, experiment_name + "." + model_name + ".job." + experiment_number + ".sh")
-    print(job_text_file)
 
     write_text_file(job_text_file, job_text)
 
