@@ -63,7 +63,7 @@ PetscErrorCode model(Vec *y, Vec u, context *ctx) {
     strcpy(readpath, getenv("SCRATCH"));
     for (i=0; i<ctx->nt; i++) {
         sprintf(readfilepath, "%s%04d%s", readpath, i, "-N.petsc");
-        if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", readfilepath);
+//        if (i%500==0) PetscPrintf(ctx->comm, "# %s\n", readfilepath);
         PetscViewerBinaryOpen(ctx->comm, readfilepath, FILE_MODE_READ, &viewer);
         VecLoad(y[i], viewer);
         PetscViewerDestroy(&viewer);

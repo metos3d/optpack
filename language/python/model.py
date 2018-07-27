@@ -50,7 +50,7 @@ def model(u, ctx):
     y = np.zeros((nt,nx))       # note, c order
     for i in range(nt):
         filepath = readpath + "{:04d}".format(i) + "-N.petsc"
-        if i%500==0: print("# {}".format(filepath), flush=True)
+#        if i%500==0: print("# {}".format(filepath), flush=True)
         y[i,:] = read_petsc_vector(filepath);
 
     # clean scratch
