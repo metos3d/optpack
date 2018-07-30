@@ -23,7 +23,7 @@
 #PBS -l elapstim_req={job[walltime]}
 #PBS -l memsz_job=10gb
 #PBS -N {experiment[name]}.{nexp}
-#PBS -o {experiment[name]}.job.{nexp}.out.txt
+#PBS -o {experiment[name]}/{experiment[name]}.job.{nexp}.out.txt
 #PBS -j o
 #PBS -q {job[queue]}
 
