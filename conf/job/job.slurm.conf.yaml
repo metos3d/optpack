@@ -19,7 +19,7 @@
 job:
     template:   template.job.slurm.sh
     queue:      focean
-    walltime:   "400:00:00"
+    walltime:   UNLIMITED
     cores:      16
     nodes:      8
     mpirun:     "mpirun -n 128"
