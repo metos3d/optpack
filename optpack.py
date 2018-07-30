@@ -131,7 +131,7 @@ def compile_if_c(opt_conf, experiment_name, experiment_number):
         print("Compiling executable ................... {0}.exe".format(executable_base))
         os.system('''
 cd {0}/;
-#source petsc.env.sh &> /dev/null;
+#source model/petsc.env.sh &> /dev/null;
 #PROGRAM={1}.exe OBJECT_FILE={1}.o make -f c/Makefile clean &> /dev/null
 #PROGRAM={1}.exe OBJECT_FILE={1}.o make -f c/Makefile &> /dev/null
 source model/petsc.env.sh;
@@ -174,10 +174,10 @@ ln -s {1}/model/model
 ln -s {1}/simpack
 ln -s {1}/metos3d/Makefile
 # compile
-#source petsc.env.sh &> /dev/null
+#source ./petsc.env.sh &> /dev/null
 #make BGC=model/{2} clean &> /dev/null
 #make BGC=model/{2} &> /dev/null
-source petsc.env.sh
+source ./petsc.env.sh
 make BGC=model/{2} clean
 make BGC=model/{2}
 '''.format(experiment_name, model_metos3d_path, model_name))
