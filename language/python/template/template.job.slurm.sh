@@ -18,7 +18,7 @@
 #
 
 #SBATCH --job-name={experiment[name]}.{nexp}
-#SBATCH --output={experiment[name]}}.job.{nexp}.out.txt
+#SBATCH --output={experiment[name]}.job.{nexp}.out.txt
 #SBATCH --error={experiment[name]}.job.{nexp}.out.txt
 #SBATCH --nodes={job[nodes]}
 #SBATCH --tasks-per-node={job[cores]}
