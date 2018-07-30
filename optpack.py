@@ -65,8 +65,9 @@ def write_text_file(file_path, text):
 # read configuration
 # ---------------------------------------------------------------------------------------------------------------------
 def read_configuration(file):
-    print("Reading configuration .................. " + file)
+    print("Reading configuration .................. " + file, end="")
     if not os.path.exists(file):
+        print(" (not found, trying default location)")
         optpack_path = os.path.abspath(os.path.dirname(__file__))
         file = os.path.join(optpack_path, file)
         print("Reading configuration .................. " + file)
